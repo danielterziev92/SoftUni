@@ -1,17 +1,14 @@
 function numbers(numb) {
     let result = 0;
-    let isTrue = false;
-    let prev = '';
+    let isSame = true;
+    let firstDigit = String(numb)[0];
     for(let char of numb.toString()){
-        if (char == prev){
-            isTrue = true;
-        } else {
-            prev = char;
-            isTrue = false;
+        if (char != firstDigit){
+            isSame = false;
         }
         result += Number(char);
     }
-    console.log(isTrue);
+    console.log(isSame);
     console.log(result);
 }
 
