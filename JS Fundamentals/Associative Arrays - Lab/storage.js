@@ -3,11 +3,12 @@ function solve(array) {
 
     for (let info of array) {
         let [name, qty] = info.split(' ');
+        qty = Number(qty);
+        let oldQty = 0;
         if (result.has(name)) {
-            result.set(name, Number(result.get(name)) + Number(qty));
-        } else {
-            result.set(name, qty);
+            oldQty = result.get(name);
         }
+        result.set(name, qty + oldQty);
     }
 
     for (let [stock, qty] of result) {
