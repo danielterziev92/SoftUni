@@ -17,7 +17,7 @@ test3 = '''33
 10 20 30
 100'''
 
-sys.stdin = StringIO(test3)
+sys.stdin = StringIO(test1)
 
 from collections import deque
 
@@ -27,9 +27,12 @@ bullets = deque(map(int, input().split()))
 locks = deque(map(int, input().split()))
 intelligence = int(input())
 shoot_count = 0
+is_done = False
 while bullets and locks:
     for _ in range(size_of_gun_barrel):
-        if not locks or not bullets: break
+        if not locks or not bullets:
+            is_done = True
+            break
         bullet = bullets.pop()
         if bullet <= locks[0]:
             print('Bang!')
@@ -38,7 +41,7 @@ while bullets and locks:
             print('Ping!')
         shoot_count += 1
 
-    if bullets:
+    if bullets and not is_done:
         print('Reloading!')
 
 if locks:
