@@ -17,12 +17,32 @@ test3 = '''33
 10 20 30
 100'''
 
-sys.stdin = StringIO(test1)
+sys.stdin = StringIO(test3)
 
 from collections import deque
 
-bullet = int(input())
+bullet_price = int(input())
 size_of_gun_barrel = int(input())
-bullets = map(int, input().split())
+bullets = deque(map(int, input().split()))
 locks = deque(map(int, input().split()))
-value_of_the_intelligence = int(input())
+intelligence = int(input())
+shoot_count = 0
+while bullets and locks:
+    for _ in range(size_of_gun_barrel):
+        if not locks or not bullets: break
+        bullet = bullets.pop()
+        if bullet <= locks[0]:
+            print('Bang!')
+            locks.popleft()
+        else:
+            print('Ping!')
+        shoot_count += 1
+
+    if bullets:
+        print('Reloading!')
+
+if locks:
+    print(f"Couldn't get through. Locks left: {len(locks)}")
+else:
+    earned_money = intelligence - (shoot_count * bullet_price)
+    print(f'{len(bullets)} bullets left. Earned ${earned_money}')
