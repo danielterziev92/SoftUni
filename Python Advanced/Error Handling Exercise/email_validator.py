@@ -13,6 +13,18 @@ sys.stdin = StringIO(test3)
 import re
 
 
+class NameTooShortError(Exception):
+    pass
+
+
+class MustContainAtSymbolError(Exception):
+    pass
+
+
+class InvalidDomainError(Exception):
+    pass
+
+
 def validation_email_name(email):
     regex = r'^[a-zA-Z0-9]{5,}'
     matches = re.search(regex, email)
@@ -29,18 +41,6 @@ def validation_email_domain(email):
     regex = r'(.com)$|(.bg)$|(.net)$|(.org)$'
     matches = re.search(regex, email)
     return matches
-
-
-class NameTooShortError(Exception):
-    pass
-
-
-class MustContainAtSymbolError(Exception):
-    pass
-
-
-class InvalidDomainError(Exception):
-    pass
 
 
 while True:
