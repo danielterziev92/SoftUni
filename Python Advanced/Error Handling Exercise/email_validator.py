@@ -5,8 +5,9 @@ test1 = '''abc@abv.bg'''
 test2 = '''peter@gmail.com
 petergmail.com '''
 test3 = '''peter@gmail.hotmail'''
+test4 = '''mymail@.com'''
 
-sys.stdin = StringIO(test3)
+sys.stdin = StringIO(test4)
 
 # Task start from here
 
