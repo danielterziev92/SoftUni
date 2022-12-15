@@ -12,6 +12,10 @@ section header h1 {
     font-size: 28px;
 }
 
+section header p {
+    font-style: italic;
+}
+
 section p {
     font-size: 24px;
 }
