@@ -1,0 +1,48 @@
+body {
+    font-family: Helvetica, sans-serif;
+    background-color: rgb(238, 238, 238);
+    color: rgb(51, 51, 51);
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+article {
+    width: 830px;
+    display: inline-block;
+    padding: 15px 15px;
+}
+
+article header h1 {
+    font-size: 37px;
+    padding: 0;
+    margin: 0;
+}
+
+article section h2 {
+    font-family: Georgia, serif !important;
+    font-size: 30px;
+    padding: 0;
+    margin: 0;
+    padding-top: 30px;
+}
+
+
+article section img {
+    width: 75%;
+    height: auto;
+}
+
+aside {
+    width: 300px;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+}
+
+aside h2, article header h1, article section h2 {
+    font-family: "Times New Roman", serif;
+}
