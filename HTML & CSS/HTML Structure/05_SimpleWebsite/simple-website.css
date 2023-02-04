@@ -43,14 +43,14 @@ section {
     margin-left: 20px;
 }
 
-section header h1 {
+section article header h1 {
     font-size: 28px;
 }
 
-section header p {
+section article header p {
     font-style: italic;
 }
 
-section p {
+section article p {
     font-size: 24px;
 }
