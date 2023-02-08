@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://use.fontawesome.com/releases/v5.15.4/css/all.css');
 
 * {
     padding: 0;
@@ -11,6 +12,11 @@
 
 body {
     padding: 0 75px;
+    display: grid;
+    grid-template-areas:
+    'header header'
+    'main nav'
+    'footer nav';
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -23,6 +29,7 @@ header {
     background-position: center;
     height: 1350px;
     position: relative;
+    grid-area: header;
 }
 
 header .logo {
@@ -60,7 +67,7 @@ header .quote:before {
 
 header .quote {
     width: 500px;
-    height: 400px;
+    height: 380px;
     position: absolute;
     right: 30px;
     background-image: linear-gradient(to right, #9c928a, #c7c7c7);
@@ -73,4 +80,138 @@ header .quote p {
     text-align: right;
     font-size: 1.65rem;
     text-shadow: 2px 2px 1px rgb(0, 0, 0, 0.7);
+}
+
+nav {
+    grid-area: nav;
+    background-color: #bab1ad;
+    width: 500px;
+}
+
+nav ul li {
+    list-style: none;
+    padding: 70px;
+}
+
+nav ul li a {
+    font-size: 6.5rem;
+    font-weight: lighter;
+    color: #ffffff;
+}
+
+nav ul li p {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
+main, footer {
+    background-color: #f2f0f3;
+}
+
+main {
+    grid-area: main;
+    padding: 60px 80px 0 80px;
+}
+
+main .our-services h2 {
+    font-size: 3.7rem;
+    text-transform: uppercase;
+    opacity: 80%;
+    margin-bottom: 40px;
+}
+
+main .our-services article p {
+    font-size: 1.8rem;
+    margin: 40px 0;
+}
+
+main .our-services article p:last-child {
+    padding-bottom: 0;
+}
+
+main .our-services article p span:before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: '\f0a9';
+    margin-right: 10px;
+    opacity: 90%;
+}
+
+main .our-services article p span {
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 90%;
+}
+
+footer {
+    grid-area: footer;
+    position: relative;
+}
+
+footer h2 {
+    font-size: 4rem;
+    text-transform: uppercase;
+    margin: 0 80px;
+    opacity: 80%;
+}
+
+footer h2:after {
+    --color-line: #000000;
+    box-sizing: border-box;
+    content: "";
+    border: 1px solid var(--color-line);
+    width: 100%;
+    transform: translateY(1rem);
+    position: absolute;
+    top: 80px;
+    left: 0;
+}
+
+footer ul {
+    margin: 40px 80px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+footer ul li {
+    list-style: none;
+    font-size: 1.9rem;
+}
+
+footer ul li span {
+    font-weight: bold;
+    font-style: italic;
+}
+
+footer form {
+    margin: 0 80px;
+    display: flex;
+    justify-items: center;
+}
+
+footer form input {
+    width: 35rem;
+    height: 4rem;
+    border: none;
+    background-color: #bab1ad;
+    color: #ffffff;
+    border-radius: 10gitpx;
+    padding: 15px 20px 10px 20px;
+}
+
+footer form input::placeholder {
+    color: #ffffff;
+    font-size: 1.5rem;
+}
+
+footer form button {
+    margin: 0 20px;
+    width: 12rem;
+    height: 4rem;
+    background-color: #67784d;
+    color: #ffffff;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 10px;
 }
