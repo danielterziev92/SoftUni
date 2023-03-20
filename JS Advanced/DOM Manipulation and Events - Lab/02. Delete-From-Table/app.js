@@ -3,12 +3,14 @@ function deleteByEmail() {
     const resultText = document.getElementById('result');
     const tableValues = document.querySelectorAll('#customers tbody tr td:nth-child(2)')
 
-    for (const row of tableValues) {
-        if (row.textContent === emailWanted.value) {
-            row.parentElement.remove();
+    for (const rowValue of tableValues) {
+        if (rowValue.textContent === emailWanted.value) {
+            rowValue.parentElement.remove();
             resultText.textContent = 'Deleted.';
-        } else {
-            resultText.textContent = 'Not found.';
+            return;
         }
     }
+
+    resultText.textContent = 'Not found.';
+
 }
