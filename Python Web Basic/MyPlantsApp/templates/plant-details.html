@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+    <section id="plant-details">
+        <h1>Plant Details</h1>
+        <div class="info-section">
+            <div class="plant-header">
+                <img class="plant-img" src="{{ object.image_url }}" alt='plant image'/>
+                <h1>{{ object.type }}</h1>
+                <p><span class="description-plant">Name: {{ object.name }}</span></p>
+                <p><span class="description-plant">Price: {{ object.get_price }}</span></p>
+                <p><span class="description-plant">Description: {{ object.description }}</span>
+                </p>
+            </div>
+
+            <div class="buttons">
+                <a href="{% url 'plant edit page' object.pk %}" class="edit-button">Edit</a>
+                <a href="{% url 'plant delete page' object.pk %}" class="delete-button">Delete</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

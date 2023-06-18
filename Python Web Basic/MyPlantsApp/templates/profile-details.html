@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tags %}
+
+{% block page_content %}
+    <section id="plant-details">
+        <h1>Profile Details</h1>
+        <div class="info-section">
+            <div class="plant-header">
+                {% if not object.profile_picture %}
+                    <img class="plant-img" src="{% static 'images/default.jpg' %}" alt='profile-image'/>
+                {% else %}
+                    <img class="plant-img" src="{{ object.profile_picture }}" alt='profile-image'/>
+                {% endif %}
+                <h1>{{ object.get_full_name }}</h1>
+                <p class="description">Username: {{ object.username }}</p>
+                <p class="description">Total stars:</p>
+                {% range_count plants.count as range_count %}
+                {% for count in range_count %}
+                    {% if count < 3 %}
+                        <img class="star-img" src="{% static 'images/star.png' %}"
+                             alt='profile-image'/>
+                    {% endif %}
+                {% empty %}
+                    <p class="description">Total stars: 0</p>
+                {% endfor %}
+                <div class="buttons">
+                    <a href="{% url 'profile edit page' %}" class="edit-button">Edit</a>
+                    <a href="{% url 'profile delete page' %}" class="delete-button">Delete</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
