@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+    <!-- edit game form -->
+    <section id="delete-page" class="auth">
+        <form id="delete" action="{% url 'car delete' object.pk %}" method="post">
+            <div class="container">
+                <h1>Delete Car</h1>
+                {% for field in form %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                    {{ field }}
+                    {{ field.errors }}
+                {% endfor %}
+                {% csrf_token %}
+                <input class="btn submit" type="submit" value="Delete Car">
+
+            </div>
+        </form>
+    </section>
+
+{% endblock %}
