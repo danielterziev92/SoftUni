@@ -1,0 +1,19 @@
+{% load static %}
+<header>
+    <a id="logo" href="{% url 'index' %}">
+        <img id="logo-img" src="{% static 'images/logo.png' %}" alt="logo"/>
+    </a>
+    <nav>
+        {% if profile %}
+            <div class="user">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'fruit create' %}">Add Fruit</a>
+                <a href="{% url 'profile details' %}">Profile</a>
+            </div>
+        {% else %}
+            <div class="guest">
+                <a href="{% url 'profile create' %}">Create Profile</a>
+            </div>
+        {% endif %}
+    </nav>
+</header>

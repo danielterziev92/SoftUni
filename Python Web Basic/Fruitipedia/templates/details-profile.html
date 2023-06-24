@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load tags %}
+{% load static %}
+
+{% block page_content %}
+    <main>
+        <section id="details">
+            <div id="details-wrapper">
+                <h2>Profile Details</h2>
+                {% if object.image_url %}
+                    <img id="details-img" src="{{ object.image_url }}"
+                         alt="profile img"/>
+                {% else %}
+                    <img id="details-img" src="{% static 'images/default.jpg' %}" alt="profile img"/>
+                {% endif %}
+                <p id="details-title">{{ object.get_full_name }}</p>
+                <div id="info-wrapper">
+                    <div id="details-description">
+                        <p>{{ object.email }}</p>
+                        <p>Age: {{ object.age }}</p>
+                        <p id="nutrition">Posts: {% posts_count %}</p>
+                    </div>
+                    <div id="action-buttons">
+                        <a href="{% url 'profile edit' %}" id="edit-btn">Edit</a>
+                        <a href="{% url 'profile delete' %}" id="delete-btn">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+{% endblock %}

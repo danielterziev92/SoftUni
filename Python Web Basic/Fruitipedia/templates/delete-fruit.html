@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+    <main>
+        <section id="edit">
+            <div class="form">
+                <h2>Delete Fruit</h2>
+                <form class="edit-form" action="{% url 'fruit delete' object.pk %}" method="post">
+                    {% for field in form %}
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    {% endfor %}
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}
