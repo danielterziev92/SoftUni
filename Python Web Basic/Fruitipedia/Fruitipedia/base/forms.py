@@ -90,6 +90,7 @@ class FruitDeleteForm(forms.ModelForm):
     class Meta:
         model = Fruit
         fields = '__all__'
+        exclude = ('nutrition',)
         labels = {
             'image_url': 'Image URL',
         }
