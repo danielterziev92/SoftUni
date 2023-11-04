@@ -1,6 +1,8 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
-export const TableWithDataHead = () => {
+export const TableWithDataHead = ({
+                                      sortDataClickHandler
+                                  }) => {
     const menus = [
         {name: 'Image'},
         {name: 'First Name', children: true},
@@ -22,7 +24,11 @@ export const TableWithDataHead = () => {
         <thead>
         <tr>
             {items.map((item, index) =>
-                (<th key={index} onClick={() => item.children && itemNameClickHandled(item.name)}>{item.name}
+                (<th key={index} onClick={() => {
+                    item.children && itemNameClickHandled(item.name);
+                    sortDataClickHandler(item.name);
+                }
+                }>{item.name}
                     {item.children &&
                         <svg aria-hidden="true" focusable="false" data-prefix="fas"
                              data-icon="arrow-down"
