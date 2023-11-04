@@ -1,14 +1,29 @@
 import {useState} from "react";
 
 export const SearchForm = ({
-
+                               clickSearchFormHandler
                            }) => {
-    const [selectedOption, setSelectedOption] = useState("");
-    const [isSearched, setIsSearched] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('');
+    const [value, setValue] = useState('');
 
-    const onChangeSelectedOptionHandle = (e) => {
+    const changeSelectedOptionHandle = (e) => {
         const selectedValue = e.currentTarget.value;
         setSelectedOption(selectedValue);
+    }
+
+    const changeSetValueHandler = (e) => {
+        setValue(e.currentTarget.value)
+    }
+
+    const clickSearchStatesHandler = (e) => {
+        e.preventDefault();
+        clickSearchFormHandler(value, selectedOption)
+    }
+
+    const clickClearStatesHandler = (e) => {
+        e.preventDefault();
+        setSelectedOption('');
+        setValue('');
     }
 
     return (
@@ -25,21 +40,21 @@ export const SearchForm = ({
                 <span>Users</span>
             </h2>
             <div className="search-input-container">
-                <input type="text" placeholder="Please, select the search criteria" name="search"/>
-                {isSearched ?
-                    <button className="btn close-btn">
+                <input type="text" placeholder="Please, select the search criteria" name="search"
+                       onChange={changeSetValueHandler} value={value}/>
+                    <button className="btn close-btn" onClick={clickClearStatesHandler}>
                         <i className="fa-solid fa-xmark"></i>
                     </button>
-                    :
-                    <button className="btn" title="Please, select the search criteria">
+                    <button className="btn" title="Please, select the search criteria"
+                            onClick={clickSearchStatesHandler}>
                         <i className="fa-solid fa-magnifying-glass"></i>
                     </button>
-                }
             </div>
 
             <div className="filter">
                 <span>Search Criteria:</span>
-                <select name="criteria" className="criteria" onChange={onChangeSelectedOptionHandle}>
+                <select name="criteria" className="criteria" onChange={changeSelectedOptionHandle}
+                        value={selectedOption}>
                     <option value="">Not selected</option>
                     <option value="firstName">First Name</option>
                     <option value="lastName">Last Name</option>
