@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export const SearchForm = ({
                                clickSearchFormHandler
@@ -17,13 +17,14 @@ export const SearchForm = ({
 
     const clickSearchStatesHandler = (e) => {
         e.preventDefault();
-        clickSearchFormHandler(value, selectedOption)
+        clickSearchFormHandler(value, selectedOption);
     }
 
     const clickClearStatesHandler = (e) => {
         e.preventDefault();
         setSelectedOption('');
         setValue('');
+        clickSearchFormHandler('', '');
     }
 
     return (
@@ -42,13 +43,13 @@ export const SearchForm = ({
             <div className="search-input-container">
                 <input type="text" placeholder="Please, select the search criteria" name="search"
                        onChange={changeSetValueHandler} value={value}/>
-                    <button className="btn close-btn" onClick={clickClearStatesHandler}>
-                        <i className="fa-solid fa-xmark"></i>
-                    </button>
-                    <button className="btn" title="Please, select the search criteria"
-                            onClick={clickSearchStatesHandler}>
-                        <i className="fa-solid fa-magnifying-glass"></i>
-                    </button>
+                <button className="btn close-btn" onClick={clickClearStatesHandler}>
+                    <i className="fa-solid fa-xmark"></i>
+                </button>
+                <button className="btn" title="Please, select the search criteria"
+                        onClick={clickSearchStatesHandler}>
+                    <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
             </div>
 
             <div className="filter">
