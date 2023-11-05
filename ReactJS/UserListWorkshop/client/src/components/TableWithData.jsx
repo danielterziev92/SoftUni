@@ -2,7 +2,7 @@ import {TableWithDataItem} from "./TableWithDataItem.jsx";
 import {useEffect, useState} from "react";
 import {ErrorOverlap} from "./overlaps/ErrorOverlap.jsx";
 import {NoUsersOverlap} from "./overlaps/NoUsersOverlap.jsx";
-import {createUser, getAllUsers, getUser, updateUser} from "../services/userService.js";
+import {createUser, deleteUser, getAllUsers, getUser, updateUser} from "../services/userService.js";
 import {TableWithDataHead} from "./TableWithDataHead.jsx";
 import {
     filteredData,
@@ -17,13 +17,15 @@ import {UserInfoModal} from "./UserInfoModal.jsx";
 import {UserCreateModal} from "./UserCreateModal.jsx";
 import {UserUpdateModal} from "./UserUpdateModal.jsx";
 import {UserDeleteModal} from "./UserDeleteModal.jsx";
+import {Pagination} from "./Pagination.jsx";
 
 export const TableWithData = ({
                                   searchValue,
                                   searchCriteria,
                               }) => {
     const [users, setUsers] = useState([]);
-    const [user, setUser] = useState({});
+    const [usersOnCurrentPage, setUsersOnCurrentPage] = useState([]);
+    const [selectedUser, setSelectedUser] = useState({});
     const [isFetchFailed, setIsFetchFailed] = useState(false);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [isSpinnerShow, setIsSpinnerShow] = useState(true);
@@ -31,10 +33,13 @@ export const TableWithData = ({
     const [showUserUpdateModal, setShowUserUpdateModal] = useState(false);
     const [showUserDeleteModal, setShowUserDeleteModal] = useState(false);
     const [showUserCreateModal, setShowUserCreateModal] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage, setUsersPerPage] = useState(5);
+    const [pageCount, setPageCount] = useState(0);
 
     useEffect(() => {
         getAllUsers()
-            .then(data => setUsers(data))
+            .then(data => setUsers([...data, ...data, ...data, ...data]))
             .catch(e => setIsFetchFailed(true))
             .finally(() => setIsSpinnerShow(false));
     }, []);
@@ -42,6 +47,27 @@ export const TableWithData = ({
     useEffect(() => {
         setFilteredUsers(filteredData(users, searchValue, searchCriteria))
     }, [searchValue, searchCriteria]);
+
+    useEffect(() => {
+        calculatePagination();
+        setUsersOnCurrentPage(getUserOnCurrentPage());
+    }, [users]);
+
+    useEffect(() => {
+        if (currentPage > pageCount && pageCount > 0) {
+            setCurrentPage(pageCount);
+        }
+    }, [pageCount]);
+
+    useEffect(() => {
+        setUsersOnCurrentPage(getUserOnCurrentPage());
+    }, [currentPage]);
+
+    useEffect(() => {
+        setUsersOnCurrentPage([]);
+        calculatePagination();
+        setUsersOnCurrentPage(getUserOnCurrentPage());
+    }, [usersPerPage]);
 
     const sortDataClickHandler = (criterion) => {
         const criteria = {
@@ -56,7 +82,7 @@ export const TableWithData = ({
 
     const onClickShowUserInfoModalHandler = async (userId) => {
         const data = await getUser(userId);
-        setUser(data);
+        setSelectedUser(data);
         setShowUserInfoModal(true);
     }
 
@@ -66,13 +92,13 @@ export const TableWithData = ({
 
     const onClickShowUserUpdateModalHandler = async (userId) => {
         const data = await getUser(userId);
-        setUser(data);
+        setSelectedUser(data);
         setShowUserUpdateModal(true);
     }
 
     const onClickShowUserDeleteModalHandler = async (userId) => {
         const data = await getUser(userId);
-        setUser(data);
+        setSelectedUser(data);
         setShowUserDeleteModal(true);
     }
 
@@ -87,20 +113,60 @@ export const TableWithData = ({
     const clickUpdateUserInfoHandler = async (e) => {
         e.preventDefault();
         const formDate = new FormData(e.currentTarget);
-        const newUser = await updateUser(user._id, Object.fromEntries(formDate));
-        const newUsersArray = users.map(u => {
-            if (u._id === newUser._id) {
+        const newUser = await updateUser(selectedUser._id, Object.fromEntries(formDate));
+        const newUsersArray = users.map(user => {
+            if (user._id === newUser._id) {
                 return newUser
             }
-            return u;
+            return user;
         });
         setUsers(newUsersArray.slice());
         closeModal();
     }
 
-    const clickDeleteUserInfoHandler = async (e) => {
-        e.preventDefault()
+    const clickDeleteUserInfoHandler = async () => {
+        const deletedUser = await deleteUser(selectedUser._id);
+        setUsers(users.filter(user => user._id !== deletedUser._id))
+        closeModal();
+    }
 
+    const calculatePagination = () => {
+        const pageCounts = calculatePageCount()
+        setPageCount(pageCounts);
+    }
+
+    const calculatePageCount = () => {
+        console.log(Math.ceil(users.length / usersPerPage))
+        return Math.ceil(users.length / usersPerPage)
+    }
+
+    const getUserOnCurrentPage = () => {
+        if (currentPage === 1) {
+            return users.slice(0, usersPerPage);
+        } else {
+            const startIndex = usersPerPage * (currentPage - 1)
+            const endIndex = startIndex + usersPerPage
+            return users.slice(startIndex, endIndex);
+        }
+    }
+
+    const clickFirstPageHandler = () => {
+        setCurrentPage(1)
+    }
+
+    const clickLastPageHandler = () => {
+        setCurrentPage(calculatePageCount());
+    }
+
+    const clickNextPageHandler = () => {
+        if (currentPage < pageCount) {
+            setCurrentPage(state => state + 1)
+        }
+    }
+    const clickPreviousPageHandler = () => {
+        if (currentPage > 1) {
+            setCurrentPage(state => state - 1)
+        }
     }
 
     const closeModal = () => {
@@ -129,12 +195,12 @@ export const TableWithData = ({
 
             {!isFetchFailed && users.length > 0 && !isSpinnerShow &&
                 <>
-                    {showUserInfoModal && <UserInfoModal {...user} closeModal={closeModal}/>}
+                    {showUserInfoModal && <UserInfoModal {...selectedUser} closeModal={closeModal}/>}
 
                     {showUserCreateModal && <UserCreateModal closeModal={closeModal}
                                                              clickCreateNewUserHandler={clickCreateNewUserHandler}/>}
 
-                    {showUserUpdateModal && <UserUpdateModal userDetail={user}
+                    {showUserUpdateModal && <UserUpdateModal userDetail={selectedUser}
                                                              closeModal={closeModal}
                                                              clickUpdateUserInfoHandler={clickUpdateUserInfoHandler}/>}
 
@@ -153,17 +219,26 @@ export const TableWithData = ({
                                                    onClickShowUserDeleteModalHandler={onClickShowUserDeleteModalHandler}
                                 />
                             ))
-                            : users.map(user => (
+                            : usersOnCurrentPage.map(user => (
                                 <TableWithDataItem {...user}
                                                    key={user._id}
                                                    onClickShowUserInfoModalHandler={onClickShowUserInfoModalHandler}
                                                    onClickShowUserUpdateModalHandler={onClickShowUserUpdateModalHandler}
-                                                   onClickShowUserDeleteModalHandle={onClickShowUserDeleteModalHandler}
+                                                   onClickShowUserDeleteModalHandler={onClickShowUserDeleteModalHandler}
                                 />
                             ))}
                         </tbody>
                     </table>
                     <button className="btn-add btn" onClick={onClickShowUserCreateModalHandler}>Add new user</button>
+                    <Pagination pageCount={pageCount}
+                                currentPage={currentPage}
+                                usersPerPage={usersPerPage}
+                                setUsersPerPage={setUsersPerPage}
+                                clickFirstPageHandler={clickFirstPageHandler}
+                                clickLastPageHandler={clickLastPageHandler}
+                                clickNextPageHandler={clickNextPageHandler}
+                                clickPreviousPageHandler={clickPreviousPageHandler}
+                    />
                 </>
             }
         </>
