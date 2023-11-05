@@ -1,7 +1,23 @@
+import {useEffect} from "react";
+
 export const UserCreateModal = ({
                                     clickCreateNewUserHandler,
                                     closeModal
                                 }) => {
+    useEffect(() => {
+        const handleEscKey = (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        };
+
+        window.addEventListener('keydown', handleEscKey);
+
+        return () => {
+            window.removeEventListener('keydown', handleEscKey)
+        }
+    }, [closeModal]);
+
     return (
         <div className="overlay">
             <div className="backdrop" onClick={closeModal}></div>

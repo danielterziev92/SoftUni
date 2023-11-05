@@ -1,14 +1,14 @@
 const baseUrl = 'http://localhost:3030/jsonstore/users'
 
-function prepareBodyData(data, currentCreatedAt, currentUpdatedAt) {
+function prepareBodyData(data, newCreatedAt, newUpdatedAt) {
     return {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
         imageUrl: data.imageUrl,
         phoneNumber: data.phoneNumber,
-        createdAt: currentCreatedAt,
-        updatedAt: currentUpdatedAt,
+        createdAt: newCreatedAt,
+        updatedAt: newUpdatedAt,
         address: {
             country: data.country,
             city: data.city,
@@ -51,13 +51,20 @@ export const createUser = async (data) => {
     return response.json()
 }
 
-export const updateUser = async (userId, details) => {
-    const bodyData = prepareBodyData(details, details.createdAt, new Date().toISOString())
+export const updateUser = async (userId, userDetails) => {
+    const bodyData = prepareBodyData(userDetails, userDetails.createdAt, new Date().toISOString())
     const requestOptions = {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(bodyData)
     }
+
+    const response = await fetch(`${baseUrl}/${userId}`, requestOptions);
+    return response.json();
+}
+
+export const deleteUser = async (userId) => {
+    const requestOptions = {method: 'DELETE'}
 
     const response = await fetch(`${baseUrl}/${userId}`, requestOptions);
     return response.json();

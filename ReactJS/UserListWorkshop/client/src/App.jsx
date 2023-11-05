@@ -3,18 +3,15 @@ import './styles.css'
 import {Footer} from "./components/Footer.jsx";
 import {SearchForm} from "./components/SearchForm.jsx";
 import {TableWithData} from "./components/TableWithData.jsx";
-import {useEffect, useState} from "react";
-import {filteredData} from "./services/sortData.js";
-import {getAllUsers} from "./services/userService.js";
+import {useState} from "react";
 
 function App() {
-    const [initialUsers, setInitialUsers] = useState([]);
+    const [searchValue, setSearchValue] = useState();
+    const [searchCriteria, setSearchCriteria] = useState();
 
-    const clickSearchFormHandler = async (searchedValue, searchedCriteria) => {
-        const response = await getAllUsers()
-        const filteredUsers = filteredData(response, searchedValue, searchedCriteria);
-        console.log(`filtered: ${filteredUsers}`)
-        setInitialUsers(filteredUsers);
+    const clickSearchFormHandler = (value, criteria) => {
+        setSearchValue(value);
+        setSearchCriteria(criteria)
     }
 
     return (
@@ -24,7 +21,7 @@ function App() {
                 <section className="card users-container">
                     <SearchForm clickSearchFormHandler={clickSearchFormHandler}/>
                     <div className="table-wrapper">
-                        <TableWithData initialUsers={initialUsers}/>
+                        <TableWithData searchValue={searchValue} searchCriteria={searchCriteria}/>
                     </div>
                 </section>
             </main>
