@@ -16,11 +16,12 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    barcodes = BarcodeSerializer(many=True, required=False)
+    barcodes = BarcodeSerializer(many=True, required=False, source='barcode')
 
     class Meta:
         model = Product
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('barcode',)
 
     def create(self, validated_data):
         barcodes_data = validated_data.pop('barcodes', [])
@@ -34,3 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
             product.barcode.add(barcode)
 
         return product
+
+    def get_barcodes(self, obj):
+        # Return a list of barcode codes for the given Product
+        return [barcode.code for barcode in obj.barcodes.all()]
