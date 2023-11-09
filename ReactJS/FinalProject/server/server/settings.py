@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import server.product.apps
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-u+fpwonwgyg^k7z-mri7@84rjz6ruo4py5vma)d2bzj4hkkz81'
@@ -17,13 +19,15 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
-PROJECT_APPS = ()
+PROJECT_APPS = (
+    'server.product.apps.ProductConfig',
+)
 
 THIRD_PARTY_APPS = (
     'rest_framework',
 )
 
-INSTALLED_APPS = DJANGO_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
