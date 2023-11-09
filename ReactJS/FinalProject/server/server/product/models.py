@@ -24,3 +24,43 @@ class Group(models.Model):
         null=False,
         blank=False,
     )
+
+
+class Product(models.Model):
+    code = models.CharField(
+        max_length=10,
+        null=True,
+        blank=True,
+    )
+
+    name = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+    )
+
+    description = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=3,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.RESTRICT,
+        null=False,
+        blank=False,
+    )
+
+    barcode = models.ManyToManyField(
+        Barcode
+    )
