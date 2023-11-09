@@ -25,6 +25,9 @@ class Group(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     code = models.CharField(
@@ -62,5 +65,6 @@ class Product(models.Model):
     )
 
     barcode = models.ManyToManyField(
-        Barcode
+        Barcode,
+        blank=True,
     )

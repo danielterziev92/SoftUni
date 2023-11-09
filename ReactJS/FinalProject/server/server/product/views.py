@@ -1,4 +1,5 @@
 from rest_framework import generics as rest_views, views as api_views
+from rest_framework.permissions import AllowAny
 
 from server.product.models import Group, Product
 from server.product.serializers import GroupSerializer, ProductSerializer
@@ -17,6 +18,7 @@ class GroupRetrieveUpdateDestroyView(rest_views.RetrieveUpdateDestroyAPIView):
 class ProductListView(rest_views.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
 
 
 class ProductDetailView(rest_views.RetrieveUpdateDestroyAPIView):
