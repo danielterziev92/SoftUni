@@ -8,7 +8,9 @@ SECRET_KEY = 'django-insecure-u+fpwonwgyg^k7z-mri7@84rjz6ruo4py5vma)d2bzj4hkkz81
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ('*',)
+
+CSRF_TRUSTED_ORIGINS = ('https://localhost:8000',)
 
 DJANGO_APPS = (
     'django.contrib.admin',
@@ -28,12 +30,8 @@ THIRD_PARTY_APPS = (
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
 }
 

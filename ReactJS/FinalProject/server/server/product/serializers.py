@@ -6,4 +6,4 @@ from server.product.models import Group
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        field = '__all__'
+        fields = '__all__'
