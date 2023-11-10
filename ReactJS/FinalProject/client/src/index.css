@@ -73,6 +73,11 @@ aside .navigation-bar {
     color: white;
 }
 
+aside .navigation-bar a {
+    color: inherit;
+    text-decoration: none;
+}
+
 aside .navigation-bar li {
     margin-right: 10px;
     position: relative;
