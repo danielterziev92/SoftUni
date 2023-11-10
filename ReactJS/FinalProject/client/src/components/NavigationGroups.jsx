@@ -1,6 +1,6 @@
-import VerticalNavigationItem from "./VerticalNavigationItem.jsx";
+import NavigationGroupItem from "./NavigationGroupItem.jsx";
 
-export default function VerticalNavigationGroupItem({
+export default function NavigationGroups({
                                                         name,
                                                         listItems
                                                     }) {
@@ -11,7 +11,7 @@ export default function VerticalNavigationGroupItem({
             <h3 className="vertical-nav-group-name">
                 {name}
             </h3>
-            {listItems.map((item, index) => <VerticalNavigationItem key={index} {...item} />)}
+            {listItems.map((item, index) => <NavigationGroupItem key={index} {...item} />)}
         </div>
     );
 }

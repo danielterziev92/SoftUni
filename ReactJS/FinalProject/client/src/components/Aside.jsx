@@ -1,6 +1,5 @@
 import clipboard from 'clipboard-copy';
-import VerticalNavigationGroupItem from "./VerticalNavigationGroupItem.jsx";
-import {Logo} from "./Logo.jsx";
+import NavigationGroups from "./NavigationGroups.jsx";
 import {Link} from "react-router-dom";
 
 const sections = [
@@ -72,7 +71,7 @@ export default function Aside() {
                 </div>
             </div>
             {sections.map((section, index) =>
-                <VerticalNavigationGroupItem key={index} {...section}/>)}
+                <NavigationGroups key={index} {...section}/>)}
         </aside>
     );
 }
