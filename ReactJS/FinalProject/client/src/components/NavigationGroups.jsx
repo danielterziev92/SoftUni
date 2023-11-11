@@ -1,14 +1,13 @@
 import NavigationGroupItem from "./NavigationGroupItem.jsx";
+import asideStyle from './Aside.module.css';
 
 export default function NavigationGroups({
-                                                        name,
-                                                        listItems
-                                                    }) {
-    console.log(listItems)
-
+                                             name,
+                                             listItems
+                                         }) {
     return (
-        <div className="vertical-nav-group-items">
-            <h3 className="vertical-nav-group-name">
+        <div className={asideStyle.verticalNavGroupItems}>
+            <h3 className={asideStyle.verticalNavGroupName}>
                 {name}
             </h3>
             {listItems.map((item, index) => <NavigationGroupItem key={index} {...item} />)}
