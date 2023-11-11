@@ -18,7 +18,6 @@ class GroupRetrieveUpdateDestroyView(rest_views.RetrieveUpdateDestroyAPIView):
 class ProductListView(rest_views.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [AllowAny]
 
 
 class ProductDetailView(rest_views.RetrieveUpdateDestroyAPIView):
