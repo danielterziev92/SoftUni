@@ -1,6 +1,7 @@
 import clipboard from 'clipboard-copy';
 import NavigationGroups from "./NavigationGroups.jsx";
 import {Link} from "react-router-dom";
+import asideStyle from './Aside.module.css';
 
 const sections = [
     {
@@ -31,12 +32,12 @@ const sections = [
 ]
 
 export default function Aside() {
-    const profileEmail = 'brian.hughes@company.com'
+    const userEmail = 'brian.hughes@company.com'
 
     const handleEmail = async () => {
         try {
-            await clipboard(profileEmail);
-            alert(`${profileEmail} is copied to clipboard`);
+            await clipboard(userEmail);
+            alert(`${userEmail} is copied to clipboard`);
         } catch (error) {
             console.log('Copied failed:', error);
             alert('Copy failed. Please try again.');
@@ -44,28 +45,28 @@ export default function Aside() {
     }
 
     return (
-        <aside>
-            <ul className="navigation-bar">
-                <li className="logo">
+        <aside className={asideStyle.Aside}>
+            <ul className={asideStyle.navigationBar}>
+                <li>
                     <Link to={"/"}>
                         <img src="../assets/logo.png" alt="Logo"/>
                     </Link>
                 </li>
-                <li className="notification"><i className="fa-solid fa-bell"></i><span>3</span></li>
-                <li className="profile"><i className="fa-solid fa-user"></i></li>
+                <li className={asideStyle.notification}><i className="fa-solid fa-bell"></i><span>3</span></li>
+                <li className={asideStyle.profile}><i className="fa-solid fa-user"></i></li>
             </ul>
-            <div className="profile">
+            <div className={asideStyle.profile}>
                 <figure>
                     <img
                         src="../assets/close-up-confident-male-employee-white-collar-shirt-smiling-camera-standing-self-assured-against-studio-background.jpg"
                         alt="User Prifile Picture"/>
                 </figure>
                 <p>Brian Hughes</p>
-                <div className="profile-email">
-                    {profileEmail}
+                <div className={asideStyle.profileEmail}>
+                    {userEmail}
                     <span onClick={handleEmail}>
                         <i className="fa-solid fa-copy">
-                            <span className="tooltip">Copy email</span>
+                            <span className={asideStyle.tooltip}>Copy email</span>
                         </i>
                     </span>
                 </div>

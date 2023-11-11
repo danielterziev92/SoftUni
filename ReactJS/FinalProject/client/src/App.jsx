@@ -1,14 +1,11 @@
-// import './App.css'
 import Aside from "./components/Aside.jsx";
-// import Main from "./components/Main.jsx";
+import Main from "./components/Main.jsx";
 
-function App() {
+export default function App() {
     return (
         <>
             <Aside/>
-            {/*<Main/>*/}
+            <Main/>
         </>
-    )
+    );
 }
-
-export default App

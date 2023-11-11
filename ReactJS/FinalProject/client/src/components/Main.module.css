@@ -1,0 +1,86 @@
+.Main {
+    width: 100%;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow: scroll;
+    background-color: var(--background-secondary);
+}
+
+.Main .Nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: right;
+    padding: 10px 20px;
+}
+
+.Main .Nav ul li {
+    margin-left: 20px;
+    list-style: none;
+}
+
+.Main .Nav ul li:first-child {
+    margin-left: 0;
+    justify-content: flex-start;
+    margin-right: auto;
+}
+
+.Main .Nav ul li div {
+    height: 40px;
+    --padding: 10px;
+
+    border: 1px solid var(--nav-search-border);
+    border-radius: calc(24px + var(--padding));
+    padding: var(--padding);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.Main .Nav ul li div i {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--nav-search-border);
+}
+
+.Main .Nav ul li div input {
+    margin-left: 5px;
+    border: none;
+}
+
+.Main .Nav ul li div input:focus {
+    outline: none;
+}
+
+.Main .Nav ul li .focused {
+    border-color: var(--nav-search-border-on-focus);
+}
+
+.Main .Nav ul li .focused i {
+    color: var(--nav-search-border-on-focus);
+}
+
+.Main .Nav ul li div input::placeholder {
+    color: var(--nav-search-text);
+    opacity: 100%;
+    font-size: 0.9rem;
+}
+
+.Main .Nav .addProduct {
+    padding: 0 15px 0 10px;
+    background-color: var(--nav-search-add-product-background);
+    font-size: 1.2rem;
+}
+
+.Main .Nav .addProduct,
+.Main .Nav .addProduct i {
+    color: var(--nav-search-add-product-font-color);
+}
+
+.Main .Nav .addProduct i {
+    margin-right: 5px;
+}
