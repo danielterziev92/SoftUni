@@ -59,6 +59,13 @@ export default function Products() {
                     </li>
                 </ul>
             </nav>
+            {productState.isSpinnerShow && <></>}
+
+            {!productState.isSpinnerShow &&
+                <section>
+                    <ProductList products={productState.data}/>
+                </section>
+            }
         </>
     );
 }

@@ -45,6 +45,8 @@ aside::-webkit-scrollbar {
     --nav-search-border-on-focus: #4f46e5;
     --nav-search-add-product-background: #4f46e5;
     --nav-search-add-product-font-color: #ffffff;
+    --table-list-products-thead-backround: #f6f8fa;
+    --table-list-products-thead-border: #e0e6ee;
 
 
     --nav-width: 200px;

@@ -1,0 +1,14 @@
+.ProductList {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ProductList thead {
+    width: 100%;
+    background-color: var(--table-list-products-thead-backround);
+    border-top: 1px solid var(--table-list-products-thead-border);
+    border-bottom: 1px solid var(--table-list-products-thead-border);
+    display: grid;
+    grid-template-columns: 1fr 1fr 11fr 1fr 1fr 3fr;
+}
