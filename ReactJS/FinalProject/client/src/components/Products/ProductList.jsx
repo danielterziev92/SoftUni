@@ -74,6 +74,18 @@ export default function ProductList(products) {
         }));
     }
 
+    const goToPreviousPageClickHandler = () => {
+        const nextPage = paginationValues.currentPage - 1;
+        const startIndex = paginationValues.startIndex - paginationValues.selectedItemPerPage;
+        const endIndex = paginationValues.endIndex - paginationValues.selectedItemPerPage;
+        setPaginationValue(state => ({
+            ...state,
+            currentPage: nextPage,
+            startIndex: startIndex,
+            endIndex: endIndex
+        }));
+    }
+
     const goLastPageClickHandler = () => {
         const currentPage = calculateTotalPages();
         const startIndex = (currentPage - 1) * paginationValues.selectedItemPerPage;
@@ -133,6 +145,7 @@ export default function ProductList(products) {
                     productPerPageChangeHandler={productPerPageChangeHandler}
                     goFirstPageClickHandler={goFirstPageClickHandler}
                     goToNextPageClickHandler={goToNextPageClickHandler}
+                    goToPreviousPageClickHandler={goToPreviousPageClickHandler}
                     goLastPageClickHandler={goLastPageClickHandler}
                 />
             </table>

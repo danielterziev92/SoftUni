@@ -12,6 +12,7 @@ export default function ProductPagination({
                                               productPerPageChangeHandler,
                                               goFirstPageClickHandler,
                                               goToNextPageClickHandler,
+                                              goToPreviousPageClickHandler,
                                               goLastPageClickHandler,
                                           }) {
     const [currItemPerPage, setCurrItemPerPage] = useState(selectedItemPerPage);
@@ -40,7 +41,7 @@ export default function ProductPagination({
                 <button onClick={goFirstPageClickHandler}><i className="fa-solid fa-angles-left"></i></button>
             </td>
             <td>
-                <button ><i className="fa-solid fa-chevron-left"></i></button>
+                <button onClick={goToPreviousPageClickHandler}><i className="fa-solid fa-chevron-left"></i></button>
             </td>
             <td>
                 <span> - {currentPage} от {totalPages} стр.</span>
