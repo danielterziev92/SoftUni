@@ -41,6 +41,10 @@ export default function ProductList(products) {
         }
     }
 
+    const calculateTotalPages = () => {
+        return Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
+    }
+
     const productPerPageChangeHandler = (value) => {
         setPaginationValue(state => ({
             ...state,
@@ -58,8 +62,16 @@ export default function ProductList(products) {
         }));
     }
 
-    const calculateTotalPages = () => {
-        return Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
+    const goToNextPageClickHandler = () => {
+        const nextPage = paginationValues.currentPage + 1;
+        const startIndex = paginationValues.startIndex + paginationValues.selectedItemPerPage;
+        const endIndex = paginationValues.endIndex + paginationValues.selectedItemPerPage;
+        setPaginationValue(state => ({
+            ...state,
+            currentPage: nextPage,
+            startIndex: startIndex,
+            endIndex: endIndex
+        }));
     }
 
     const goLastPageClickHandler = () => {
@@ -110,7 +122,7 @@ export default function ProductList(products) {
                 <tbody>
                 {products.products.slice(paginationValues.startIndex, paginationValues.endIndex).map((product, index) => (
                     <tr key={product.id}>
-                        <ProductListItem index={index + paginationValues.startIndex +1} {...product}
+                        <ProductListItem index={index + paginationValues.startIndex + 1} {...product}
                                          detailModuleShowed={detailModuleShowed}
                         />
                     </tr>
@@ -120,6 +132,7 @@ export default function ProductList(products) {
                     {...paginationValues}
                     productPerPageChangeHandler={productPerPageChangeHandler}
                     goFirstPageClickHandler={goFirstPageClickHandler}
+                    goToNextPageClickHandler={goToNextPageClickHandler}
                     goLastPageClickHandler={goLastPageClickHandler}
                 />
             </table>
