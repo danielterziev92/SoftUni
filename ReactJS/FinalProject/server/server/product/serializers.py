@@ -39,6 +39,28 @@ class ProductSerializer(serializers.ModelSerializer):
         # Return a list of barcode codes for the given Product
         return [barcode.code for barcode in obj.barcode.all()]
 
+    def get_groups(self, obj):
+        # Return the name of the group and all parents
+        group = obj.group
+        names = []
+
+        while group:
+            names.append(group.name)
+            group = group.parent_category
+
+        return reversed(names) if names else ''
+
+    def get_group_name(self, obj):
+        # Return the name of the group for the given Product
+        return obj.group.name if obj.group else ''
+
+    def get_group_information(self, obj):
+        # Check if the object has a group
+        if obj.group.parent_category:
+            return self.get_groups(obj)
+        else:
+            return self.get_group_name(obj)
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
@@ -50,7 +72,8 @@ class ProductSerializer(serializers.ModelSerializer):
                 'name': representation['name'],
                 'price': representation['price'],
                 'is_active': representation['is_active'],
-                'group': representation['group'],
+                'groups': self.get_group_information(instance),
+                'group': self.get_group_name(instance),
                 'barcodes': self.get_barcodes(instance),
             }
         else:
