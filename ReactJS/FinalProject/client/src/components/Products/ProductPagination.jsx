@@ -4,15 +4,14 @@ import {useEffect, useState} from "react";
 import paginationStyle from './ProductPagination.module.css';
 
 export default function ProductPagination({
-                                              startIndex,
-                                              endIndex,
-                                              currStartIndex,
-                                              currEndIndex,
                                               currentPage,
                                               totalPages,
+                                              totalProducts,
                                               itemPerPage,
                                               selectedItemPerPage,
                                               productPerPageChangeHandler,
+                                              goFirstPageClickHandler,
+                                              goLastPageClickHandler,
                                           }) {
     const [currItemPerPage, setCurrItemPerPage] = useState(selectedItemPerPage);
 
@@ -36,7 +35,28 @@ export default function ProductPagination({
             </td>
         </tr>
         <tr>
-
+            <td>
+                <button onClick={goFirstPageClickHandler}><i className="fa-solid fa-angles-left"></i></button>
+            </td>
+            <td>
+                <button><i className="fa-solid fa-chevron-left"></i></button>
+            </td>
+            <td>
+                <span> - {currentPage} от {totalPages} стр.</span>
+            </td>
+            <td>
+                <button><i className="fa-solid fa-chevron-right"></i></button>
+            </td>
+            <td>
+                <button onClick={goLastPageClickHandler}><i className="fa-solid fa-angles-right"></i></button>
+            </td>
+            <td><span>({totalProducts} продукта общо)</span></td>
+        </tr>
+        <tr>
+            <td>
+                <span>Обнови всики продукти</span>
+                <button><i className="fa-solid fa-arrow-rotate-right"></i></button>
+            </td>
         </tr>
         </tfoot>
     );

@@ -1,5 +1,5 @@
-import NavigationGroupItem from "./NavigationGroupItem.jsx";
 import asideStyle from './Aside.module.css';
+import {Link} from "react-router-dom";
 
 export default function NavigationGroups({
                                              name,
@@ -10,7 +10,12 @@ export default function NavigationGroups({
             <h3 className={asideStyle.verticalNavGroupName}>
                 {name}
             </h3>
-            {listItems.map((item, index) => <NavigationGroupItem key={index} {...item} />)}
+            {listItems.map((item, index) => (
+                <Link to={item.itemHREF} key={index}>
+                    <i className={item.itemIClassName}></i>
+                    <span>{item.itemTitle}</span>
+                </Link>
+            ))}
         </div>
     );
 }

@@ -13,12 +13,12 @@ const tableKeys = [
     {name: 'Детайл', sorting: false},
 ]
 
-const paginationKeys = {
+const initialPagination = {
     startIndex: 0,
     endIndex: 0,
-    startPage: 0,
-    currentPage: 0,
+    currentPage: 1,
     totalPages: 0,
+    totalProducts: 0,
     itemPerPage: [5, 10, 15],
     selectedItemPerPage: 15,
 }
@@ -28,7 +28,9 @@ export default function ProductList(products) {
     const [isAscending, setIsAscending] = useState(true);
     const [selectedItem, setSelectedItem] = useState('');
     const detailModuleShowed = useRef(false);
-    const [paginationValues, setPaginationValue] = useState(paginationKeys);
+    const [paginationValues, setPaginationValue] = useState(initialPagination);
+
+    // console.log(products.products.length / state.selectedItemPerPage)
 
     const changeAscendingOrderClickHandler = (e) => {
         if (selectedItem !== e.currentTarget.textContent) {
@@ -42,15 +44,44 @@ export default function ProductList(products) {
     const productPerPageChangeHandler = (value) => {
         setPaginationValue(state => ({
             ...state,
-            selectedItemPerPage: value
+            selectedItemPerPage: value,
+        }));
+    }
+
+    const goFirstPageClickHandler = () => {
+        const endIndex = paginationValues.selectedItemPerPage;
+        setPaginationValue(state => ({
+            ...state,
+            currentPage: 1,
+            startIndex: 0,
+            endIndex: endIndex
+        }));
+    }
+
+    const calculateTotalPages = () => {
+        return Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
+    }
+
+    const goLastPageClickHandler = () => {
+        const currentPage = calculateTotalPages();
+        const startIndex = (currentPage - 1) * paginationValues.selectedItemPerPage;
+        const endIndex = paginationValues.totalProducts;
+        setPaginationValue(state => ({
+            ...state,
+            currentPage: currentPage,
+            startIndex: startIndex,
+            endIndex: endIndex,
         }));
     }
 
     useEffect(() => {
         setPaginationValue(state => ({
             ...state,
+            endIndex: paginationValues.selectedItemPerPage,
+            totalPages: Math.ceil(products.products.length / paginationValues.selectedItemPerPage),
+            totalProducts: products.products.length,
         }));
-    }, []);
+    }, [paginationValues.selectedItemPerPage, products.products.length]);
 
     return (
         <>
@@ -77,13 +108,20 @@ export default function ProductList(products) {
                 </tr>
                 </thead>
                 <tbody>
-                {products.products.slice(paginationValues.currStartIndex, paginationValues.selectedItemPerPage).map((product, index) => (
+                {products.products.slice(paginationValues.startIndex, paginationValues.endIndex).map((product, index) => (
                     <tr key={product.id}>
-                        <ProductListItem index={index + 1} {...product} detailModuleShowed={detailModuleShowed}/>
+                        <ProductListItem index={index + paginationValues.startIndex +1} {...product}
+                                         detailModuleShowed={detailModuleShowed}
+                        />
                     </tr>
                 ))}
                 </tbody>
-                <ProductPagination {...paginationKeys} productPerPageChangeHandler={productPerPageChangeHandler}/>
+                <ProductPagination
+                    {...paginationValues}
+                    productPerPageChangeHandler={productPerPageChangeHandler}
+                    goFirstPageClickHandler={goFirstPageClickHandler}
+                    goLastPageClickHandler={goLastPageClickHandler}
+                />
             </table>
         </>
     );

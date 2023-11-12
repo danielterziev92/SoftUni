@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-
 import listItemStyle from './ProductList.module.css';
 
 export default function ProductListItem({

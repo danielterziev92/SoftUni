@@ -8,10 +8,20 @@ const sections = [
         name: 'Табло',
         listItems: [
             {
-                itemTitle: "Продукти",
-                itemHREF: "/products",
-                itemIClassName: "fa-solid fa-box-open"
+                itemTitle: 'Продукти',
+                itemHREF: '/products',
+                itemIClassName: 'fa-solid fa-boxes-stacked',
             },
+            {
+                itemTitle: 'Продажба',
+                itemHREF: '/sale',
+                itemIClassName: 'fa-solid fa-cash-register',
+            },
+            {
+                itemTitle: 'Продажба',
+                itemHREF: '/sale',
+                itemIClassName: 'fa-solid fa-truck-medical',
+            }
             // {
             //     itemTitle: "Чат",
             //     itemHREF: "#",
@@ -39,7 +49,6 @@ export default function Aside() {
             await clipboard(userEmail);
             alert(`${userEmail} is copied to clipboard`);
         } catch (error) {
-            console.log('Copied failed:', error);
             alert('Copy failed. Please try again.');
         }
     }
