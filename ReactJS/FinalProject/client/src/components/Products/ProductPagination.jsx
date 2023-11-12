@@ -44,7 +44,7 @@ export default function ProductPagination({
                 <button onClick={goToPreviousPageClickHandler}><i className="fa-solid fa-chevron-left"></i></button>
             </td>
             <td>
-                <span> - {currentPage} от {totalPages} стр.</span>
+                <span>{currentPage} от {totalPages} стр.</span>
             </td>
             <td>
                 <button onClick={goToNextPageClickHandler}><i className="fa-solid fa-chevron-right"></i></button>
