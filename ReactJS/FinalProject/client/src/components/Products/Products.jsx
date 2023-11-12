@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 
 import ProductList from "./ProductList.jsx";
 import SearchProduct from "./SearchProduct.jsx";
@@ -7,6 +7,7 @@ import ProductAddForm from "./ProductAddForm.jsx";
 import {getAllProducts} from "../../services/apiServices.js";
 
 import navStyle from '../Main.module.css'
+import Spinner from "../Spinner.jsx";
 
 const initialState = {
     title: 'Всички продукти',
@@ -59,7 +60,9 @@ export default function Products() {
                     </li>
                 </ul>
             </nav>
-            {productState.isSpinnerShow && <></>}
+            {productState.isShowAddProduct && <ProductAddForm/>}
+
+            {productState.isSpinnerShow && <Spinner/>}
 
             {!productState.isSpinnerShow &&
                 <section>

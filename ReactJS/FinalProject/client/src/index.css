@@ -47,7 +47,18 @@ aside::-webkit-scrollbar {
     --nav-search-add-product-font-color: #ffffff;
     --table-list-products-thead-backround: #f6f8fa;
     --table-list-products-thead-border: #e0e6ee;
-
+    --table-list-products-in-stock: #0caf64;
+    --table-list-products-out-stock: #d51920;
+    --table-list-product-detail-select: #c9d3df;
+    --table-list-product-detail-select-arrow: #c9d3df;
+    --table-list-product-detail-select-selected: #4e45e3;
+    --table-list-product-detail-select-arrow-selected: #4e45e3;
+    --table-list-product-detail-option: #ffffff;
+    --table-list-product-detail-option-border: #c5c5c5;
+    --table-list-product-detail-option-hover: #e1e1e1;
+    --table-list-product-detail-option-selected: #4e45e3;
+    --table-list-products-tfoot-backround: #f6f8fa;
+    --table-list-products-tfoot-border: #e0e6ee;
 
     --nav-width: 200px;
     --aside-width: 100px;

@@ -6,6 +6,10 @@
     background-color: var(--background-secondary);
 }
 
+.Main .Nav {
+    padding: 20px 0;
+}
+
 .Main .Nav ul {
     display: flex;
     flex-wrap: wrap;
@@ -74,6 +78,7 @@
     padding: 0 15px 0 10px;
     background-color: var(--nav-search-add-product-background);
     font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .Main .Nav .addProduct,
