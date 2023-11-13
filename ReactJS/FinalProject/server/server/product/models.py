@@ -80,3 +80,18 @@ class ProductBaseInformation(models.Model):
     )
 
 
+class ProductAdditionalInfo(models.Model):
+    product_id = models.AutoField(
+        primary_key=True
+    )
+
+    description = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    more_barcodes = models.ManyToManyField(
+        MoreBarcodes,
+        blank=True,
+    )
