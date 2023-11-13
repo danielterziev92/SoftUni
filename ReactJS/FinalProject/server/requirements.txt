@@ -3,3 +3,5 @@ Django==4.2.7
 djangorestframework==3.14.0
 pytz==2023.3.post1
 sqlparse==0.4.4
+
+cloudinary~=1.36.0

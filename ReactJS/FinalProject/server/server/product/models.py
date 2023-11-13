@@ -1,20 +1,11 @@
 from django.db import models
-
-
-class MoreBarcodes(models.Model):
-    code = models.CharField(
-        max_length=128,
-        null=True,
-        blank=True,
-    )
-
-    def __str__(self):
-        return self.code
+from cloudinary import models as cloudinary_models
 
 
 class Group(models.Model):
     code = models.CharField(
         max_length=10,
+        unique=True,
         null=True,
         blank=True,
     )
@@ -40,6 +31,7 @@ class Group(models.Model):
 class ProductBaseInformation(models.Model):
     code = models.CharField(
         max_length=10,
+        unique=True,
         null=True,
         blank=True,
     )
@@ -91,7 +83,25 @@ class ProductAdditionalInfo(models.Model):
         blank=True,
     )
 
-    more_barcodes = models.ManyToManyField(
-        MoreBarcodes,
+    picture = cloudinary_models.CloudinaryField(
+        null=False,
+        blank=False,
+    )
+
+
+class MoreBarcodes(models.Model):
+    code = models.CharField(
+        max_length=128,
+        null=True,
         blank=True,
     )
+
+    product_id = models.ForeignKey(
+        ProductBaseInformation,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return self.code

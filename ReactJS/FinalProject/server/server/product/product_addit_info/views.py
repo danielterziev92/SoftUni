@@ -7,6 +7,7 @@ from server.product.product_addit_info.serializers import ProductInfoDetailSeria
 class ProductInfoDetailView(rest_views.RetrieveUpdateDestroyAPIView):
     queryset = ProductAdditionalInfo.objects.all()
     serializer_class = ProductInfoDetailSerializer
+    lookup_url_kwarg = 'pk'
 
 
 class ProductInfoCreateView(rest_views.CreateAPIView):
