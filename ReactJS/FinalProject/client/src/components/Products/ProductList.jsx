@@ -17,7 +17,7 @@ const initialPagination = {
     startIndex: 0,
     endIndex: 0,
     currentPage: 1,
-    totalPages: 0,
+    totalPages: 1,
     totalProducts: 0,
     itemPerPage: [5, 10, 15],
     selectedItemPerPage: 15,
@@ -28,9 +28,9 @@ export default function ProductList(products) {
     const [isAscending, setIsAscending] = useState(true);
     const [selectedItem, setSelectedItem] = useState('');
     const detailModuleShowed = useRef(false);
+    const prevPaginationValues = useRef(15);
     const [paginationValues, setPaginationValue] = useState(initialPagination);
 
-    // console.log(products.products.length / state.selectedItemPerPage)
 
     const changeAscendingOrderClickHandler = (e) => {
         if (selectedItem !== e.currentTarget.textContent) {
@@ -45,66 +45,103 @@ export default function ProductList(products) {
         return Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
     }
 
+    const calculatePaginationValues = () => {
+        const totalPages = calculateTotalPages();
+        let currentPage = 0;
+        if (paginationValues.currentPage > totalPages) {
+            currentPage = totalPages;
+        } else {
+            currentPage = paginationValues.currentPage;
+        }
+
+        const startIndex = (currentPage - 1) * paginationValues.selectedItemPerPage;
+        const endIndex = startIndex + paginationValues.selectedItemPerPage;
+        const itemPerPage = paginationValues.itemPerPage;
+        const totalProducts = paginationValues.totalProducts
+        const selectedItemPerPage = paginationValues.selectedItemPerPage;
+        prevPaginationValues.current = paginationValues.selectedItemPerPage;
+
+        return {startIndex, endIndex, currentPage, totalPages, itemPerPage, totalProducts, selectedItemPerPage,}
+    }
+
     const productPerPageChangeHandler = (value) => {
         setPaginationValue(state => ({
             ...state,
             selectedItemPerPage: value,
         }));
+        console.log('change the selectedItemPerPage')
+        prevPaginationValues.current = paginationValues.selectedItemPerPage;
     }
 
     const goFirstPageClickHandler = () => {
-        const endIndex = paginationValues.selectedItemPerPage;
         setPaginationValue(state => ({
             ...state,
             currentPage: 1,
             startIndex: 0,
-            endIndex: endIndex
+            endIndex: paginationValues.selectedItemPerPage,
         }));
     }
 
     const goToNextPageClickHandler = () => {
-        const nextPage = paginationValues.currentPage + 1;
-        const startIndex = paginationValues.startIndex + paginationValues.selectedItemPerPage;
-        const endIndex = paginationValues.endIndex + paginationValues.selectedItemPerPage;
+        if (paginationValues.currentPage + 1 > paginationValues.totalPages) {
+            return;
+        }
+
         setPaginationValue(state => ({
             ...state,
-            currentPage: nextPage,
-            startIndex: startIndex,
-            endIndex: endIndex
+            currentPage: paginationValues.currentPage + 1,
+            startIndex: paginationValues.startIndex + paginationValues.selectedItemPerPage,
+            endIndex: paginationValues.endIndex + paginationValues.selectedItemPerPage,
         }));
     }
 
     const goToPreviousPageClickHandler = () => {
-        const nextPage = paginationValues.currentPage - 1;
-        const startIndex = paginationValues.startIndex - paginationValues.selectedItemPerPage;
-        const endIndex = paginationValues.endIndex - paginationValues.selectedItemPerPage;
+        if (paginationValues.currentPage - 1 < 1) {
+            return;
+        }
+
         setPaginationValue(state => ({
             ...state,
-            currentPage: nextPage,
-            startIndex: startIndex,
-            endIndex: endIndex
+            currentPage: paginationValues.currentPage - 1,
+            startIndex: paginationValues.startIndex - paginationValues.selectedItemPerPage,
+            endIndex: paginationValues.endIndex - paginationValues.selectedItemPerPage,
         }));
     }
 
     const goLastPageClickHandler = () => {
         const currentPage = calculateTotalPages();
-        const startIndex = (currentPage - 1) * paginationValues.selectedItemPerPage;
-        const endIndex = paginationValues.totalProducts;
         setPaginationValue(state => ({
             ...state,
             currentPage: currentPage,
-            startIndex: startIndex,
-            endIndex: endIndex,
+            startIndex: (currentPage - 1) * paginationValues.selectedItemPerPage,
+            endIndex: paginationValues.totalProducts,
         }));
     }
 
     useEffect(() => {
+        // console.log(`
+        //     PresValueSelected: ${prevPaginationValues.current},
+        //     CurrentValueSelected: ${paginationValues.selectedItemPerPage},
+        //     Are the same: ${prevPaginationValues.current !== paginationValues.selectedItemPerPage}
+        // `)
+        if (prevPaginationValues.current !== paginationValues.selectedItemPerPage) {
+            const newPaginationValues = calculatePaginationValues();
+            setPaginationValue(newPaginationValues);
+            return;
+        }
+
+        prevPaginationValues.current = paginationValues.selectedItemPerPage;
+
         setPaginationValue(state => ({
             ...state,
             endIndex: paginationValues.selectedItemPerPage,
-            totalPages: Math.ceil(products.products.length / paginationValues.selectedItemPerPage),
+            totalPages: Math.ceil(products.products.length / state.selectedItemPerPage),
             totalProducts: products.products.length,
         }));
+
+        // Object.keys(paginationValues).map(key => {
+        //     console.log(`${key}: ${paginationValues[key]}`)
+        // })
     }, [paginationValues.selectedItemPerPage, products.products.length]);
 
     return (
