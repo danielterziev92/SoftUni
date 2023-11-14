@@ -8,7 +8,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductBaseInformation
-        fields = ['code', 'name', 'price', 'quantity', 'group_name']
+        fields = ['id', 'code', 'name', 'price', 'quantity', 'is_active', 'group_name']
 
 
 class ProductSerializer(serializers.ModelSerializer):
