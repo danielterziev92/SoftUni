@@ -1,4 +1,4 @@
-import asideStyle from './Aside.module.css';
+import asideStyle from './NavigationGroups.module.css';
 import {Link} from "react-router-dom";
 
 export default function NavigationGroups({

@@ -1,17 +1,7 @@
-import listStyle from './ProductList.module.css';
 import {useEffect, useRef, useState} from "react";
-import ProductListItem from "./ProductListItem.jsx";
-import ProductPagination from "./ProductPagination.jsx";
 
-const tableKeys = [
-    {name: '№', sorting: false},
-    {name: 'Код', sorting: true},
-    {name: 'Име', sorting: true},
-    {name: 'Цена', sorting: true},
-    {name: 'Активен', sorting: true},
-    {name: 'Група', sorting: true},
-    {name: 'Детайл', sorting: false},
-]
+
+import paginationStyle from './ProductPagination.module.css';
 
 const initialPagination = {
     startIndex: 0,
@@ -23,23 +13,14 @@ const initialPagination = {
     selectedItemPerPage: 15,
 }
 
-
-export default function ProductList(products) {
-    const [isAscending, setIsAscending] = useState(true);
-    const [selectedItem, setSelectedItem] = useState('');
-    const detailModuleShowed = useRef(false);
+export default function ProductPagination({
+                                              setStartIndex,
+                                              setEndIndex,
+                                              productLength,
+                                          }) {
     const prevPaginationValues = useRef(15);
     const [paginationValues, setPaginationValue] = useState(initialPagination);
-
-
-    const changeAscendingOrderClickHandler = (e) => {
-        if (selectedItem !== e.currentTarget.textContent) {
-            setSelectedItem(e.currentTarget.textContent);
-            setIsAscending(true);
-        } else {
-            setIsAscending(state => !state);
-        }
-    }
+    const [currItemPerPage, setCurrItemPerPage] = useState(initialPagination.selectedItemPerPage);
 
     const calculateTotalPages = () => {
         return Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
@@ -69,7 +50,6 @@ export default function ProductList(products) {
             ...state,
             selectedItemPerPage: value,
         }));
-        console.log('change the selectedItemPerPage')
         prevPaginationValues.current = paginationValues.selectedItemPerPage;
     }
 
@@ -119,11 +99,6 @@ export default function ProductList(products) {
     }
 
     useEffect(() => {
-        // console.log(`
-        //     PresValueSelected: ${prevPaginationValues.current},
-        //     CurrentValueSelected: ${paginationValues.selectedItemPerPage},
-        //     Are the same: ${prevPaginationValues.current !== paginationValues.selectedItemPerPage}
-        // `)
         if (prevPaginationValues.current !== paginationValues.selectedItemPerPage) {
             const newPaginationValues = calculatePaginationValues();
             setPaginationValue(newPaginationValues);
@@ -135,57 +110,63 @@ export default function ProductList(products) {
         setPaginationValue(state => ({
             ...state,
             endIndex: paginationValues.selectedItemPerPage,
-            totalPages: Math.ceil(products.products.length / state.selectedItemPerPage),
-            totalProducts: products.products.length,
+            totalPages: Math.ceil(productLength / state.selectedItemPerPage),
+            totalProducts: productLength,
         }));
 
-        // Object.keys(paginationValues).map(key => {
-        //     console.log(`${key}: ${paginationValues[key]}`)
-        // })
-    }, [paginationValues.selectedItemPerPage, products.products.length]);
+    }, [paginationValues.selectedItemPerPage, productLength]);
+
+    useEffect(() => {
+        productPerPageChangeHandler(currItemPerPage);
+    }, [currItemPerPage]);
+
+    useEffect(() => {
+        setStartIndex(paginationValues.startIndex);
+    }, [paginationValues.startIndex]);
+
+    useEffect(() => {
+        setEndIndex(paginationValues.endIndex);
+    }, [paginationValues.endIndex]);
 
     return (
-        <>
-            <table className={listStyle.ProductList}>
-                <thead>
-                <tr>
-                    {tableKeys.map((key, index) => (
-                        <th key={index}>
-                            {key.sorting ? (
-                                <span onClick={changeAscendingOrderClickHandler}>
-                                    {key.name}
-                                </span>
-                            ) : (
-                                <span>{key.name}</span>
-                            )}
-                            {(selectedItem === key.name) &&
-                                (isAscending ? (
-                                    <i className="fa-solid fa-arrow-up-short-wide"></i>
-                                ) : (
-                                    <i className="fa-solid fa-arrow-down-short-wide"></i>
-                                ))}
-                        </th>
+        <tfoot className={paginationStyle.tfoot}>
+        <tr>
+            <td>
+                <label htmlFor="itemPerPage">Продукти на страница:</label>
+            </td>
+            <td>
+                <select name="" id="itemPerPage" value={currItemPerPage}
+                        onChange={(e) => setCurrItemPerPage(parseInt(e.target.value))}>
+                    {paginationValues.itemPerPage.map(numb => (
+                        <option value={numb} key={numb}>{numb}</option>
                     ))}
-                </tr>
-                </thead>
-                <tbody>
-                {products.products.slice(paginationValues.startIndex, paginationValues.endIndex).map((product, index) => (
-                    <tr key={product.id}>
-                        <ProductListItem index={index + paginationValues.startIndex + 1} {...product}
-                                         detailModuleShowed={detailModuleShowed}
-                        />
-                    </tr>
-                ))}
-                </tbody>
-                <ProductPagination
-                    {...paginationValues}
-                    productPerPageChangeHandler={productPerPageChangeHandler}
-                    goFirstPageClickHandler={goFirstPageClickHandler}
-                    goToNextPageClickHandler={goToNextPageClickHandler}
-                    goToPreviousPageClickHandler={goToPreviousPageClickHandler}
-                    goLastPageClickHandler={goLastPageClickHandler}
-                />
-            </table>
-        </>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button onClick={goFirstPageClickHandler}><i className="fa-solid fa-angles-left"></i></button>
+            </td>
+            <td>
+                <button onClick={goToPreviousPageClickHandler}><i className="fa-solid fa-chevron-left"></i></button>
+            </td>
+            <td>
+                <span>{paginationValues.currentPage} от {paginationValues.totalPages} стр.</span>
+            </td>
+            <td>
+                <button onClick={goToNextPageClickHandler}><i className="fa-solid fa-chevron-right"></i></button>
+            </td>
+            <td>
+                <button onClick={goLastPageClickHandler}><i className="fa-solid fa-angles-right"></i></button>
+            </td>
+            <td><span>({paginationValues.totalProducts} продукта общо)</span></td>
+        </tr>
+        <tr>
+            <td>
+                <span>Обнови всики продукти</span>
+                <button><i className="fa-solid fa-arrow-rotate-right"></i></button>
+            </td>
+        </tr>
+        </tfoot>
     );
 }

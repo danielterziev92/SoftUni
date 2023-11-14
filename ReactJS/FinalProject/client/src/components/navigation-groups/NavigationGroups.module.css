@@ -1,0 +1,35 @@
+.verticalNavGroupItems .verticalNavGroupName {
+    width: 100%;
+    padding: 10px 0 10px 15px;
+    color: #7E8AD9;
+    font-size: 1.2rem;
+    user-select: none;
+}
+
+.verticalNavGroupItems {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.verticalNavGroupItems a {
+    width: 100%;
+    margin: 5px 0 5px 15px;
+    padding: 10px 0 10px 15px;
+    text-decoration: none;
+}
+
+
+.verticalNavGroupItems a:hover {
+    background-color: var(--aside-button-hover);
+    border-radius: 5px 0 0 5px;
+}
+
+.verticalNavGroupItems a i,
+.verticalNavGroupItems a span {
+    color: white;
+}
+
+.verticalNavGroupItems a span {
+    text-decoration: none;
+    margin-left: 10px;
+}

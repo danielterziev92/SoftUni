@@ -1,0 +1,73 @@
+
+/*.product-list tbody tr th .select {*/
+/*    width: 100%;*/
+/*    padding: 8px;*/
+/*    font-size: 16px;*/
+/*    border: 1px solid var(--table-list-products-select);*/
+/*    border-radius: 10px;*/
+/*    background-color: transparent;*/
+/*    position: relative;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*}*/
+
+/*.product-list tbody tr th .select.selected {*/
+/*    border-color: var(--table-list-products-select-selected);*/
+/*}*/
+
+/*.product-list tbody tr th .select:before {*/
+/*    font-family: "Font Awesome 5 Free";*/
+/*    font-weight: 900;*/
+/*    content: '\f0dd';*/
+/*    position: absolute;*/
+/*    right: 10px;*/
+/*    color: var(--table-list-products-select-arrow);*/
+/*    font-size: 1rem;*/
+/*    bottom: 50%;*/
+/*    transform: translateY(25%);*/
+/*}*/
+
+/*.product-list tbody tr th .select.selected:before {*/
+/*    color: var(--table-list-products-select-arrow-selected);*/
+/*}*/
+
+
+/*.product-list tbody tr th .select ul {*/
+/*    display: none;*/
+/*}*/
+
+/*.product-list tbody tr th .select.selected ul {*/
+/*    width: 100%;*/
+/*    background-color: var(--table-list-products-option);*/
+/*    border: 1px solid var(--table-list-products-option-border);*/
+/*    border-radius: 10px;*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    position: absolute;*/
+/*    top: 36px;*/
+/*    left: 0;*/
+/*    z-index: 2;*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*.product-list tbody tr th .select.selected ul li {*/
+/*    text-align: left;*/
+/*    width: 100%;*/
+/*    list-style: none;*/
+/*    padding: 10px;*/
+/*}*/
+
+
+/*.product-list tbody tr th .select.selected ul li.selected {*/
+/*    color: var(--table-list-products-option-selected);*/
+/*}*/
+
+/*.product-list tbody tr th .select.selected ul li.selected:before {*/
+/*    font-family: "Font Awesome 5 Free";*/
+/*    font-weight: 900;*/
+/*    content: '\f0dd';*/
+/*}*/
+
+/*.product-list tbody tr th .select.selected ul li:hover {*/
+/*    background-color: var(--table-list-products-option-hover);*/
+/*}

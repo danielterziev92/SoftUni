@@ -80,18 +80,12 @@ export default function SearchProduct({
 
             if (direction === 'forward' && charIndex + 1 === placeholderWords[currentWordIndex].length) {
                 setDirection('backward');
-            }
-
-            if (direction === 'forward') {
+            } else if (direction === 'forward') {
                 increaseIndex();
-            }
-
-            if (direction === 'backward' && charIndex === -1) {
+            } else if (direction === 'backward' && charIndex === -1) {
                 moveNextWord();
                 setDirection('forward');
-            }
-
-            if (direction === 'backward') {
+            } else if (direction === 'backward') {
                 reduceIndex();
             }
 

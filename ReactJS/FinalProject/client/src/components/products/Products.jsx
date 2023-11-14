@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 
-import ProductList from "./ProductList.jsx";
-import SearchProduct from "./SearchProduct.jsx";
+import ProductList from "../product-list/ProductList.jsx";
+import SearchProduct from "../search-product/SearchProduct.jsx";
 import ProductAddForm from "./ProductAddForm.jsx";
 
-import {getAllProducts} from "../../services/apiServices.js";
+import {getAllProducts} from "../../services/productService.js";
 
 import navStyle from '../Main.module.css'
 import Spinner from "../Spinner.jsx";

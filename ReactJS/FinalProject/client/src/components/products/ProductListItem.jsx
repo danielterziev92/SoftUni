@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import listItemStyle from './ProductList.module.css';
+import listItemStyle from '../product-list/ProductList.module.css';
 
 export default function ProductListItem({
                                             index,
@@ -8,15 +8,14 @@ export default function ProductListItem({
                                             name,
                                             price,
                                             is_active,
-                                            group,
-                                            groups,
+                                            group_name,
+                                            quantity,
                                             detailModuleShowed,
                                         }) {
     const [showDetail, setShowDetail] = useState(false);
 
     useEffect(() => {
         if (showDetail) {
-            // eslint-disable-next-line react/prop-types
             detailModuleShowed.current = !detailModuleShowed.current;
         }
     }, [showDetail, detailModuleShowed]);
@@ -33,7 +32,7 @@ export default function ProductListItem({
                     : <i className={`fa-solid fa-circle-xmark ${listItemStyle.outStock}`}></i>
                 }
             </th>
-            <th><span>{group}</span></th>
+            <th><span>{group_name}</span></th>
             <th>
                 {showDetail
                     ? <i className={`fa-solid fa-angle-up ${listItemStyle.detail}`}
