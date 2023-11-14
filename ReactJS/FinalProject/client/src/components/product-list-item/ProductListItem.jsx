@@ -43,7 +43,7 @@ export default function ProductListItem({
                     }
                 </div>
             </div>
-            {showDetail && <ProductListItemDetail id={id}/>}
+            {showDetail && <ProductListItemDetail id={id} setShowDetail={setShowDetail}/>}
         </>
     );
 }
