@@ -33,6 +33,8 @@ aside::-webkit-scrollbar {
     /*-moz-osx-font-smoothing: grayscale;*/
     /*-webkit-text-size-adjust: 100%;*/
 
+    --spinner-color: #4f46e5;
+
     --background-primary: #e0e0e6;
     --background-secondary: #ffffff;
     --aside-background: #0F172A;
@@ -50,9 +52,10 @@ aside::-webkit-scrollbar {
     --table-list-products-in-stock: #0caf64;
     --table-list-products-out-stock: #d51920;
     --table-list-product-detail-select: #c9d3df;
-    --table-list-product-detail-select-arrow: #c9d3df;
+    --table-list-product-detail-select-arrow: #8a8a8a;
     --table-list-product-detail-select-selected: #4e45e3;
     --table-list-product-detail-select-arrow-selected: #4e45e3;
+    --table-list-product-detail-select-arrow-hover: #414141;
     --table-list-product-detail-option: #ffffff;
     --table-list-product-detail-option-border: #c5c5c5;
     --table-list-product-detail-option-hover: #e1e1e1;
@@ -79,19 +82,3 @@ aside::-webkit-scrollbar {
 #root {
     display: flex;
 }
-
-
-/*@media (prefers-color-scheme: light) {*/
-/*    :root {*/
-/*        !*color: ;*!*/
-/*        background-color: #ffffff;*/
-/*    }*/
-
-/*    a:hover {*/
-/*        color: #747bff;*/
-/*    }*/
-
-/*    button {*/
-/*        background-color: #f9f9f9;*/
-/*    }*/
-/*}*/

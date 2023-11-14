@@ -1,6 +1,6 @@
-import listStyle from './ProductList.module.css';
+import style from './ProductList.module.css';
 import {useRef, useState} from "react";
-import ProductListItem from "../products/ProductListItem.jsx";
+import ProductListItem from "../product-list-item/ProductListItem.jsx";
 import ProductPagination from "../product-pagination/ProductPagination.jsx";
 
 const tableKeys = [
@@ -8,9 +8,9 @@ const tableKeys = [
     {name: 'Код', sorting: true},
     {name: 'Име', sorting: true},
     {name: 'Цена', sorting: true},
+    {name: 'Брой', sorting: true},
     {name: 'Активен', sorting: true},
-    {name: 'Група', sorting: true},
-    {name: 'Детайл', sorting: false},
+    {name: 'Детайли', sorting: false},
 ]
 
 
@@ -34,43 +34,42 @@ export default function ProductList(products) {
 
     return (
         <>
-            <table className={listStyle.ProductList}>
-                <thead>
-                <tr>
-                    {tableKeys.map((key, index) => (
-                        <th key={index}>
-                            {key.sorting ? (
-                                <span onClick={changeAscendingOrderClickHandler}>
+            <div className={style.ProductList}>
+                <div className={style.header}>
+                    <div className={style.row}>
+                        {tableKeys.map((key, index) => (
+                            <div key={index} className={style.column}>
+                                {key.sorting ? (
+                                    <span onClick={changeAscendingOrderClickHandler}>
                                     {key.name}
                                 </span>
-                            ) : (
-                                <span>{key.name}</span>
-                            )}
-                            {(selectedItem === key.name) &&
-                                (isAscending ? (
-                                    <i className="fa-solid fa-arrow-up-short-wide"></i>
                                 ) : (
-                                    <i className="fa-solid fa-arrow-down-short-wide"></i>
-                                ))}
-                        </th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {products.products.slice(startIndex, endIndex).map((product, index) => (
-                    <tr key={product.id}>
-                        <ProductListItem index={index + startIndex + 1} {...product}
+                                    <span>{key.name}</span>
+                                )}
+                                {(selectedItem === key.name) &&
+                                    (isAscending ? (
+                                        <i className="fa-solid fa-arrow-up-short-wide"></i>
+                                    ) : (
+                                        <i className="fa-solid fa-arrow-down-short-wide"></i>
+                                    ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className={style.body}>
+                    {products.products.slice(startIndex, endIndex).map((product, index) => (
+                        <ProductListItem rowNumb={index + startIndex + 1} {...product}
                                          detailModuleShowed={detailModuleShowed}
+                                         key={product.id}
                         />
-                    </tr>
-                ))}
-                </tbody>
+                    ))}
+                </div>
                 <ProductPagination
                     setStartIndex={setStartIndex}
                     setEndIndex={setEndIndex}
                     productLength={productLength}
                 />
-            </table>
+            </div>
         </>
     );
 }

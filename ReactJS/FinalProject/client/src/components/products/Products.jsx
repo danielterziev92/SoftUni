@@ -7,7 +7,7 @@ import ProductAddForm from "./ProductAddForm.jsx";
 import {getAllProducts} from "../../services/productService.js";
 
 import navStyle from '../Main.module.css'
-import Spinner from "../Spinner.jsx";
+import Spinner from "../spinner/Spinner.jsx";
 
 const initialState = {
     title: 'Всички продукти',
@@ -15,7 +15,6 @@ const initialState = {
     error: '',
     searchedProductValue: '',
     isSpinnerShow: true,
-
     isShowAddProduct: false,
 }
 

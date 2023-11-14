@@ -7,5 +7,5 @@ export const getAllProducts = async () => {
 }
 
 export const getProductById = async (productId) => {
-    return request.get(`${baseUrl}/products/${productId}`);
+    return request.get(`${baseUrl}/product/${productId}`);
 }
