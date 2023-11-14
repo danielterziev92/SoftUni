@@ -73,7 +73,7 @@ class ProductBaseInformation(models.Model):
 
 
 class ProductAdditionalInfo(models.Model):
-    product_id = models.AutoField(
+    product = models.AutoField(
         primary_key=True
     )
 
@@ -84,8 +84,8 @@ class ProductAdditionalInfo(models.Model):
     )
 
     picture = cloudinary_models.CloudinaryField(
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
     )
 
 
@@ -96,7 +96,7 @@ class MoreBarcodes(models.Model):
         blank=True,
     )
 
-    product_id = models.ForeignKey(
+    product = models.ForeignKey(
         ProductBaseInformation,
         on_delete=models.CASCADE,
         null=False,

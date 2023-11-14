@@ -11,15 +11,9 @@ class ProductListSerializer(serializers.ModelSerializer):
         fields = ['code', 'name', 'price', 'quantity', 'group_name']
 
 
-class ProductDetailSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     group_name = serializers.StringRelatedField(source='group.name', read_only=True)
 
-    class Meta:
-        model = ProductBaseInformation
-        fields = '__all__'
-
-
-class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductBaseInformation
         fields = '__all__'

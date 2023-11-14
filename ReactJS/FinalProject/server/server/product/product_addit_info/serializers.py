@@ -1,15 +1,15 @@
 from rest_framework import serializers
 
-from server.product.models import ProductAdditionalInfo
+from server.product.models import ProductAdditionalInfo, MoreBarcodes
 
 
-class ProductInfoDetailSerializer(serializers.ModelSerializer):
+class ProductInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductAdditionalInfo
         fields = '__all__'
 
 
-class ProductInfoCreateSerializer(serializers.ModelSerializer):
+class MoreBarcodesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProductAdditionalInfo
+        model = MoreBarcodes
         fields = '__all__'

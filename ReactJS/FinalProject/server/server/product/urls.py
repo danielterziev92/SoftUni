@@ -1,7 +1,8 @@
 from django.urls import path, include
 
 from server.product.groups.views import GroupListView, GroupDetailView, GroupCreateView
-from server.product.product_addit_info.views import ProductInfoDetailView, ProductInfoCreateView
+from server.product.product_addit_info.views import ProductInfoDetailView, ProductInfoCreateView, \
+    MoreBarcodesDetailView, MoreBarcodesCreateView, ProductInfoUploadView
 from server.product.product_base_info.views import ProductListView, ProductDetailView, ProductCreateView
 
 urlpatterns = (
@@ -11,11 +12,11 @@ urlpatterns = (
     path('products/', ProductListView.as_view(), name='product-list'),
     path('product/<int:pk>/', include([
         path('', ProductDetailView.as_view(), name='product-detail'),
-        path('product/<int:pk>/info/', ProductInfoDetailView.as_view(), name='product-info-detail'),
-        path('product/<int:pk>/info/create/', ProductInfoCreateView.as_view(), name='product-info-create'),
+        path('info/', ProductInfoDetailView.as_view(), name='product-info-detail'),
+        path('info/create/', ProductInfoCreateView.as_view(), name='product-info-create'),
+        path('barcodes/', MoreBarcodesDetailView.as_view(), name='more-barcodes-detail'),
+        path('barcodes/create/', MoreBarcodesCreateView.as_view(), name='more-barcodes-create'),
     ])),
+    path('product-info/upload/', ProductInfoUploadView.as_view(), name='product-info-upload'),
     path('product/create/', ProductCreateView.as_view(), name='product-create'),
 )
-
-# endpoint /product/<int:pk>/barcodes to have GET, PATCH and DELETE methods
-# endpoint /product/<int:pk>/barcodes/create to have only CREATE method
