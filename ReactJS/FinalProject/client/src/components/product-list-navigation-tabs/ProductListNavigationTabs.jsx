@@ -37,7 +37,7 @@ export default function ProductListNavigationTabs({
                 ))}
             </ul>
             <div className={style.closeButton} onClick={closeShowDetailClickHandler}>
-                <i class="fa-regular fa-circle-xmark"></i>
+                <i className="fa-regular fa-circle-xmark"></i>
             </div>
         </div>
     );

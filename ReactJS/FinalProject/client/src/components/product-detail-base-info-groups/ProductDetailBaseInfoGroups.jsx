@@ -1,8 +1,19 @@
+import {useEffect, useState} from "react";
+
 export default function ProductDetailBaseInfoGroups({
                                                         items,
-                                                        onRadioChange,
+                                                        changeHandler,
                                                         selectedId,
                                                     }) {
+    const [localSelectedId, setLocalSelectedId] = useState(selectedId);
+
+    console.log(selectedId)
+
+
+    useEffect(() => {
+        setLocalSelectedId(selectedId)
+    }, []);
+
     return (
         <ul>
             {items.map((item) => (
@@ -11,15 +22,15 @@ export default function ProductDetailBaseInfoGroups({
                         id={item.id}
                         type="radio"
                         name="groupSelection"
-                        checked={selectedId === item.id}
-                        onChange={onRadioChange}
+                        checked={localSelectedId === item.id}
+                        onChange={changeHandler}
                     />
-                    {item.name}
+                    <label htmlFor={item.id}>{item.name}</label>
                     {item.children.length > 0 && (
                         <ProductDetailBaseInfoGroups
                             items={item.children}
-                            onRadioChange={onRadioChange}
-                            selectedId={selectedId}
+                            changeHandler={changeHandler}
+                            selectedId={localSelectedId}
                         />
                     )}
                 </li>
