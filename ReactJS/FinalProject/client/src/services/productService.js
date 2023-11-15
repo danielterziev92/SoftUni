@@ -10,3 +10,7 @@ export const getProductById = async (productId) => {
     // await new Promise(resolve => setTimeout(resolve, 5000));
     return request.get(`${baseUrl}/product/${productId}`);
 }
+
+export const patchProductById = async (productId, data) => {
+    return request.patch(`${baseUrl}/product/${productId}/`, data);
+}

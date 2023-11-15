@@ -5,7 +5,7 @@ import {getProductById} from "../../services/productService.js";
 import ProductDetailBaseInfo from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
 import ProductListNavigationTabs from "../product-list-navigation-tabs/ProductListNavigationTabs.jsx";
 
-export default function ProductListItemDetail({id, setShowDetail}) {
+export default function ProductListItemDetail({id, setShowDetail, setProductsState}) {
 
     const [productData, setProductData] = useState({});
     const [isSpinnerShow, setIsSpinnerShow] = useState(true);
@@ -14,6 +14,13 @@ export default function ProductListItemDetail({id, setShowDetail}) {
     const closeShowDetailClickHandler = () => {
         setShowDetail(false);
     }
+
+    useEffect(() => {
+        setProductsState(state => ({
+            ...state,
+            data: state.data.map(item => item.id === productData.id ? productData : item),
+        }));
+    }, [productData]);
 
     useEffect(() => {
         getProductById(id).then(data => {

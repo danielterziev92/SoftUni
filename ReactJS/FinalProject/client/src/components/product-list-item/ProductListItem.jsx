@@ -11,6 +11,7 @@ export default function ProductListItem({
                                             is_active,
                                             quantity,
                                             detailModuleShowed,
+                                            setProductsState,
                                         }) {
     const [showDetail, setShowDetail] = useState(false);
 
@@ -43,7 +44,12 @@ export default function ProductListItem({
                     }
                 </div>
             </div>
-            {showDetail && <ProductListItemDetail id={id} setShowDetail={setShowDetail}/>}
+            {showDetail &&
+                <ProductListItemDetail
+                    id={id}
+                    setShowDetail={setShowDetail}
+                    setProductsState={setProductsState}
+                />}
         </>
     );
 }

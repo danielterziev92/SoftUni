@@ -14,13 +14,16 @@ const tableKeys = [
 ]
 
 
-export default function ProductList(products) {
+export default function ProductList({
+                                        products,
+                                        setProductsState
+                                    }) {
     const [isAscending, setIsAscending] = useState(true);
     const [selectedItem, setSelectedItem] = useState('');
     const detailModuleShowed = useRef(false);
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(15);
-    const [productLength, setProductLength] = useState(products.products.length);
+    const [productLength, setProductLength] = useState(products.length);
 
     const changeAscendingOrderClickHandler = (e) => {
         if (selectedItem !== e.currentTarget.textContent) {
@@ -57,9 +60,10 @@ export default function ProductList(products) {
                     </div>
                 </div>
                 <div className={style.body}>
-                    {products.products.slice(startIndex, endIndex).map((product, index) => (
+                    {products.slice(startIndex, endIndex).map((product, index) => (
                         <ProductListItem rowNumb={index + startIndex + 1} {...product}
                                          detailModuleShowed={detailModuleShowed}
+                                         setProductsState={setProductsState}
                                          key={product.id}
                         />
                     ))}

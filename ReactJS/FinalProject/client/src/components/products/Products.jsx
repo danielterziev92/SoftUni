@@ -19,10 +19,10 @@ const initialState = {
 }
 
 export default function Products() {
-    const [productState, setProductState] = useState(initialState);
+    const [productsState, setProductsState] = useState(initialState);
 
     const addProductClickHandler = () => {
-        setProductState(state => ({
+        setProductsState(state => ({
             ...state,
             isShowCreateProduct: true
         }));
@@ -30,15 +30,15 @@ export default function Products() {
 
     useEffect(() => {
         getAllProducts()
-            .then(products => setProductState(state => ({
+            .then(products => setProductsState(state => ({
                 ...state,
                 data: products
             })))
-            .catch(e => setProductState(state => ({
+            .catch(e => setProductsState(state => ({
                 ...state,
                 error: e
             })))
-            .finally(() => setProductState(state => ({
+            .finally(() => setProductsState(state => ({
                     ...state,
                     isSpinnerShow: false
                 }))
@@ -49,8 +49,8 @@ export default function Products() {
         <>
             <nav className={navStyle.Nav}>
                 <ul>
-                    <li><h2>{productState.title}</h2></li>
-                    <li><SearchProduct setProductState={setProductState} productState={productState}/></li>
+                    <li><h2>{productsState.title}</h2></li>
+                    <li><SearchProduct setProductState={setProductsState} productState={productsState}/></li>
                     <li>
                         <div className={navStyle.addProduct} onClick={addProductClickHandler}>
                             <i className="fa-solid fa-circle-plus"></i>
@@ -59,13 +59,16 @@ export default function Products() {
                     </li>
                 </ul>
             </nav>
-            {productState.isShowAddProduct && <ProductAddForm/>}
+            {productsState.isShowAddProduct && <ProductAddForm/>}
 
-            {productState.isSpinnerShow && <Spinner/>}
+            {productsState.isSpinnerShow && <Spinner/>}
 
-            {!productState.isSpinnerShow &&
+            {!productsState.isSpinnerShow &&
                 <section>
-                    <ProductList products={productState.data}/>
+                    <ProductList
+                        products={productsState.data}
+                        setProductsState={setProductsState}
+                    />
                 </section>
             }
         </>
