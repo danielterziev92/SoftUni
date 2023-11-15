@@ -1,0 +1,41 @@
+.navigationTabs {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+.navigationTabs ul {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: auto;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+.navigationTabs ul li {
+    list-style: none;
+    padding: 10px;
+}
+
+
+.navigationTabs ul li:hover {
+    border: 1px solid #4e45e3;
+    border-bottom-color: transparent;
+    border-radius: 10px 10px 0 0;
+}
+
+.navigationTabs ul li.active {
+    background-color:  #4e45e3;
+    border-bottom-color: transparent;
+    border-radius: 10px 10px 0 0;
+    color: #ffffff;
+}
+
+.closeButton {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    color: var(--table-list-products-close-button);
+}

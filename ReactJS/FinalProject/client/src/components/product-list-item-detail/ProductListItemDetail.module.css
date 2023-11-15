@@ -3,28 +3,7 @@
     height: 200px;
 }
 
-.navigationTabs {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 20px;
-}
 
-.navigationTabs ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin-right: auto;
-}
-
-.navigationTabs ul li {
-    list-style: none;
-}
-
-.closeButton {
-    color: var(--table-list-products-close-button);
-}
 
 
 /*!*.product-list tbody tr th .select {*!*/
