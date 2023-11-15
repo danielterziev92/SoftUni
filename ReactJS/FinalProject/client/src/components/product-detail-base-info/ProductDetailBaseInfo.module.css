@@ -60,6 +60,12 @@
     padding: 10px;
     overflow-y: scroll;
     max-height: 260px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.baseInfoForm .groups span{
+    width: 100%;
 }
 
 .baseInfoForm .groups ul {

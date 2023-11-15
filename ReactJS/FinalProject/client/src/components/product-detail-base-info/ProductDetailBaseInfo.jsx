@@ -1,9 +1,21 @@
 import {useEffect, useState} from "react";
-import {getAllGroups, patchProductById} from "../../services/productService.js";
+import {deleteProductById, getAllGroups, patchProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
 import ProductDetailBaseInfoGroups from "../product-detail-base-info-groups/ProductDetailBaseInfoGroups.jsx";
 import Spinner from "../spinner/Spinner.jsx";
+
+const initialData = {
+    name: '',
+    code: '',
+    barcode: '',
+    price: 0,
+    quantity: 0,
+    is_active: false,
+    group: 0,
+    group_name: '',
+}
+
 
 export default function ProductDetailBaseInfo({
                                                   id,
@@ -13,7 +25,7 @@ export default function ProductDetailBaseInfo({
                                                   setIsSpinnerShow
                                               }) {
 
-    const [dataToChange, setDataToChange] = useState({});
+    const [dataToChange, setDataToChange] = useState(initialData);
     const [groups, setGroups] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -41,8 +53,13 @@ export default function ProductDetailBaseInfo({
     const changeProductDataSubmitHandler = (e) => {
         e.preventDefault();
         patchProductById(id, dataToChange).then(data => setProductData(data));
-        // closeShowDetailClickHandler();
     }
+
+    const deleteProductClickHandler = () => {
+        const result = deleteProductById(id);
+        console.log(result)
+    }
+
 
     const sortGroup = (data) => {
         const grouped = {};
@@ -109,19 +126,20 @@ export default function ProductDetailBaseInfo({
                                onChange={changeHandler}/>
                     </div>
                     <div className={style.groups}>
-                        {/*<ul>*/}
-                        {/*    <ProductDetailBaseInfoGroups*/}
-                        {/*        items={groups}*/}
-                        {/*        changeHandler={changeHandler}*/}
-                        {/*        selectedId={productData.group}*/}
-                        {/*    />*/}
-                        {/*</ul>*/}
+                        <span>Групи:</span>
+                        <ul>
+                            <ProductDetailBaseInfoGroups
+                                items={groups}
+                                changeHandler={changeHandler}
+                                selectedId={productData.group}
+                            />
+                        </ul>
                     </div>
                     <div className={style.buttons}>
-                        <button type="button">Нулирай</button>
-                        <button type="button">Изтрий</button>
-                        <button>Промени</button>
-                        <button type="button" onClick={closeShowDetailClickHandler}>Отказ</button>
+                        <button type="button" onClick={deleteProductClickHandler}><i
+                            className="fa-solid fa-trash"></i> Изтрий
+                        </button>
+                        <button><i className="fa-solid fa-floppy-disk"></i> Запази</button>
                     </div>
                 </form>
             }

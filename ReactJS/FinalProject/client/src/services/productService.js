@@ -15,6 +15,10 @@ export const patchProductById = async (productId, data) => {
     return request.put(`${baseUrl}/product/${productId}/`, data);
 }
 
+export const deleteProductById = async (productId) => {
+    return request.remove(`${baseUrl}/product/${productId}`);
+}
+
 export const getAllGroups = async () => {
     return request.get(`${baseUrl}/groups/`)
 }
