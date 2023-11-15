@@ -2,7 +2,7 @@ import style from './ProductListItemDetail.module.css';
 import {useEffect, useState} from "react";
 import Spinner from "../spinner/Spinner.jsx";
 import {getProductById} from "../../services/productService.js";
-import ProductListItemDetailBaseInfo from "../product-list-item-detail-base-info/ProductListItemDetailBaseInfo.jsx";
+import ProductDetailBaseInfo from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
 
 export default function ProductListItemDetail({id, setShowDetail}) {
 
@@ -34,15 +34,18 @@ export default function ProductListItemDetail({id, setShowDetail}) {
             {isSpinnerShow && <Spinner/>}
             {!isSpinnerShow &&
                 <>
-                    <div>
+                    <div className={style.navigationTabs}>
                         <ul>
                             <li name="base-info" onClick={changeActiveTabHandler}>Основни данни</li>
-                            <li>Допълнителни данни</li>
-                            <li>Баркодове</li>
+                            <li name="addit-info" onClick={changeActiveTabHandler}>Допълнителни данни</li>
+                            <li name="barcodes" onClick={changeActiveTabHandler}>Баркодове</li>
                         </ul>
+                        <div className={style.closeButton} onClick={closeShowDetailClickHandler}>
+                            <i className="fa-solid fa-circle-xmark"></i>
+                        </div>
                     </div>
                     {activeTab === 'base-info' &&
-                        <ProductListItemDetailBaseInfo
+                        <ProductDetailBaseInfo
                             id={id}
                             productData={productData}
                             setProductData={setProductData}

@@ -65,6 +65,9 @@ aside::-webkit-scrollbar {
     --table-list-products-tfoot-button-bg: #4e45e3;
     --table-list-products-tfoot-button-icon: #f6f8fa;
 
+    --table-list-products-close-button: #d51920;
+
+
     --nav-width: 200px;
     --aside-width: 100px;
 }

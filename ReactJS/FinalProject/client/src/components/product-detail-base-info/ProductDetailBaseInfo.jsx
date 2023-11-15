@@ -1,4 +1,4 @@
-export default function ProductListItemDetailBaseInfo({
+export default function ProductDetailBaseInfo({
                                                           id,
                                                           productData,
                                                           setProductData,
