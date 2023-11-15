@@ -1,0 +1,75 @@
+.baseInfoForm {
+    display: grid;
+    grid-template-areas:
+            "name name name name groups"
+            "code code barcode barcode groups"
+            "quantity quantity price price groups"
+            "active buttons buttons buttons groups";
+    flex-wrap: wrap;
+    padding: 0 20px 20px 20px;
+    box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+
+
+.baseInfoForm div {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.baseInfoForm .name {
+    grid-area: name;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.baseInfoForm .name label,
+.baseInfoForm .name input {
+    width: 100%;
+}
+
+.baseInfoForm .code {
+    grid-area: code;
+}
+
+.baseInfoForm .barcode {
+    grid-area: barcode;
+}
+
+.baseInfoForm .price {
+    grid-area: price;
+}
+
+.baseInfoForm .quantity {
+    grid-area: quantity;
+}
+
+.baseInfoForm .active {
+    grid-area: active;
+}
+
+.baseInfoForm .buttons {
+    grid-area: buttons;
+}
+
+.baseInfoForm .groups {
+    grid-area: groups;
+}
+
+.baseInfoForm div label {
+    min-width: 150px;
+    padding: 5px 0;
+}
+
+.baseInfoForm div:not(:nth-child(6)) input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+.baseInfoForm div input:focus {
+    border: 1px solid #4e45e3;
+    outline: none;
+}
