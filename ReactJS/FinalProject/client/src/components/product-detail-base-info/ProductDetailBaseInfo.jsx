@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {getAllGroups, patchProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
+import ProductDetailBaseInfoGroups from "../product-detail-base-info-groups/ProductDetailBaseInfoGroups.jsx";
 
 export default function ProductDetailBaseInfo({
                                                   id,
@@ -13,8 +14,10 @@ export default function ProductDetailBaseInfo({
 
     const [dataToChange, setDataToChange] = useState({});
     const [groups, setGroups] = useState([]);
+    const [selectedId, setSelectedId] = useState();
 
     const changeHandler = (e) => {
+        console.log(e.target)
         let {type, name, value} = e.target;
 
         if (type === 'number') {
@@ -22,7 +25,11 @@ export default function ProductDetailBaseInfo({
         }
 
         if (type === 'checkbox') {
-            value = e.target.checked
+            value = e.target.checked;
+        }
+
+        if (type === 'radio') {
+            value = e.target.id;
         }
 
         setDataToChange(state => ({
@@ -61,7 +68,7 @@ export default function ProductDetailBaseInfo({
     };
 
     useEffect(() => {
-        console.log(groups)
+        setSelectedId(productData.group)
     }, [groups]);
 
     useEffect(() => {
@@ -99,7 +106,13 @@ export default function ProductDetailBaseInfo({
                        onChange={changeHandler}/>
             </div>
             <div className={style.groups}>
-
+                <ul>
+                    <ProductDetailBaseInfoGroups
+                        items={groups}
+                        onRadioChange={changeHandler}
+                        selectedId={selectedId}
+                    />
+                </ul>
             </div>
             <div className={style.buttons}>
                 <button>Нулирай</button>

@@ -23,6 +23,7 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    background-color: red;
 }
 
 .baseInfoForm .name label,
@@ -56,6 +57,19 @@
 
 .baseInfoForm .groups {
     grid-area: groups;
+    width: 100%;
+    padding: 10px;
+    background-color: green;
+    overflow-y: scroll;
+    max-height: 260px;
+}
+
+.baseInfoForm .groups ul {
+    list-style: none;
+}
+
+.baseInfoForm .groups ul ul {
+    margin-left: 10px;
 }
 
 .baseInfoForm div label {
