@@ -12,11 +12,11 @@ urlpatterns = (
     path('products/', ProductListView.as_view(), name='product-list'),
     path('product/<int:pk>/', include([
         path('', ProductDetailView.as_view(), name='product-detail'),
+        path('create/', ProductCreateView.as_view(), name='product-create'),
         path('info/', ProductInfoDetailView.as_view(), name='product-info-detail'),
         path('info/create/', ProductInfoCreateView.as_view(), name='product-info-create'),
         path('barcodes/', MoreBarcodesDetailView.as_view(), name='more-barcodes-detail'),
         path('barcodes/create/', MoreBarcodesCreateView.as_view(), name='more-barcodes-create'),
     ])),
     path('product-info/upload/', ProductInfoUploadView.as_view(), name='product-info-upload'),
-    path('product/create/', ProductCreateView.as_view(), name='product-create'),
 )

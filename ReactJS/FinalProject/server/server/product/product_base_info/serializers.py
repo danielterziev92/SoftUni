@@ -4,11 +4,11 @@ from server.product.models import ProductBaseInformation
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    group_name = serializers.StringRelatedField(source='group.name', read_only=True)
+    # group_name = serializers.StringRelatedField(source='group.name', read_only=True)
 
     class Meta:
         model = ProductBaseInformation
-        fields = ['id', 'code', 'name', 'price', 'quantity', 'is_active', 'group_name']
+        fields = ['id', 'code', 'name', 'price', 'quantity', 'is_active']
 
 
 class ProductSerializer(serializers.ModelSerializer):
