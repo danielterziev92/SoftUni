@@ -1,21 +1,29 @@
 .baseInfoForm {
     display: grid;
     grid-template-areas:
-            "name name name name groups"
-            "code code barcode barcode groups"
-            "quantity quantity price price groups"
-            "active buttons buttons buttons groups";
+            "name name groups"
+            "code barcode groups"
+            "quantity price groups"
+            "active buttons groups";
     flex-wrap: wrap;
     padding: 0 20px 20px 20px;
     box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.2);
     background-color: #ffffff;
 }
 
-
 .baseInfoForm div {
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
+    padding: 10px;
+}
+
+.baseInfoForm div label {
+    width: 100%;
+}
+
+.baseInfoForm div input {
+    width: 80%;
 }
 
 .baseInfoForm .name {
@@ -48,10 +56,37 @@
 
 .baseInfoForm .active {
     grid-area: active;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.baseInfoForm .active > label {
+    min-width: unset;
+    width: auto;
+    margin-right: 20px;
 }
 
 .baseInfoForm .buttons {
     grid-area: buttons;
+}
+
+
+.baseInfoForm .buttons button {
+    margin: 10px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+}
+
+.baseInfoForm .buttons button.save {
+    background-color: #4e45e3;
+    color: #ffffff;
+}
+
+.baseInfoForm .buttons button.delete {
+    background-color: #d51920;
+    color: #ffffff;
 }
 
 .baseInfoForm .groups {
@@ -62,9 +97,65 @@
     max-height: 260px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    overflow-y: scroll;
+    scrollbar-width: auto;
+    scrollbar-color: #4e45e3 #4e45e3; /* For Firefox */
+
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #4e45e3;
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #4e45e3;
+    }
 }
 
-.baseInfoForm .groups span{
+.baseInfoForm .groups ul li div {
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.baseInfoForm .active input,
+.baseInfoForm .groups input {
+    appearance: none;
+    border: 1px solid #d3d3d3;
+    width: 30px;
+    height: 30px;
+    content: none;
+    outline: none;
+    margin: 0 10px 0 0;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.baseInfoForm .active input[type="checkbox"]:checked,
+.baseInfoForm .groups input[type="radio"]:checked {
+    appearance: none;
+    outline: none;
+    content: none;
+    border: 1px solid #4e45e3;
+}
+
+.baseInfoForm .active input[type="checkbox"]:checked::before,
+.baseInfoForm .groups input[type="radio"]:checked::before {
+    font-family: "Font Awesome 5 Free";
+    color: #4e45e3 !important;
+    content: "\f00c" !important;
+    font-weight: bolder;
+    font-size: 21px;
+}
+
+.baseInfoForm .groups span {
     width: 100%;
 }
 

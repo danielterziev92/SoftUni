@@ -42,6 +42,9 @@ export default function ProductDetailBaseInfo({
 
         if (type === 'radio') {
             value = Number(e.target.id);
+            console.log(value)
+            console.log(name)
+            console.log(dataToChange)
         }
 
         setDataToChange(state => ({
@@ -131,15 +134,17 @@ export default function ProductDetailBaseInfo({
                             <ProductDetailBaseInfoGroups
                                 items={groups}
                                 changeHandler={changeHandler}
-                                selectedId={productData.group}
+                                selectedId={dataToChange.group}
                             />
                         </ul>
                     </div>
                     <div className={style.buttons}>
-                        <button type="button" onClick={deleteProductClickHandler}><i
-                            className="fa-solid fa-trash"></i> Изтрий
+                        <button type="button" onClick={deleteProductClickHandler} className={style.delete}>
+                            <i className="fa-solid fa-trash"></i> Изтрий
                         </button>
-                        <button><i className="fa-solid fa-floppy-disk"></i> Запази</button>
+                        <button className={style.save}>
+                            <i className="fa-solid fa-floppy-disk"></i> Запази
+                        </button>
                     </div>
                 </form>
             }
