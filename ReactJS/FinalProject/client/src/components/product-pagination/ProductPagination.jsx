@@ -129,44 +129,44 @@ export default function ProductPagination({
     }, [paginationValues.endIndex]);
 
     return (
-        <tfoot className={paginationStyle.tfoot}>
-        <tr>
-            <td>
-                <label htmlFor="itemPerPage">Продукти на страница:</label>
-            </td>
-            <td>
-                <select name="" id="itemPerPage" value={currItemPerPage}
-                        onChange={(e) => setCurrItemPerPage(parseInt(e.target.value))}>
-                    {paginationValues.itemPerPage.map(numb => (
-                        <option value={numb} key={numb}>{numb}</option>
-                    ))}
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button onClick={goFirstPageClickHandler}><i className="fa-solid fa-angles-left"></i></button>
-            </td>
-            <td>
-                <button onClick={goToPreviousPageClickHandler}><i className="fa-solid fa-chevron-left"></i></button>
-            </td>
-            <td>
-                <span>{paginationValues.currentPage} от {paginationValues.totalPages} стр.</span>
-            </td>
-            <td>
-                <button onClick={goToNextPageClickHandler}><i className="fa-solid fa-chevron-right"></i></button>
-            </td>
-            <td>
-                <button onClick={goLastPageClickHandler}><i className="fa-solid fa-angles-right"></i></button>
-            </td>
-            <td><span>({paginationValues.totalProducts} продукта общо)</span></td>
-        </tr>
-        <tr>
-            <td>
-                <span>Обнови всики продукти</span>
-                <button><i className="fa-solid fa-arrow-rotate-right"></i></button>
-            </td>
-        </tr>
-        </tfoot>
+        <div className={paginationStyle.tfoot}>
+            <div>
+                <div>
+                    <label htmlFor="itemPerPage">Продукти на страница:</label>
+                </div>
+                <div>
+                    <select name="" id="itemPerPage" value={currItemPerPage}
+                            onChange={(e) => setCurrItemPerPage(parseInt(e.target.value))}>
+                        {paginationValues.itemPerPage.map(numb => (
+                            <option value={numb} key={numb}>{numb}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <button onClick={goFirstPageClickHandler}><i className="fa-solid fa-angles-left"></i></button>
+                </div>
+                <div>
+                    <button onClick={goToPreviousPageClickHandler}><i className="fa-solid fa-chevron-left"></i></button>
+                </div>
+                <div>
+                    <span>{paginationValues.currentPage} от {paginationValues.totalPages} стр.</span>
+                </div>
+                <div>
+                    <button onClick={goToNextPageClickHandler}><i className="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div>
+                    <button onClick={goLastPageClickHandler}><i className="fa-solid fa-angles-right"></i></button>
+                </div>
+                <div><span>({paginationValues.totalProducts} продукта общо)</span></div>
+            </div>
+            <div>
+                <div>
+                    <span>Обнови всики продукти</span>
+                    <button><i className="fa-solid fa-arrow-rotate-right"></i></button>
+                </div>
+            </div>
+        </div>
     );
 }
