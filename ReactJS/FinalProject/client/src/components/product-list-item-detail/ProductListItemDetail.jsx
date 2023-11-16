@@ -4,12 +4,20 @@ import Spinner from "../spinner/Spinner.jsx";
 import {getProductById} from "../../services/productService.js";
 import ProductDetailBaseInfo from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
 import ProductListNavigationTabs from "../product-list-navigation-tabs/ProductListNavigationTabs.jsx";
+import ProductDetailMessageBox from "../product-detail-message-box/ProductDetailMessageBox.jsx";
+
+const initialMessageModalData = {
+    showModal: false,
+    title: '',
+    message: '',
+}
 
 export default function ProductListItemDetail({id, setShowDetail, setProductsState}) {
 
     const [productData, setProductData] = useState({});
     const [isSpinnerShow, setIsSpinnerShow] = useState(true);
     const [activeTab, setActiveTab] = useState('base-info');
+    const [messageModalData, setMessageModalData] = useState(initialMessageModalData);
 
     const closeShowDetailClickHandler = () => {
         setShowDetail(false);
@@ -36,6 +44,10 @@ export default function ProductListItemDetail({id, setShowDetail, setProductsSta
             {isSpinnerShow && <Spinner/>}
             {!isSpinnerShow &&
                 <>
+                    {messageModalData.showModal && <ProductDetailMessageBox
+                        {...messageModalData}
+                        setMessageModalData={setMessageModalData}
+                    />}
                     <ProductListNavigationTabs closeShowDetailClickHandler={closeShowDetailClickHandler}
                                                setActiveTab={setActiveTab}
                                                activeTab={activeTab}
@@ -47,6 +59,7 @@ export default function ProductListItemDetail({id, setShowDetail, setProductsSta
                             setProductData={setProductData}
                             closeShowDetailClickHandler={closeShowDetailClickHandler}
                             setIsSpinnerShow={setIsSpinnerShow}
+                            setMessageModalData={setMessageModalData}
                         />
                     }
                 </>

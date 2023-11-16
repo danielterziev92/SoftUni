@@ -67,6 +67,11 @@
     margin-right: 20px;
 }
 
+
+.baseInfoForm .active > input {
+    border-radius: 10px;
+}
+
 .baseInfoForm .buttons {
     grid-area: buttons;
 }
@@ -89,18 +94,24 @@
     color: #ffffff;
 }
 
+.baseInfoForm .buttons button.cancel {
+    background-color: #ea5e66;
+    color: #ffffff;
+}
+
 .baseInfoForm .groups {
     grid-area: groups;
     width: 100%;
+    max-width: 420px;
     padding: 10px;
     overflow-y: scroll;
+    overflow-x: scroll;
     max-height: 260px;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
 
-    overflow-y: scroll;
     scrollbar-width: auto;
     scrollbar-color: #4e45e3 #4e45e3; /* For Firefox */
 
@@ -118,6 +129,10 @@
     }
 }
 
+.baseInfoForm .groups div {
+    padding: 4px 10px;
+}
+
 .baseInfoForm .groups ul li div {
     flex-wrap: nowrap;
     align-items: center;
@@ -132,7 +147,6 @@
     content: none;
     outline: none;
     margin: 0 10px 0 0;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -164,7 +178,7 @@
 }
 
 .baseInfoForm .groups ul ul {
-    margin-left: 10px;
+    margin-left: 15px;
 }
 
 .baseInfoForm div label {

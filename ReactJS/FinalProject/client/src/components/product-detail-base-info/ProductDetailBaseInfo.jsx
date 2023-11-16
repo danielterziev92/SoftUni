@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {deleteProductById, getAllGroups, patchProductById} from "../../services/productService.js";
+import {getAllGroups, patchProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
 import ProductDetailBaseInfoGroups from "../product-detail-base-info-groups/ProductDetailBaseInfoGroups.jsx";
@@ -22,7 +22,8 @@ export default function ProductDetailBaseInfo({
                                                   productData,
                                                   setProductData,
                                                   closeShowDetailClickHandler,
-                                                  setIsSpinnerShow
+                                                  setIsSpinnerShow,
+                                                  setMessageModalData,
                                               }) {
 
     const [dataToChange, setDataToChange] = useState(initialData);
@@ -42,9 +43,6 @@ export default function ProductDetailBaseInfo({
 
         if (type === 'radio') {
             value = Number(e.target.id);
-            console.log(value)
-            console.log(name)
-            console.log(dataToChange)
         }
 
         setDataToChange(state => ({
@@ -59,8 +57,13 @@ export default function ProductDetailBaseInfo({
     }
 
     const deleteProductClickHandler = () => {
-        const result = deleteProductById(id);
-        console.log(result)
+        setMessageModalData(state => ({
+            ...state,
+            showModal: true,
+            title: 'Изтриване на продукт',
+            message: `Сигурни ли сте че желаете да изтриете ${productData.name} ?`
+        }));
+        // const result = deleteProductById(id);
     }
 
 
@@ -102,11 +105,13 @@ export default function ProductDetailBaseInfo({
                 <form onSubmit={changeProductDataSubmitHandler} className={style.baseInfoForm}>
                     <div className={style.name}>
                         <label htmlFor="name">Име:</label>
-                        <input id="name" type="text" name="name" value={dataToChange.name} onChange={changeHandler}/>
+                        <input id="name" type="text" name="name" value={dataToChange.name}
+                               onChange={changeHandler}/>
                     </div>
                     <div className={style.code}>
                         <label htmlFor="code">Код:</label>
-                        <input id="code" type="text" name="code" value={dataToChange.code} onChange={changeHandler}/>
+                        <input id="code" type="text" name="code" value={dataToChange.code}
+                               onChange={changeHandler}/>
                     </div>
                     <div className={style.barcode}>
                         <label htmlFor="barcode">Баркод:</label>
@@ -130,13 +135,11 @@ export default function ProductDetailBaseInfo({
                     </div>
                     <div className={style.groups}>
                         <span>Групи:</span>
-                        <ul>
-                            <ProductDetailBaseInfoGroups
-                                items={groups}
-                                changeHandler={changeHandler}
-                                selectedId={dataToChange.group}
-                            />
-                        </ul>
+                        <ProductDetailBaseInfoGroups
+                            items={groups}
+                            changeHandler={changeHandler}
+                            selectedId={dataToChange.group}
+                        />
                     </div>
                     <div className={style.buttons}>
                         <button type="button" onClick={deleteProductClickHandler} className={style.delete}>
@@ -144,6 +147,9 @@ export default function ProductDetailBaseInfo({
                         </button>
                         <button className={style.save}>
                             <i className="fa-solid fa-floppy-disk"></i> Запази
+                        </button>
+                        <button type="button" onClick={deleteProductClickHandler} className={style.cancel}>
+                            <i className="fas fa-times-circle"></i> Отказ
                         </button>
                     </div>
                 </form>
