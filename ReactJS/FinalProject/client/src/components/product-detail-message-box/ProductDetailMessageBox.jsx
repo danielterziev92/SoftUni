@@ -4,6 +4,10 @@ export default function ProductDetailMessageBox({
                                                     showModal,
                                                     title,
                                                     message,
+                                                    successButtonMessage,
+                                                    errorButtonMessage,
+                                                    successButtonHandler,
+                                                    errorButtonHandler,
                                                     setMessageModalData,
                                                 }) {
 
@@ -14,6 +18,14 @@ export default function ProductDetailMessageBox({
         }))
     }
 
+    const successButtonClickHandler = () => {
+        successButtonHandler();
+    }
+
+    const errorButtonClickHandler = () => {
+        errorButtonHandler();
+    }
+
     return (
         <div className={style.overlay}>
             <div>
@@ -22,8 +34,12 @@ export default function ProductDetailMessageBox({
                     <div className={style.title}>{title}</div>
                     <div className={style.body}>{message}</div>
                     <div className={style.buttons}>
-                        <button className={style.success}>Да</button>
-                        <button className={style.error}>Не</button>
+                        <button className={style.success} onClick={successButtonClickHandler}>
+                            {successButtonMessage}
+                        </button>
+                        <button className={style.error} onClick={errorButtonClickHandler}>
+                            {errorButtonMessage}
+                        </button>
                     </div>
                 </div>
             </div>

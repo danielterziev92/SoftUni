@@ -23,7 +23,11 @@ export default function ProductDetailBaseInfo({
                                                   setProductData,
                                                   closeShowDetailClickHandler,
                                                   setIsSpinnerShow,
+                                                  successButtonHandler,
+                                                  errorButtonHandler,
                                                   setMessageModalData,
+                                                  removeProduct,
+                                                  closeMessageModal,
                                               }) {
 
     const [dataToChange, setDataToChange] = useState(initialData);
@@ -61,9 +65,12 @@ export default function ProductDetailBaseInfo({
             ...state,
             showModal: true,
             title: 'Изтриване на продукт',
-            message: `Сигурни ли сте че желаете да изтриете ${productData.name} ?`
+            message: `Сигурни ли сте че желаете да изтриете "${productData.name}" ?`,
+            successButtonMessage: 'Да',
+            errorButtonMessage: 'Не',
+            successButtonHandler: removeProduct,
+            errorButtonHandler: closeMessageModal,
         }));
-        // const result = deleteProductById(id);
     }
 
 

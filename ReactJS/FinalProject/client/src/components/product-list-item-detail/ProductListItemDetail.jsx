@@ -10,7 +10,12 @@ const initialMessageModalData = {
     showModal: false,
     title: '',
     message: '',
+    successButtonMessage: '',
+    errorButtonMessage: '',
+    successButtonHandler: null,
+    errorButtonHandler: null,
 }
+
 
 export default function ProductListItemDetail({id, setShowDetail, setProductsState}) {
 
@@ -18,9 +23,18 @@ export default function ProductListItemDetail({id, setShowDetail, setProductsSta
     const [isSpinnerShow, setIsSpinnerShow] = useState(true);
     const [activeTab, setActiveTab] = useState('base-info');
     const [messageModalData, setMessageModalData] = useState(initialMessageModalData);
+    const [productRemoveMessage, setProductRemoveMessage] = useState('');
 
     const closeShowDetailClickHandler = () => {
         setShowDetail(false);
+    }
+
+    const closeMessageModal = () => {
+        setMessageModalData(initialMessageModalData);
+    }
+
+    const removeProduct = () => {
+        deleteProductById(id).then(setProductRemoveMessage);
     }
 
     useEffect(() => {
@@ -60,6 +74,8 @@ export default function ProductListItemDetail({id, setShowDetail, setProductsSta
                             closeShowDetailClickHandler={closeShowDetailClickHandler}
                             setIsSpinnerShow={setIsSpinnerShow}
                             setMessageModalData={setMessageModalData}
+                            removeProduct={removeProduct}
+                            closeMessageModal={closeMessageModal}
                         />
                     }
                 </>
