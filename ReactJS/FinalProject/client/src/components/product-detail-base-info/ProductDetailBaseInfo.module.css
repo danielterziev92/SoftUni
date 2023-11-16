@@ -196,3 +196,7 @@
     border: 1px solid #4e45e3;
     outline: none;
 }
+
+.productTitle {
+    font-weight: bolder;
+}

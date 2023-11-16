@@ -1,15 +1,17 @@
-import style from './ProductDetailMessageBox.module.css';
+import style from './MessageBoxModal.module.css';
+import {useEffect} from "react";
+import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
 
-export default function ProductDetailMessageBox({
-                                                    showModal,
-                                                    title,
-                                                    message,
-                                                    successButtonMessage,
-                                                    errorButtonMessage,
-                                                    successButtonHandler,
-                                                    errorButtonHandler,
-                                                    setMessageModalData,
-                                                }) {
+export default function MessageBoxModal({
+                                            showModal,
+                                            title,
+                                            message,
+                                            successButtonMessage,
+                                            errorButtonMessage,
+                                            successButtonHandler,
+                                            errorButtonHandler,
+                                            setMessageModalData,
+                                        }) {
 
     const closeModalClickHandler = () => {
         setMessageModalData(state => ({
@@ -25,6 +27,8 @@ export default function ProductDetailMessageBox({
     const errorButtonClickHandler = () => {
         errorButtonHandler();
     }
+
+    useEscapeKeyHook(closeModalClickHandler);
 
     return (
         <div className={style.overlay}>

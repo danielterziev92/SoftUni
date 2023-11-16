@@ -4,7 +4,7 @@ import Spinner from "../spinner/Spinner.jsx";
 import {getProductById} from "../../services/productService.js";
 import ProductDetailBaseInfo from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
 import ProductListNavigationTabs from "../product-list-navigation-tabs/ProductListNavigationTabs.jsx";
-import ProductDetailMessageBox from "../product-detail-message-box/ProductDetailMessageBox.jsx";
+import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 
 const initialMessageModalData = {
     showModal: false,
@@ -58,7 +58,7 @@ export default function ProductListItemDetail({id, setShowDetail, setProductsSta
             {isSpinnerShow && <Spinner/>}
             {!isSpinnerShow &&
                 <>
-                    {messageModalData.showModal && <ProductDetailMessageBox
+                    {messageModalData.showModal && <MessageBoxModal
                         {...messageModalData}
                         setMessageModalData={setMessageModalData}
                     />}

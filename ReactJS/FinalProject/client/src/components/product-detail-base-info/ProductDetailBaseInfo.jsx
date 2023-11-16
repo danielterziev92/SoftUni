@@ -4,6 +4,7 @@ import {getAllGroups, patchProductById} from "../../services/productService.js";
 import style from './ProductDetailBaseInfo.module.css';
 import ProductDetailBaseInfoGroups from "../product-detail-base-info-groups/ProductDetailBaseInfoGroups.jsx";
 import Spinner from "../spinner/Spinner.jsx";
+import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
 
 const initialData = {
     name: '',
@@ -60,12 +61,21 @@ export default function ProductDetailBaseInfo({
         patchProductById(id, dataToChange).then(data => setProductData(data));
     }
 
+    const messageBoxBodyDeleteProduct = () => {
+        return (
+            <div>
+                <span>Сигурни ли сте че желаете да изтриете </span>
+                <span className={style.productTitle}>{productData.name}</span> ?
+            </div>
+        );
+    }
+
     const deleteProductClickHandler = () => {
         setMessageModalData(state => ({
             ...state,
             showModal: true,
             title: 'Изтриване на продукт',
-            message: `Сигурни ли сте че желаете да изтриете "${productData.name}" ?`,
+            message: messageBoxBodyDeleteProduct(),
             successButtonMessage: 'Да',
             errorButtonMessage: 'Не',
             successButtonHandler: removeProduct,
@@ -98,19 +108,9 @@ export default function ProductDetailBaseInfo({
     useEffect(() => {
         setDataToChange(productData)
         getAllGroups().then(data => setGroups(sortGroup(data)));
-
-        const handleEscKey = (e) => {
-            if (e.key === 'Escape') {
-                closeShowDetailClickHandler();
-            }
-        };
-
-        window.addEventListener('keydown', handleEscKey);
-
-        return () => {
-            window.removeEventListener('keydown', handleEscKey)
-        }
     }, []);
+
+    useEscapeKeyHook(closeShowDetailClickHandler);
 
     useEffect(() => {
         setDataLoaded(true);

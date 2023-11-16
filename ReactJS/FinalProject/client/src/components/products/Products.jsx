@@ -8,6 +8,7 @@ import {getAllProducts} from "../../services/productService.js";
 
 import navStyle from '../Main.module.css'
 import Spinner from "../spinner/Spinner.jsx";
+import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 
 const initialState = {
     title: 'Всички продукти',
@@ -47,6 +48,11 @@ export default function Products() {
 
     return (
         <>
+            {productsState.isShowAddProduct &&
+                <MessageBoxModal
+
+                />
+            }
             <nav className={navStyle.Nav}>
                 <ul>
                     <li><h2>{productsState.title}</h2></li>
