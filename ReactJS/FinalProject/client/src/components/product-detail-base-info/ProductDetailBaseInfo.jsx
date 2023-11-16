@@ -73,7 +73,6 @@ export default function ProductDetailBaseInfo({
         }));
     }
 
-
     const sortGroup = (data) => {
         const grouped = {};
         const result = [];
@@ -99,11 +98,24 @@ export default function ProductDetailBaseInfo({
     useEffect(() => {
         setDataToChange(productData)
         getAllGroups().then(data => setGroups(sortGroup(data)));
+
+        const handleEscKey = (e) => {
+            if (e.key === 'Escape') {
+                closeShowDetailClickHandler();
+            }
+        };
+
+        window.addEventListener('keydown', handleEscKey);
+
+        return () => {
+            window.removeEventListener('keydown', handleEscKey)
+        }
     }, []);
 
     useEffect(() => {
         setDataLoaded(true);
     }, [groups]);
+
 
     return (
         <>
