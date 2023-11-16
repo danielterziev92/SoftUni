@@ -1,0 +1,202 @@
+.Form {
+    display: grid;
+    grid-template-areas:
+            "name name groups"
+            "code barcode groups"
+            "quantity price groups"
+            "active buttons groups";
+    flex-wrap: wrap;
+    padding: 0 20px 20px 20px;
+    box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+
+.Form div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.Form div label {
+    width: 100%;
+}
+
+.Form div input {
+    width: 80%;
+}
+
+.Form .name {
+    grid-area: name;
+    width: 92.5%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Form .name label,
+.Form .name input {
+    width: 100%;
+}
+
+.Form .code {
+    grid-area: code;
+}
+
+.Form .barcode {
+    grid-area: barcode;
+}
+
+.Form .price {
+    grid-area: price;
+}
+
+.Form .quantity {
+    grid-area: quantity;
+}
+
+.Form .active {
+    grid-area: active;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.Form .active > label {
+    min-width: unset;
+    width: auto;
+    margin-right: 20px;
+}
+
+
+.Form .active > input {
+    border-radius: 10px;
+}
+
+.Form .buttons {
+    grid-area: buttons;
+}
+
+
+.Form .buttons button {
+    margin: 10px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+}
+
+.Form .buttons button.save {
+    background-color: #4e45e3;
+    color: #ffffff;
+}
+
+.Form .buttons button.delete {
+    background-color: #d51920;
+    color: #ffffff;
+}
+
+.Form .buttons button.cancel {
+    background-color: #ea5e66;
+    color: #ffffff;
+}
+
+.Form .groups {
+    grid-area: groups;
+    width: 100%;
+    max-width: 420px;
+    padding: 10px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    max-height: 355px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    scrollbar-width: auto;
+    scrollbar-color: #4e45e3 #4e45e3; /* For Firefox */
+
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #4e45e3;
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #4e45e3;
+    }
+}
+
+.Form .groups div {
+    padding: 4px 10px;
+}
+
+.Form .groups ul li div {
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.Form .active input,
+.Form .groups input {
+    appearance: none;
+    border: 1px solid #d3d3d3;
+    width: 30px;
+    height: 30px;
+    content: none;
+    outline: none;
+    margin: 0 10px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Form .active input[type="checkbox"]:checked,
+.Form .groups input[type="radio"]:checked {
+    appearance: none;
+    outline: none;
+    content: none;
+    border: 1px solid #4e45e3;
+}
+
+.Form .active input[type="checkbox"]:checked::before,
+.Form .groups input[type="radio"]:checked::before {
+    font-family: "Font Awesome 5 Free";
+    color: #4e45e3 !important;
+    content: "\f00c" !important;
+    font-weight: bolder;
+    font-size: 21px;
+}
+
+.Form .groups span {
+    width: 100%;
+}
+
+.Form .groups ul {
+    list-style: none;
+}
+
+.Form .groups ul ul {
+    margin-left: 15px;
+}
+
+.Form div label {
+    min-width: 150px;
+    padding: 5px 0;
+}
+
+.Form div:not(:nth-child(6)) input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+.Form div input:focus {
+    border: 1px solid #4e45e3;
+    outline: none;
+}
+
+.productTitle {
+    font-weight: bolder;
+}

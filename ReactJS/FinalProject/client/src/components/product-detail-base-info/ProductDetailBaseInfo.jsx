@@ -2,9 +2,9 @@ import {useEffect, useState} from "react";
 import {getAllGroups, patchProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
-import ProductDetailBaseInfoGroups from "../product-detail-base-info-groups/ProductDetailBaseInfoGroups.jsx";
 import Spinner from "../spinner/Spinner.jsx";
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
+import ProductForm from "../product-form/ProductForm.jsx";
 
 const initialData = {
     name: '',
@@ -35,27 +35,6 @@ export default function ProductDetailBaseInfo({
     const [groups, setGroups] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
 
-    const changeHandler = (e) => {
-        let {type, name, value} = e.target;
-
-        if (type === 'number') {
-            value = Number(value);
-        }
-
-        if (type === 'checkbox') {
-            value = e.target.checked;
-        }
-
-        if (type === 'radio') {
-            value = Number(e.target.id);
-        }
-
-        setDataToChange(state => ({
-            ...state,
-            [name]: value,
-        }));
-    };
-
     const changeProductDataSubmitHandler = (e) => {
         e.preventDefault();
         patchProductById(id, dataToChange).then(data => setProductData(data));
@@ -68,7 +47,7 @@ export default function ProductDetailBaseInfo({
                 <span className={style.productTitle}>{productData.name}</span> ?
             </div>
         );
-    }
+    };
 
     const deleteProductClickHandler = () => {
         setMessageModalData(state => ({
@@ -121,57 +100,13 @@ export default function ProductDetailBaseInfo({
         <>
             {!setDataLoaded && <Spinner/>}
             {setDataLoaded &&
-                <form onSubmit={changeProductDataSubmitHandler} className={style.baseInfoForm}>
-                    <div className={style.name}>
-                        <label htmlFor="name">Име:</label>
-                        <input id="name" type="text" name="name" value={dataToChange.name}
-                               onChange={changeHandler}/>
-                    </div>
-                    <div className={style.code}>
-                        <label htmlFor="code">Код:</label>
-                        <input id="code" type="text" name="code" value={dataToChange.code}
-                               onChange={changeHandler}/>
-                    </div>
-                    <div className={style.barcode}>
-                        <label htmlFor="barcode">Баркод:</label>
-                        <input id="barcode" type="text" name="name" value={dataToChange.barcode}
-                               onChange={changeHandler}/>
-                    </div>
-                    <div className={style.price}>
-                        <label htmlFor="price">Цена:</label>
-                        <input id="price" type="number" step="0.01" name="price" value={dataToChange.price}
-                               onChange={changeHandler}/>
-                    </div>
-                    <div className={style.quantity}>
-                        <label htmlFor="quantity">Количество:</label>
-                        <input id="quantity" type="number" step="1" name="quantity" value={dataToChange.quantity}
-                               onChange={changeHandler}/>
-                    </div>
-                    <div className={style.active}>
-                        <label htmlFor="is_active">Активен:</label>
-                        <input id="is_active" type="checkbox" name="is_active" checked={dataToChange.is_active}
-                               onChange={changeHandler}/>
-                    </div>
-                    <div className={style.groups}>
-                        <span>Групи:</span>
-                        <ProductDetailBaseInfoGroups
-                            items={groups}
-                            changeHandler={changeHandler}
-                            selectedId={dataToChange.group}
-                        />
-                    </div>
-                    <div className={style.buttons}>
-                        <button type="button" onClick={deleteProductClickHandler} className={style.delete}>
-                            <i className="fa-solid fa-trash"></i> Изтрий
-                        </button>
-                        <button className={style.save}>
-                            <i className="fa-solid fa-floppy-disk"></i> Запази
-                        </button>
-                        <button type="button" onClick={deleteProductClickHandler} className={style.cancel}>
-                            <i className="fas fa-times-circle"></i> Отказ
-                        </button>
-                    </div>
-                </form>
+                <ProductForm
+                    productData={productData}
+                    submitHandler={changeProductDataSubmitHandler}
+                    removeProduct={true}
+                    removeProductHandler={deleteProductClickHandler}
+                    closeModalHandler={closeMessageModal}
+                />
             }
         </>
     );

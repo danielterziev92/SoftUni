@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 
 import ProductList from "../product-list/ProductList.jsx";
 import SearchProduct from "../search-product/SearchProduct.jsx";
-import ProductAddForm from "./ProductAddForm.jsx";
+import ProductForm, {initialFilledData} from "../product-form/ProductForm.jsx";
 
 import {getAllProducts} from "../../services/productService.js";
 
@@ -17,17 +17,49 @@ const initialState = {
     searchedProductValue: '',
     isSpinnerShow: true,
     isShowAddProduct: false,
-}
+};
 
 export default function Products() {
     const [productsState, setProductsState] = useState(initialState);
+    const [filledData, setFilledData] = useState(initialFilledData);
 
-    const addProductClickHandler = () => {
+    const showAddProductClickHandler = () => {
         setProductsState(state => ({
             ...state,
             isShowCreateProduct: true
         }));
     };
+
+    const closeAddProductClickHandler = () => {
+        setProductsState(state => ({
+            ...state,
+            isShowCreateProduct: false,
+        }));
+    };
+
+    const addProductForm = () => {
+        return (
+            <ProductForm
+                productData={null}
+                submitHandler={productAddSubmitHandler}
+                removeProduct={null}
+                removeProductHandler={null}
+                closeModalHandler={closeAddProductClickHandler}
+            />
+        );
+    };
+
+    const productAddSubmitHandler = () => {
+        console.log('Submit Handler')
+    };
+
+    const successfullyAddProductHandler = () => {
+
+    }
+
+    const unsuccessfullyAddProductHandler = () => {
+
+    }
 
     useEffect(() => {
         getAllProducts()
@@ -50,22 +82,27 @@ export default function Products() {
         <>
             {productsState.isShowAddProduct &&
                 <MessageBoxModal
-
-                />
-            }
+                    title={'Добавяне на продукт'}
+                    message={addProductForm}
+                    successButtonMessage={'Добави'}
+                    errorButtonMessage={'Отказ'}
+                    successButtonHandler={successfullyAddProductHandler}
+                    errorButtonHandler={unsuccessfullyAddProductHandler}
+                    closeModalHanlder={closeAddProductClickHandler}
+                />}
             <nav className={navStyle.Nav}>
                 <ul>
                     <li><h2>{productsState.title}</h2></li>
                     <li><SearchProduct setProductState={setProductsState} productState={productsState}/></li>
                     <li>
-                        <div className={navStyle.addProduct} onClick={addProductClickHandler}>
+                        <div className={navStyle.addProduct} onClick={showAddProductClickHandler}>
                             <i className="fa-solid fa-circle-plus"></i>
                             Добави
                         </div>
                     </li>
                 </ul>
             </nav>
-            {productsState.isShowAddProduct && <ProductAddForm/>}
+            {productsState.isShowAddProduct && <ProductForm/>}
 
             {productsState.isSpinnerShow && <Spinner/>}
 
