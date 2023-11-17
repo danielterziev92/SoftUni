@@ -60,6 +60,13 @@ export default function ProductForm({
         }));
     };
 
+    const changeSelectedGroupClickHandler = (e) => {
+        setData(state => ({
+            ...state,
+            selectedGroup: Number(e.target.id),
+        }));
+    }
+
     useEffect(() => {
         if (data) {
             setData(data);
@@ -105,7 +112,7 @@ export default function ProductForm({
                 <span>Групи:</span>
                 <AllGroupsElement
                     groups={data.groups}
-                    changeHandler={changeDataHandler}
+                    changeHandler={changeSelectedGroupClickHandler}
                     selectedId={data.selectedGroup}/>
             </div>
             <div className={formStyle.buttons}>
