@@ -1,20 +1,13 @@
 import formStyle from './ProductForm.module.css';
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
 
-export const initialFilledData = {
-    name: '',
-    code: '',
-    barcode: '',
-    quantity: 0,
-    price: 0,
-    group: 0,
-    is_active: false,
-    groups: [],
-    selectedGroup: 0,
-};
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
+    if (!groups || groups.length === 0) {
+        return (<></>);
+    }
+
     return (
         <ul>
             {groups.map((item) => (
@@ -26,7 +19,7 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
                     </div>
                     {item.children.length > 0 && (
                         <AllGroupsElement
-                            data={item.children}
+                            groups={item.children}
                             changeHandler={changeHandler}
                             selectedId={selectedId}
                         />
@@ -38,13 +31,13 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
 }
 
 export default function ProductForm({
-                                        productData,
+                                        data,
+                                        setData,
                                         submitHandler,
                                         removeProduct,
                                         removeProductHandler,
                                         closeModalHandler,
                                     }) {
-    const [data, setData] = useState(initialFilledData);
 
     const changeDataHandler = (e) => {
         let {type, name, value} = e.target;
@@ -68,8 +61,8 @@ export default function ProductForm({
     };
 
     useEffect(() => {
-        if (productData) {
-            setData(productData);
+        if (data) {
+            setData(data);
         }
 
     }, []);

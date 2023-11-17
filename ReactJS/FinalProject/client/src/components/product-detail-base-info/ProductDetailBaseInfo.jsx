@@ -2,21 +2,20 @@ import {useEffect, useState} from "react";
 import {getAllGroups, patchProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
-import Spinner from "../spinner/Spinner.jsx";
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
 import ProductForm from "../product-form/ProductForm.jsx";
 
-const initialData = {
+export const initialFilledData = {
     name: '',
     code: '',
     barcode: '',
-    price: 0,
     quantity: 0,
-    is_active: false,
+    price: 0,
     group: 0,
-    group_name: '',
-}
-
+    is_active: false,
+    groups: [],
+    selectedGroup: 0,
+};
 
 export default function ProductDetailBaseInfo({
                                                   id,
@@ -31,9 +30,7 @@ export default function ProductDetailBaseInfo({
                                                   closeMessageModal,
                                               }) {
 
-    const [dataToChange, setDataToChange] = useState(initialData);
-    const [groups, setGroups] = useState([]);
-    const [dataLoaded, setDataLoaded] = useState(false);
+    const [dataToChange, setDataToChange] = useState(initialFilledData);
 
     const changeProductDataSubmitHandler = (e) => {
         e.preventDefault();
@@ -81,33 +78,33 @@ export default function ProductDetailBaseInfo({
             parent.children = grouped[parent.id] || [];
         });
 
-        return result;
+        setDataToChange(state => ({
+            ...state,
+            groups: result,
+        }));
+
     };
 
     useEffect(() => {
-        setDataToChange(productData)
-        getAllGroups().then(data => setGroups(sortGroup(data)));
+        setDataToChange(state => ({
+            ...state,
+            ...productData,
+            selectedGroup: productData.group
+        }));
+        getAllGroups().then(data => sortGroup(data));
     }, []);
 
     useEscapeKeyHook(closeShowDetailClickHandler);
 
-    useEffect(() => {
-        setDataLoaded(true);
-    }, [groups]);
-
 
     return (
-        <>
-            {!setDataLoaded && <Spinner/>}
-            {setDataLoaded &&
-                <ProductForm
-                    productData={productData}
-                    submitHandler={changeProductDataSubmitHandler}
-                    removeProduct={true}
-                    removeProductHandler={deleteProductClickHandler}
-                    closeModalHandler={closeMessageModal}
-                />
-            }
-        </>
+        <ProductForm
+            data={dataToChange}
+            setData={setDataToChange}
+            submitHandler={changeProductDataSubmitHandler}
+            removeProduct={true}
+            removeProductHandler={deleteProductClickHandler}
+            closeModalHandler={closeMessageModal}
+        />
     );
 }

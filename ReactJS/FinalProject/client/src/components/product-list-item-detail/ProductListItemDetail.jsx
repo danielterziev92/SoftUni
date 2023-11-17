@@ -61,6 +61,7 @@ export default function ProductListItemDetail({id, setShowDetail, setProductsSta
                     {messageModalData.showModal && <MessageBoxModal
                         {...messageModalData}
                         setMessageModalData={setMessageModalData}
+                        closeModalHanlder={closeShowDetailClickHandler}
                     />}
                     <ProductListNavigationTabs closeShowDetailClickHandler={closeShowDetailClickHandler}
                                                setActiveTab={setActiveTab}

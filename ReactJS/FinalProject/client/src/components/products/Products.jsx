@@ -2,13 +2,14 @@ import {useEffect, useState} from "react";
 
 import ProductList from "../product-list/ProductList.jsx";
 import SearchProduct from "../search-product/SearchProduct.jsx";
-import ProductForm, {initialFilledData} from "../product-form/ProductForm.jsx";
+import ProductForm from "../product-form/ProductForm.jsx";
 
 import {getAllProducts} from "../../services/productService.js";
 
 import navStyle from '../Main.module.css'
 import Spinner from "../spinner/Spinner.jsx";
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
+import {initialFilledData} from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
 
 const initialState = {
     title: 'Всички продукти',
