@@ -13,37 +13,42 @@ const initialPagination = {
     selectedItemPerPage: 15,
 }
 
-export default function ProductPagination({
-                                              setStartIndex,
-                                              setEndIndex,
-                                              productLength,
-                                          }) {
+export default function ProductPagination({setPaginationState, productLength,}) {
     const prevPaginationValues = useRef(15);
     const [paginationValues, setPaginationValue] = useState(initialPagination);
     const [currItemPerPage, setCurrItemPerPage] = useState(initialPagination.selectedItemPerPage);
 
-    const calculateTotalPages = () => {
-        return Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
-    }
+    useEffect(() => {
+        productPerPageChangeHandler(currItemPerPage);
+    }, [currItemPerPage]);
+
+    useEffect(() => {
+        setPaginationState(state => ({...state, startIndex: paginationValues.startIndex}));
+    }, [paginationValues.startIndex]);
+
+    useEffect(() => {
+        setPaginationState(state => ({...state, endIndex: paginationValues.endIndex}));
+    }, [paginationValues.endIndex]);
+
+    const calculateTotalPages = () => Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
 
     const calculatePaginationValues = () => {
         const totalPages = calculateTotalPages();
-        let currentPage = 0;
-        if (paginationValues.currentPage > totalPages) {
-            currentPage = totalPages;
-        } else {
-            currentPage = paginationValues.currentPage;
-        }
-
+        const currentPage = Math.min(paginationValues.currentPage, totalPages)
         const startIndex = (currentPage - 1) * paginationValues.selectedItemPerPage;
-        const endIndex = startIndex + paginationValues.selectedItemPerPage;
-        const itemPerPage = paginationValues.itemPerPage;
-        const totalProducts = paginationValues.totalProducts
-        const selectedItemPerPage = paginationValues.selectedItemPerPage;
+        const endIndex = Math.min(startIndex + paginationValues.selectedItemPerPage, paginationValues.totalProducts);
+
         prevPaginationValues.current = paginationValues.selectedItemPerPage;
 
-        return {startIndex, endIndex, currentPage, totalPages, itemPerPage, totalProducts, selectedItemPerPage,}
+        return {
+            startIndex, endIndex, currentPage, totalPages,
+            itemPerPage: paginationValues.itemPerPage,
+            totalProducts: paginationValues.totalProducts,
+            selectedItemPerPage: paginationValues.selectedItemPerPage,
+        }
     }
+
+    const updatePaginationValues = (newValues) => setPaginationValue((state) => ({...state, ...newValues}));
 
     const productPerPageChangeHandler = (value) => {
         setPaginationValue(state => ({
@@ -53,50 +58,26 @@ export default function ProductPagination({
         prevPaginationValues.current = paginationValues.selectedItemPerPage;
     }
 
-    const goFirstPageClickHandler = () => {
-        setPaginationValue(state => ({
-            ...state,
-            currentPage: 1,
-            startIndex: 0,
-            endIndex: paginationValues.selectedItemPerPage,
-        }));
-    }
-
-    const goToNextPageClickHandler = () => {
-        if (paginationValues.currentPage + 1 > paginationValues.totalPages) {
+    const goToPageClickHandler = (page) => {
+        if (page < 1 || page > paginationValues.totalPages) {
             return;
         }
 
-        setPaginationValue(state => ({
-            ...state,
-            currentPage: paginationValues.currentPage + 1,
-            startIndex: paginationValues.startIndex + paginationValues.selectedItemPerPage,
-            endIndex: paginationValues.endIndex + paginationValues.selectedItemPerPage,
-        }));
-    }
+        const startIndex = (page - 1) * paginationValues.selectedItemPerPage;
+        updatePaginationValues({
+            currentPage: page,
+            startIndex,
+            endIndex: startIndex + paginationValues.selectedItemPerPage
+        });
+    };
 
-    const goToPreviousPageClickHandler = () => {
-        if (paginationValues.currentPage - 1 < 1) {
-            return;
-        }
+    const goFirstPageClickHandler = () => goToPageClickHandler(1);
 
-        setPaginationValue(state => ({
-            ...state,
-            currentPage: paginationValues.currentPage - 1,
-            startIndex: paginationValues.startIndex - paginationValues.selectedItemPerPage,
-            endIndex: paginationValues.endIndex - paginationValues.selectedItemPerPage,
-        }));
-    }
+    const goToNextPageClickHandler = () => goToPageClickHandler(paginationValues.currentPage + 1);
 
-    const goLastPageClickHandler = () => {
-        const currentPage = calculateTotalPages();
-        setPaginationValue(state => ({
-            ...state,
-            currentPage: currentPage,
-            startIndex: (currentPage - 1) * paginationValues.selectedItemPerPage,
-            endIndex: paginationValues.totalProducts,
-        }));
-    }
+    const goToPreviousPageClickHandler = () => goToPageClickHandler(paginationValues.currentPage - 1);
+
+    const goLastPageClickHandler = () => goToPageClickHandler(calculateTotalPages());
 
     useEffect(() => {
         if (prevPaginationValues.current !== paginationValues.selectedItemPerPage) {
@@ -115,18 +96,6 @@ export default function ProductPagination({
         }));
 
     }, [paginationValues.selectedItemPerPage, productLength]);
-
-    useEffect(() => {
-        productPerPageChangeHandler(currItemPerPage);
-    }, [currItemPerPage]);
-
-    useEffect(() => {
-        setStartIndex(paginationValues.startIndex);
-    }, [paginationValues.startIndex]);
-
-    useEffect(() => {
-        setEndIndex(paginationValues.endIndex);
-    }, [paginationValues.endIndex]);
 
     return (
         <div className={paginationStyle.tfoot}>

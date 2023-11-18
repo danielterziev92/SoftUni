@@ -9,11 +9,10 @@ import {getAllProducts} from "../../services/productService.js";
 import navStyle from '../Main.module.css'
 import Spinner from "../spinner/Spinner.jsx";
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
-import {initialFilledData} from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
+import {ProductsContext} from "../../contexts/ProductsContext.js";
 
 const initialState = {
     title: 'Всички продукти',
-    data: [],
     error: '',
     searchedProductValue: '',
     isSpinnerShow: true,
@@ -22,7 +21,21 @@ const initialState = {
 
 export default function Products() {
     const [productsState, setProductsState] = useState(initialState);
-    const [filledData, setFilledData] = useState(initialFilledData);
+    const [allProducts, setAllProducts] = useState([]);
+
+    useEffect(() => {
+        getAllProducts()
+            .then(setAllProducts)
+            .catch(e => setProductsState(state => ({
+                ...state,
+                error: e
+            })))
+            .finally(() => setProductsState(state => ({
+                    ...state,
+                    isSpinnerShow: false
+                }))
+            )
+    }, []);
 
     const showAddProductClickHandler = () => {
         setProductsState(state => ({
@@ -51,46 +64,29 @@ export default function Products() {
     };
 
     const productAddSubmitHandler = () => {
-        console.log('Submit Handler')
+        console.log('productAddSubmitHandler')
     };
 
     const successfullyAddProductHandler = () => {
-
+        console.log('successfullyAddProductHandler')
     }
 
     const unsuccessfullyAddProductHandler = () => {
-
+        console.log('unsuccessfullyAddProductHandler')
     }
-
-    useEffect(() => {
-        getAllProducts()
-            .then(products => setProductsState(state => ({
-                ...state,
-                data: products
-            })))
-            .catch(e => setProductsState(state => ({
-                ...state,
-                error: e
-            })))
-            .finally(() => setProductsState(state => ({
-                    ...state,
-                    isSpinnerShow: false
-                }))
-            )
-    }, []);
 
     return (
         <>
-            {productsState.isShowAddProduct &&
-                <MessageBoxModal
-                    title={'Добавяне на продукт'}
-                    message={addProductForm}
-                    successButtonMessage={'Добави'}
-                    errorButtonMessage={'Отказ'}
-                    successButtonHandler={successfullyAddProductHandler}
-                    errorButtonHandler={unsuccessfullyAddProductHandler}
-                    closeModalHanlder={closeAddProductClickHandler}
-                />}
+            {/*{productsState.isShowAddProduct &&*/}
+            {/*    <MessageBoxModal*/}
+            {/*        title={'Добавяне на продукт'}*/}
+            {/*        message={addProductForm}*/}
+            {/*        successButtonMessage={'Добави'}*/}
+            {/*        errorButtonMessage={'Отказ'}*/}
+            {/*        successButtonHandler={successfullyAddProductHandler}*/}
+            {/*        errorButtonHandler={unsuccessfullyAddProductHandler}*/}
+            {/*        closeModalHanlder={closeAddProductClickHandler}*/}
+            {/*    />}*/}
             <nav className={navStyle.Nav}>
                 <ul>
                     <li><h2>{productsState.title}</h2></li>
@@ -103,17 +99,16 @@ export default function Products() {
                     </li>
                 </ul>
             </nav>
-            {productsState.isShowAddProduct && <ProductForm/>}
+            {/*{productsState.isShowAddProduct && <ProductForm/>}*/}
 
             {productsState.isSpinnerShow && <Spinner/>}
 
             {!productsState.isSpinnerShow &&
-                <section>
-                    <ProductList
-                        products={productsState.data}
-                        setProductsState={setProductsState}
-                    />
-                </section>
+                <ProductsContext.Provider value={{allProducts, setAllProducts}}>
+                    <section>
+                        <ProductList/>
+                    </section>
+                </ProductsContext.Provider>
             }
         </>
     );
