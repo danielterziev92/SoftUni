@@ -6,7 +6,7 @@ import ProductDetailBaseInfo from "../product-detail-base-info/ProductDetailBase
 import ProductListNavigationTabs from "../product-list-navigation-tabs/ProductListNavigationTabs.jsx";
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
-import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
+import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
 
 const initialMessageModalData = {
     showModal: false,
@@ -49,7 +49,8 @@ export default function ProductListItemDetail({id, setShowDetail}) {
     }
 
     const removeProduct = () => {
-        deleteProductById(id).then(setProductRemoveMessage);
+        console.log('delete product')
+        // deleteProductById(id).then(setProductRemoveMessage);
     }
 
     return (

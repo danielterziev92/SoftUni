@@ -1,5 +1,5 @@
 import style from './MessageBoxModal.module.css';
-import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
+import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
 
 export default function MessageBoxModal({
                                             title,

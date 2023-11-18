@@ -1,5 +1,5 @@
 import formStyle from './ProductForm.module.css';
-import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
+import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
 import useForm from "../../hooks/useForm.js";
 
 
