@@ -1,7 +1,7 @@
 import {useState} from "react";
 
-export default function useForm({initialData,}) {
-    const [data, setData] = useState(initialData);
+export default function useForm({initialData}) {
+    const [formValue, setFormValue] = useState(initialData);
 
     const typeHandlers = {
         'number': (value) => Number(value),
@@ -16,23 +16,16 @@ export default function useForm({initialData,}) {
             value = typeHandlers[type](e.target);
         }
 
-        setData(state => ({
+        setFormValue(state => ({
             ...state,
             [name]: value,
         }));
     };
 
-    const changeSelectedGroupClickHandler = (e) => {
-        setData(state => ({
-            ...state,
-            selectedGroup: Number(e.target.id),
-        }));
-    }
-
 
     return {
-        data,
+        formValue,
+        setFormValue,
         changeDataHandler,
-        changeSelectedGroupClickHandler,
     }
 }

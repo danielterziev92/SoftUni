@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {getAllGroups, patchProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
-import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
 import ProductForm from "../product-form/ProductForm.jsx";
 
 export const initialFilledData = {
@@ -31,6 +30,15 @@ export default function ProductDetailBaseInfo({
                                               }) {
 
     const [dataToChange, setDataToChange] = useState(initialFilledData);
+
+    useEffect(() => {
+        setDataToChange(state => ({
+            ...state,
+            ...productData,
+            selectedGroup: productData.group
+        }));
+        getAllGroups().then(data => sortGroup(data));
+    }, []);
 
     const changeProductDataSubmitHandler = (e) => {
         e.preventDefault();
@@ -84,17 +92,6 @@ export default function ProductDetailBaseInfo({
         }));
 
     };
-
-    useEffect(() => {
-        setDataToChange(state => ({
-            ...state,
-            ...productData,
-            selectedGroup: productData.group
-        }));
-        getAllGroups().then(data => sortGroup(data));
-    }, []);
-
-    useEscapeKeyHook(closeShowDetailClickHandler);
 
 
     return (

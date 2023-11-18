@@ -7,7 +7,7 @@ export const getAllProducts = async () => {
 }
 
 export const getProductById = async (productId) => {
-    // await new Promise(resolve => setTimeout(resolve, 5000));
+    // await new Promise(resolve => setTimeout(resolve, 2000));
     return request.get(`${baseUrl}/product/${productId}/`);
 }
 

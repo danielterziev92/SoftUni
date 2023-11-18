@@ -1,5 +1,4 @@
 import formStyle from './ProductForm.module.css';
-import {useEffect} from "react";
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
 import useForm from "../../hooks/useForm.js";
 
@@ -32,19 +31,21 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
 }
 
 export default function ProductForm({
+                                        data,
+                                        setData,
                                         submitHandler,
                                         removeProduct,
                                         removeProductHandler,
                                         closeModalHandler,
                                     }) {
-    const {data, changeDataHandler, changeSelectedGroupClickHandler} = useForm(data)
+    const {formValue, setFormValue, changeDataHandler} = useForm(data)
 
-    useEffect(() => {
-        if (data) {
-            setData(data);
-        }
-
-    }, []);
+    const changeSelectedGroupClickHandler = (e) => {
+        setData(state => ({
+            ...state,
+            selectedGroup: Number(e.target.id),
+        }));
+    }
 
     useEscapeKeyHook(closeModalHandler);
 

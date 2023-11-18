@@ -40,15 +40,14 @@ export default function ProductList() {
             <div className={style.ProductList}>
                 <div className={style.header}>
                     <div className={style.row}>
-                        {tableKeys.map((key, index) => (
+                        {tableKeys.map(({sorting, name}, index) => (
                             <div key={index} className={style.column}>
-                                {key.sorting
-                                    ? <span onClick={changeOrderClickHandler}>{key.name}</span>
-                                    : <span>{key.name}</span>
-                                }
-                                {(selectedItem === key.name) && isAscending
+                                {sorting
+                                    ? <span onClick={changeOrderClickHandler}>{name}</span>
+                                    : <span>{name}</span>}
+                                {selectedItem === name && (isAscending
                                     ? <i className="fa-solid fa-arrow-up-short-wide"></i>
-                                    : <i className="fa-solid fa-arrow-down-short-wide"></i>
+                                    : <i className="fa-solid fa-arrow-down-short-wide"></i>)
                                 }
                             </div>
                         ))}

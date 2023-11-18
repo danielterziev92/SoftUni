@@ -1,10 +1,12 @@
 import style from './ProductListItemDetail.module.css';
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Spinner from "../spinner/Spinner.jsx";
 import {getProductById} from "../../services/productService.js";
 import ProductDetailBaseInfo from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
 import ProductListNavigationTabs from "../product-list-navigation-tabs/ProductListNavigationTabs.jsx";
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
+import {ProductsContext} from "../../contexts/ProductsContext.js";
+import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.jsx";
 
 const initialMessageModalData = {
     showModal: false,
@@ -17,13 +19,26 @@ const initialMessageModalData = {
 }
 
 
-export default function ProductListItemDetail({id, setShowDetail, setProductsState}) {
-
+export default function ProductListItemDetail({id, setShowDetail}) {
+    const {allProducts, setAllProducts} = useContext(ProductsContext)
     const [productData, setProductData] = useState({});
     const [isSpinnerShow, setIsSpinnerShow] = useState(true);
     const [activeTab, setActiveTab] = useState('base-info');
     const [messageModalData, setMessageModalData] = useState(initialMessageModalData);
     const [productRemoveMessage, setProductRemoveMessage] = useState('');
+
+    useEffect(() => {
+        setAllProducts(allProducts.map(item => item.id === productData.id ? productData : item));
+    }, [productData]);
+
+    useEffect(() => {
+        getProductById(id).then(data => {
+            setProductData(data);
+            setIsSpinnerShow(false);
+        }).catch(e => {
+            console.log(e);
+        });
+    }, []);
 
     const closeShowDetailClickHandler = () => {
         setShowDetail(false);
@@ -37,21 +52,7 @@ export default function ProductListItemDetail({id, setShowDetail, setProductsSta
         deleteProductById(id).then(setProductRemoveMessage);
     }
 
-    useEffect(() => {
-        setProductsState(state => ({
-            ...state,
-            data: state.data.map(item => item.id === productData.id ? productData : item),
-        }));
-    }, [productData]);
-
-    useEffect(() => {
-        getProductById(id).then(data => {
-            setProductData(data);
-            setIsSpinnerShow(false);
-        }).catch(e => {
-            console.log(e);
-        });
-    }, []);
+    useEscapeKeyHook(closeShowDetailClickHandler);
 
     return (
         <div className={style.detail}>

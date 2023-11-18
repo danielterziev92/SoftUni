@@ -32,8 +32,9 @@ export default function ProductListNavigationTabs({
             <ul>
                 {navigationTabs.map((tab, index) => (
                     <li key={index} id={tab.liName} onClick={tab.onClickHandler}
-                        className={activeTab === tab.liName ? style.active : ''}
-                    >{tab.textContent}</li>
+                        className={activeTab === tab.liName ? style.active : ''}>
+                        {tab.textContent}
+                    </li>
                 ))}
             </ul>
             <div className={style.closeButton} onClick={closeShowDetailClickHandler}>
