@@ -11,7 +11,7 @@ export const getProductById = async (productId) => {
     return request.get(`${baseUrl}/product/${productId}/`);
 }
 
-export const patchProductById = async (productId, data) => {
+export const updateProductById = async (productId, data) => {
     return request.put(`${baseUrl}/product/${productId}/`, data);
 }
 

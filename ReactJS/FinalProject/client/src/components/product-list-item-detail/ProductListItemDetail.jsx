@@ -45,14 +45,12 @@ export default function ProductListItemDetail({id, setShowDetail}) {
     }
 
     const closeMessageModal = () => {
-        setMessageModalData(initialMessageModalData);
+        setMessageModalData(state => ({...state, showModal: false}));
     }
 
     const removeProduct = () => {
         deleteProductById(id).then(setProductRemoveMessage);
     }
-
-    useEscapeKeyHook(closeShowDetailClickHandler);
 
     return (
         <div className={style.detail}>
@@ -62,7 +60,7 @@ export default function ProductListItemDetail({id, setShowDetail}) {
                     {messageModalData.showModal && <MessageBoxModal
                         {...messageModalData}
                         setMessageModalData={setMessageModalData}
-                        closeModalHanlder={closeShowDetailClickHandler}
+                        closeModalHanlder={closeMessageModal}
                     />}
                     <ProductListNavigationTabs closeShowDetailClickHandler={closeShowDetailClickHandler}
                                                setActiveTab={setActiveTab}
@@ -77,7 +75,7 @@ export default function ProductListItemDetail({id, setShowDetail}) {
                             setIsSpinnerShow={setIsSpinnerShow}
                             setMessageModalData={setMessageModalData}
                             removeProduct={removeProduct}
-                            closeMessageModal={closeMessageModal}
+                            closeMessageModal={closeShowDetailClickHandler}
                         />
                     }
                 </>
@@ -85,4 +83,3 @@ export default function ProductListItemDetail({id, setShowDetail}) {
         </div>
     );
 }
-

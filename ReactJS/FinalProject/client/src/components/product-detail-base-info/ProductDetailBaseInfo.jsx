@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getAllGroups, patchProductById} from "../../services/productService.js";
+import {getAllGroups, updateProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
 import ProductForm from "../product-form/ProductForm.jsx";
@@ -42,7 +42,11 @@ export default function ProductDetailBaseInfo({
 
     const changeProductDataSubmitHandler = (e) => {
         e.preventDefault();
-        patchProductById(id, dataToChange).then(data => setProductData(data));
+
+        const newData = {...dataToChange, group: dataToChange.selectedGroup};
+        delete newData.selectedGroup;
+        delete newData.groups;
+        updateProductById(id, newData).then(data => setProductData(data));
     }
 
     const messageBoxBodyDeleteProduct = () => {
