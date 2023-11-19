@@ -1,14 +1,12 @@
 import Spinner from "../spinner/Spinner.jsx";
 import {useContext, useEffect, useState} from "react";
-import style from "./ProductUpdateForm.module.css";
-import ProductDetailMessageBox from "../product-detail-message-box/ProductDetailMessageBox.jsx";
-import ProductListNavigationTabs from "../product-detail-navigation-tabs/ProductDetailNavigationTabs.jsx";
+import style from "./ProductFormUpdate.module.css";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
 import {getProductById} from "../../services/productService.js";
-import OldProductForm from "../product-form/oldProductForm.jsx";
+import ProductForm from "../product-form/ProductForm.jsx";
 
 
-export default function ProductUpdateForm() {
+export default function ProductFormUpdate({productId}) {
     const {allProducts, updateAllProduct} = useContext(ProductsContext);
     const [productData, setProductData] = useState({});
     const [isSpinnerShow, setIsSpinnerShow] = useState(true);
@@ -19,7 +17,7 @@ export default function ProductUpdateForm() {
     }, [productData]);
 
     useEffect(() => {
-        getProductById(id).then(data => {
+        getProductById(productId).then(data => {
             setProductData(data);
             setIsSpinnerShow(false);
         }).catch(e => console.log(e));
@@ -38,11 +36,11 @@ export default function ProductUpdateForm() {
         <div className={style.detail}>
             {isSpinnerShow && <Spinner/>}
             {!isSpinnerShow &&
-                <>
-                    <ProductDetailMessageBox/>
-                    <OldProductForm/>
-                    {}
-                </>
+                <ProductForm
+                    productId={productId}
+                    formRef={null}
+                    closeModalHandler={null}
+                />
             }
         </div>
     );

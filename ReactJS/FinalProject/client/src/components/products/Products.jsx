@@ -5,10 +5,11 @@ import SearchProduct from "../search-product/SearchProduct.jsx";
 import {getAllProducts} from "../../services/productService.js";
 
 import navStyle from '../Main.module.css'
-import Spinner from "../spinner/Spinner.jsx";
-import {ProductsContext} from "../../contexts/ProductsContext.js";
 import {MessageContext} from "../../contexts/MessageContext.js";
-import ProductAddForm from "../product-add-form/ProductAddForm.jsx";
+import ProductAddForm from "../product-form-add/ProductAddForm.jsx";
+import Spinner from "../spinner/Spinner.jsx";
+import ProductList from "../product-list/ProductList.jsx";
+import {ProductsContext} from "../../contexts/ProductsContext.js";
 
 const initialState = {
     title: 'Всички продукти',
@@ -29,7 +30,9 @@ export default function Products() {
         getAllProducts()
             .then(setAllProducts)
             .catch(e => setMessage({message: e, status: 'error'}))
-            .finally(() => setProductsState(state => ({...state, isSpinnerShow: false})))
+            .finally(() => setProductsState(state => ({...state, isSpinnerShow: false})));
+
+        setMessage({message: 'Im message', status: 'great'})
     }, []);
 
     useEffect(() => {
@@ -78,15 +81,15 @@ export default function Products() {
             </nav>
             {isShowAddProduct && <ProductAddForm closeProductForm={closeAddProductClickHandler}/>}
 
-            {/*{productsState.isSpinnerShow && <Spinner/>}*/}
+            {productsState.isSpinnerShow && <Spinner/>}
 
-            {/*{!productsState.isSpinnerShow &&*/}
-            {/*    <ProductsContext.Provider value={{allProducts, updateAllProduct}}>*/}
-            {/*        /!*<section>*!/*/}
-            {/*        /!*    <ProductList/>*!/*/}
-            {/*        /!*</section>*!/*/}
-            {/*    </ProductsContext.Provider>*/}
-            {/*}*/}
+            {!productsState.isSpinnerShow &&
+                <ProductsContext.Provider value={{allProducts, updateAllProduct}}>
+                    <section>
+                        <ProductList/>
+                    </section>
+                </ProductsContext.Provider>
+            }
         </MessageContext.Provider>
     );
 }

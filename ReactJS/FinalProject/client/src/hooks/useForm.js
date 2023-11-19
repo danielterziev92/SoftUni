@@ -22,9 +22,22 @@ export default function useForm(initialData) {
         }));
     };
 
+    const updateFormValue = (newData) => {
+        setFormValue(newData);
+    }
+
+    const updateFormValueByKeyAndValue = (key, value) => {
+        setFormValue(state => ({
+            ...state,
+            [key]: value,
+        }));
+    };
+
+
     return {
         formValue,
-        setFormValue,
+        updateFormValue,
+        updateFormValueByKeyAndValue,
         changeDataHandler,
     }
 }

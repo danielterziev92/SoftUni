@@ -11,6 +11,10 @@ export const getProductById = async (productId) => {
     return request.get(`${baseUrl}/product/${productId}/`);
 }
 
+export const createProduct = async (data) => {
+    return request.post(`${baseUrl}/product/create/`, data);
+}
+
 export const updateProductById = async (productId, data) => {
     return request.put(`${baseUrl}/product/${productId}/`, data);
 }

@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
 import style from './ProductListItem.module.css';
 import ProductListItemDetail from "../product-list-item-detail/ProductListItemDetail.jsx";
+import ProductFormUpdate from "../product-form-update/ProductFormUpdate.jsx";
+import ProductForm from "../product-form/ProductForm.jsx";
 
 export default function ProductListItem({
                                             rowNumb,
@@ -43,7 +45,7 @@ export default function ProductListItem({
                     }
                 </div>
             </div>
-            {showDetail && <ProductListItemDetail id={id} setShowDetail={setShowDetail}/>}
+            {showDetail && <ProductFormUpdate productId={id}/>}
         </>
     );
 }

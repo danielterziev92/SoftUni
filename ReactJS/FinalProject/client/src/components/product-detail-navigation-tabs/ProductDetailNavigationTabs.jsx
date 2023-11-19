@@ -1,8 +1,9 @@
 import style from "./ProductDetailNavigationTabs.module.css";
-import {useProductContext} from "../../hooks/useProductContext.js";
+import {useContext} from "react";
+import {ProductContext} from "../../contexts/ProductContext.js";
 
-export default function ProductListNavigationTabs() {
-    const {activeTab, updateActiveTab, closeFormDialog} = useProductContext();
+export default function ProductListNavigationTabs({closeFormDialogSet}) {
+    const {activeTab, updateActiveTab, closeFormDialog} = useContext(ProductContext);
     const changeActiveTabHandler = (e) => {
         updateActiveTab(e.target.id);
     }
@@ -35,9 +36,11 @@ export default function ProductListNavigationTabs() {
                     </li>
                 ))}
             </ul>
-            <div className={style.closeButton} onClick={closeFormDialog}>
-                <i className="fa-regular fa-circle-xmark"></i>
-            </div>
+            {closeFormDialogSet &&
+                <div className={style.closeButton} onClick={closeFormDialog}>
+                    <i className="fa-regular fa-circle-xmark"></i>
+                </div>
+            }
         </div>
     );
 }

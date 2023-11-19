@@ -1,3 +1,5 @@
+import {json} from "react-router-dom";
+
 const errorMessage = 'Something went wrong. Please try again later or contact with Administrator'
 
 function getOptions(data) {
@@ -19,9 +21,13 @@ const request = async (method, url, data) => {
         method,
     });
 
-    if (!response.ok) {
-        throw new Error(errorMessage);
-    }
+    // if (!response.ok) {
+    //     try {
+    //         const errorResponse = await response.json();
+    //     } catch (e) {
+    //         throw new Error('Server error');
+    //     }
+    // }
 
     return await response.json()
 };

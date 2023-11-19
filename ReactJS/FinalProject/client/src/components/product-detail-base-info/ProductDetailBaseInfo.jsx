@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {getAllGroups, updateProductById} from "../../services/productService.js";
 
 import style from './ProductDetailBaseInfo.module.css';
-import OldProductForm from "../product-form/oldProductForm.jsx";
 
 export const initialFilledData = {
     name: '',
@@ -99,13 +98,6 @@ export default function ProductDetailBaseInfo({
 
 
     return (
-        <OldProductForm
-            data={dataToChange}
-            setData={setDataToChange}
-            submitHandler={changeProductDataSubmitHandler}
-            removeProduct={true}
-            removeProductHandler={deleteProductClickHandler}
-            closeModalHandler={closeMessageModal}
-        />
+        <></>
     );
 }
