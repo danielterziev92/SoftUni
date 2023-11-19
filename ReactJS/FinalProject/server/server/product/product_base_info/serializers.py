@@ -12,7 +12,6 @@ class ProductListSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    group_name = serializers.StringRelatedField(source='group.name', read_only=True)
 
     class Meta:
         model = ProductBaseInformation
