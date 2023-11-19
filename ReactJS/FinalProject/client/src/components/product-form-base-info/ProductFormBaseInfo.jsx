@@ -1,6 +1,5 @@
 import formStyle from "./ProductFormBaseInfo.module.css";
-import useForm from "../../hooks/useForm.js";
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 
