@@ -1,11 +1,11 @@
 import style from "./ProductDetailNavigationTabs.module.css";
-import {useContext, useEffect} from "react";
-import {SingleProductContext} from "../../contexts/SingleProductContext.js";
+import {useContext} from "react";
 import {FormContext} from "../../contexts/FormContext.js";
+import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 
-export default function ProductListNavigationTabs({closeFormDialogSet}) {
-    const {activeTab, updateActiveTab, closeFormDialog} = useContext(SingleProductContext);
+export default function ProductListNavigationTabs() {
     const {haveButtons, closeModalHandler} = useContext(FormContext);
+    const {activeTab, updateActiveTab} = useContext(ProductFormContext);
 
     const changeActiveTabHandler = (e) => {
         updateActiveTab(e.target.id);
