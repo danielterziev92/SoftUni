@@ -3,6 +3,7 @@ import {useContext, useRef, useState} from "react";
 import ProductListItem from "../product-list-item/ProductListItem.jsx";
 import ProductPagination from "../product-pagination/ProductPagination.jsx";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
+import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 
 const tableKeys = [
     {name: '№', sorting: false},
@@ -44,7 +45,8 @@ export default function ProductList() {
                             <div key={index} className={style.column}>
                                 {sorting
                                     ? <span onClick={changeOrderClickHandler}>{name}</span>
-                                    : <span>{name}</span>}
+                                    : <span>{name}</span>
+                                }
                                 {selectedItem === name && (isAscending
                                     ? <i className="fa-solid fa-arrow-up-short-wide"></i>
                                     : <i className="fa-solid fa-arrow-down-short-wide"></i>)
@@ -55,10 +57,9 @@ export default function ProductList() {
                 </div>
                 <div className={style.body}>
                     {allProducts.slice(paginationState.startIndex, paginationState.endIndex).map((product, index) => (
-                        <ProductListItem rowNumb={index + paginationState.startIndex + 1} {...product}
-                                         detailModuleShowed={detailModuleShowed}
-                                         key={product.id}
-                        />
+                        <SingleProductContext.Provider key={product.id} value={{product, detailModuleShowed}}>
+                            <ProductListItem rowNumb={index + paginationState.startIndex + 1}/>
+                        </SingleProductContext.Provider>
                     ))}
                 </div>
                 <ProductPagination

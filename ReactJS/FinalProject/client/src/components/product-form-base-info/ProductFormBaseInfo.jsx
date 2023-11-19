@@ -1,7 +1,8 @@
 import formStyle from "./ProductFormBaseInfo.module.css";
 import useForm from "../../hooks/useForm.js";
 import {useContext, useEffect} from "react";
-import {ProductContext} from "../../contexts/ProductContext.js";
+import {ProductFormContext} from "../../contexts/ProductFormContext.js";
+import {FormContext} from "../../contexts/FormContext.js";
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
     if (!groups || groups.length === 0) {
@@ -30,14 +31,10 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
     );
 }
 
-export default function ProductFormBaseInfo({
-                                                submitHandler,
-                                                removeProductHandler,
-                                                closeModalHandler,
-                                                showRemoveButton
-                                            }) {
-    const {formRef, productData, updateProductData} = useContext(ProductContext);
-    const {formValue, updateFormValue, updateFormValueByKeyAndValue, changeDataHandler} = useForm();
+export default function ProductFormBaseInfo({submitHandler, removeProductHandler,}) {
+    const {productData, updateProductData} = useContext(ProductFormContext);
+    const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
+    const {formValue, updateFormValue, changeDataHandler} = useForm();
 
     useEffect(() => {
         updateProductData(state => ({
@@ -94,7 +91,7 @@ export default function ProductFormBaseInfo({
                     selectedId={productData.selectedGroup}/>
             </div>
             <div className={formStyle.buttons}>
-                {showRemoveButton &&
+                {haveButtons &&
                     <>
                         <button type="button" onClick={removeProductHandler} className={formStyle.delete}>
                             <i className="fa-solid fa-trash"></i> Изтрий

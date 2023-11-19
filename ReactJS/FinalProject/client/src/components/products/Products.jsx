@@ -79,7 +79,7 @@ export default function Products() {
                     </li>
                 </ul>
             </nav>
-            {isShowAddProduct && <ProductAddForm closeProductForm={closeAddProductClickHandler}/>}
+            {isShowAddProduct && <ProductAddForm closeModalHandler={closeAddProductClickHandler}/>}
 
             {productsState.isSpinnerShow && <Spinner/>}
 

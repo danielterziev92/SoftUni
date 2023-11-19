@@ -1,20 +1,15 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import style from './ProductListItem.module.css';
-import ProductListItemDetail from "../product-list-item-detail/ProductListItemDetail.jsx";
 import ProductFormUpdate from "../product-form-update/ProductFormUpdate.jsx";
-import ProductForm from "../product-form/ProductForm.jsx";
+import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 
-export default function ProductListItem({
-                                            rowNumb,
-                                            id,
-                                            code,
-                                            name,
-                                            price,
-                                            is_active,
-                                            quantity,
-                                            detailModuleShowed,
-                                        }) {
+export default function ProductListItem({rowNumb}) {
     const [showDetail, setShowDetail] = useState(false);
+    const {product, detailModuleShowed} = useContext(SingleProductContext);
+
+    const closeDetailHandler = () => {
+        setShowDetail(false);
+    }
 
     useEffect(() => {
         if (showDetail) {
@@ -26,12 +21,12 @@ export default function ProductListItem({
         <>
             <div className={style.ListItem}>
                 <div>{rowNumb}</div>
-                <div>{code}</div>
-                <div>{name}</div>
-                <div>{Number(price).toFixed(2)} лв.</div>
-                <div><span>{quantity}</span></div>
+                <div>{product.code}</div>
+                <div>{product.name}</div>
+                <div>{Number(product.price).toFixed(2)} лв.</div>
+                <div><span>{product.quantity}</span></div>
                 <div>
-                    {is_active
+                    {product.is_active
                         ? <i className={`fa-solid fa-circle-check ${style.inStock}`}></i>
                         : <i className={`fa-solid fa-circle-xmark ${style.outStock}`}></i>
                     }
@@ -45,7 +40,7 @@ export default function ProductListItem({
                     }
                 </div>
             </div>
-            {showDetail && <ProductFormUpdate productId={id}/>}
+            {showDetail && <ProductFormUpdate closeModalHandler={closeDetailHandler}/>}
         </>
     );
 }

@@ -1,12 +1,16 @@
-import ProductListNavigationTabs from "../product-detail-navigation-tabs/ProductDetailNavigationTabs.jsx";
-import {ProductContext} from "../../contexts/ProductContext.js";
 import {useContext, useEffect, useState} from "react";
-import {getProductById} from "../../services/productService.js";
+
+import ProductListNavigationTabs from "../product-detail-navigation-tabs/ProductDetailNavigationTabs.jsx";
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
 import useForm from "../../hooks/useForm.js";
 import useLoadAllGroups from "../../hooks/useLoadAllGroups.js";
 import ProductFormBaseInfo from "../product-form-base-info/ProductFormBaseInfo.jsx";
+
+import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {MessageContext} from "../../contexts/MessageContext.js";
+import {FormContext} from "../../contexts/FormContext.js";
+import {getProductById} from "../../services/productService.js";
+import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 
 export const initialProductData = {
     name: '',
@@ -20,44 +24,30 @@ export const initialProductData = {
     selectedGroup: 0,
 };
 
-const initialErrorMessages = {
-    name: '',
-    code: '',
-    quantity: '',
-    price: '',
-    selectedGroup: ''
-}
-
-export default function ProductForm({productId, closeModalHandler, formRef}) {
+export default function ProductForm() {
 
     const [activeTab, setActiveTab] = useState('base-info');
     const [productData, setProductData] = useState(initialProductData);
-    const [showRemoveButton, setShowRemoveButton] = useState(false);
 
-
+    const {product,} = useContext(SingleProductContext)
+    const {haveButtons, closeModalHandler, formRef, onSubmitFormHandler} = useContext(FormContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
-    const {formValue, updateFormValueByKeyAndValue,} = useForm(productData);
     const groups = useLoadAllGroups();
 
 
     useEffect(() => {
-        if (productId === null) {
-            updateProductData(initialProductData);
+        if (product.id === undefined) {
             return;
         }
 
-        getProductById(productId)
+        getProductById(product.id)
             .then(updateProductData)
-            .catch(e => {
-                updateMessage(e);
-                updateStatus('error');
-            });
-        setShowRemoveButton(true);
+            .catch(e => console.log(e));
     }, []);
 
     useEffect(() => {
         updateProductDataByKey('groups', groups);
-        updateFormValueByKeyAndValue('groups', groups);
+        updateProductDataByKey('selectedGroup', productData.group);
     }, [groups]);
 
     useEscapeKeyHook(closeModalHandler);
@@ -66,9 +56,7 @@ export default function ProductForm({productId, closeModalHandler, formRef}) {
         setActiveTab(newValue);
     };
 
-    const updateProductData = (newData) => {
-        setProductData(newData);
-    };
+    const updateProductData = (newState) => setProductData(state => ({...state, ...newState,}));
 
     const updateProductDataByKey = (key, newValue) => {
         setProductData(state => ({
@@ -80,19 +68,20 @@ export default function ProductForm({productId, closeModalHandler, formRef}) {
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        const data = {...productData, group: productData.selectedGroup}
-        delete data.groups;
-        delete data.selectedGroup;
+        onSubmitFormHandler();
 
-        console.log('Submit')
+        // const data = {...productData, group: productData.selectedGroup}
+        // delete data.groups;
+        // delete data.selectedGroup;
+        //
+        // console.log('Submit')
     };
 
     const removeProductHandler = () => {
         console.log('Remove product');
     };
 
-    const productContext = {
-        formRef,
+    const formProductContext = {
         activeTab,
         updateActiveTab,
         productData,
@@ -102,16 +91,11 @@ export default function ProductForm({productId, closeModalHandler, formRef}) {
 
 
     return (
-        <ProductContext.Provider value={productContext}>
-            <ProductListNavigationTabs closeFormDialogSet={false}/>
+        <ProductFormContext.Provider value={{...formProductContext}}>
+            <ProductListNavigationTabs closeFormDialogSet={true}/>
             {activeTab === 'base-info' &&
-                <ProductFormBaseInfo
-                    submitHandler={submitHandler}
-                    removeProductHandler={removeProductHandler}
-                    closeModalHandler={closeModalHandler}
-                    showRemoveButto={showRemoveButton}
-                />
+                <ProductFormBaseInfo submitHandler={submitHandler} removeProductHandler={removeProductHandler}/>
             }
-        </ProductContext.Provider>
+        </ProductFormContext.Provider>
     );
 }
