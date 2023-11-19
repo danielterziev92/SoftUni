@@ -4,9 +4,9 @@ export default function useForm(initialData) {
     const [formValue, setFormValue] = useState(initialData);
 
     const typeHandlers = {
-        'number': (value) => Number(value),
-        'checkbox': (value) => value.checked,
-        'radio': (value) => value.id,
+        'number': (target) => Number(target.value),
+        'checkbox': (target) => target.checked,
+        'radio': (target) => target.id,
     }
 
     const changeDataHandler = (e) => {
