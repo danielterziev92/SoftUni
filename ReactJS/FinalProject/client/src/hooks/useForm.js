@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-export default function useForm({initialData}) {
+export default function useForm(initialData) {
     const [formValue, setFormValue] = useState(initialData);
 
     const typeHandlers = {
@@ -21,7 +21,6 @@ export default function useForm({initialData}) {
             [name]: value,
         }));
     };
-
 
     return {
         formValue,
