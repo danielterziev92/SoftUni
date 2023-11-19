@@ -32,22 +32,27 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
 }
 
 export default function ProductFormBaseInfo({submitHandler, removeProductHandler,}) {
-    const {productData, updateProductData} = useContext(ProductFormContext);
     const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
-    const {formValue, updateFormValue, changeDataHandler} = useForm();
+    const {productData, updateProductDataByKey} = useContext(ProductFormContext);
 
-    useEffect(() => {
-        updateProductData(state => ({
-            ...state,
-            ...formValue,
-        }));
-    }, [formValue]);
+    const typeHandlers = {
+        'number': (target) => Number(target.value),
+        'checkbox': (target) => target.checked,
+        'radio': (target) => target.id,
+    }
+
+    const changeDataHandler = (e) => {
+        let {type, name, value} = e.target;
+
+        if (typeHandlers[type]) {
+            value = typeHandlers[type](e.target);
+        }
+
+        updateProductDataByKey(name, value);
+    };
 
     const changeSelectedGroupClickHandler = (e) => {
-        updateFormValue(state => ({
-            ...state,
-            selectedGroup: Number(e.target.id),
-        }));
+        updateProductDataByKey('selectedGroup', Number(e.target.id));
     };
 
     return (

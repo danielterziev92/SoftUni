@@ -2,7 +2,6 @@ import {useContext, useEffect, useState} from "react";
 
 import ProductListNavigationTabs from "../product-detail-navigation-tabs/ProductDetailNavigationTabs.jsx";
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
-import useForm from "../../hooks/useForm.js";
 import useLoadAllGroups from "../../hooks/useLoadAllGroups.js";
 import ProductFormBaseInfo from "../product-form-base-info/ProductFormBaseInfo.jsx";
 
@@ -30,10 +29,13 @@ export default function ProductForm() {
     const [productData, setProductData] = useState(initialProductData);
 
     const {product,} = useContext(SingleProductContext)
-    const {haveButtons, closeModalHandler, formRef, onSubmitFormHandler} = useContext(FormContext);
+    const {closeModalHandler, onSubmitFormHandler} = useContext(FormContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const groups = useLoadAllGroups();
 
+    useEffect(() => {
+        updateProductDataByKey('selectedGroup', productData.group);
+    }, [productData.group]);
 
     useEffect(() => {
         if (product.id === undefined) {
@@ -47,7 +49,6 @@ export default function ProductForm() {
 
     useEffect(() => {
         updateProductDataByKey('groups', groups);
-        updateProductDataByKey('selectedGroup', productData.group);
     }, [groups]);
 
     useEscapeKeyHook(closeModalHandler);
@@ -56,7 +57,12 @@ export default function ProductForm() {
         setActiveTab(newValue);
     };
 
-    const updateProductData = (newState) => setProductData(state => ({...state, ...newState,}));
+    const updateProductData = (newState) => {
+        setProductData(state => ({
+            ...state,
+            ...newState,
+        }));
+    };
 
     const updateProductDataByKey = (key, newValue) => {
         setProductData(state => ({
