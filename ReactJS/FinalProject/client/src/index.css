@@ -84,4 +84,5 @@ aside::-webkit-scrollbar {
 
 #root {
     display: flex;
+    overflow: hidden;
 }

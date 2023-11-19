@@ -1,23 +1,16 @@
 import style from './MessageBoxModal.module.css';
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
+import {useEffect} from "react";
 
 export default function MessageBoxModal({
                                             title,
-                                            message,
+                                            body,
                                             successButtonMessage,
                                             errorButtonMessage,
                                             successButtonHandler,
                                             errorButtonHandler,
                                             closeModalHanlder,
                                         }) {
-
-    const successButtonClickHandler = () => {
-        successButtonHandler();
-    }
-
-    const errorButtonClickHandler = () => {
-        errorButtonHandler();
-    }
 
     useEscapeKeyHook(closeModalHanlder);
 
@@ -27,12 +20,12 @@ export default function MessageBoxModal({
                 <i className={`fas fa-times-circle ${style.close}`} onClick={closeModalHanlder}></i>
                 <div className={style.modal}>
                     <div className={style.title}>{title}</div>
-                    <div className={style.body}>{message}</div>
+                    <div className={style.body}>{body}</div>
                     <div className={style.buttons}>
-                        <button className={style.success} onClick={successButtonClickHandler}>
+                        <button className={style.success} onClick={successButtonHandler}>
                             {successButtonMessage}
                         </button>
-                        <button className={style.error} onClick={errorButtonClickHandler}>
+                        <button className={style.error} onClick={errorButtonHandler}>
                             {errorButtonMessage}
                         </button>
                     </div>

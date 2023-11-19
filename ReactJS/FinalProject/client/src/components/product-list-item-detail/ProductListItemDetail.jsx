@@ -3,10 +3,8 @@ import {useContext, useEffect, useState} from "react";
 import Spinner from "../spinner/Spinner.jsx";
 import {getProductById} from "../../services/productService.js";
 import ProductDetailBaseInfo from "../product-detail-base-info/ProductDetailBaseInfo.jsx";
-import ProductListNavigationTabs from "../product-list-navigation-tabs/ProductListNavigationTabs.jsx";
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
-import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
 
 const initialMessageModalData = {
     showModal: false,
@@ -20,7 +18,7 @@ const initialMessageModalData = {
 
 
 export default function ProductListItemDetail({id, setShowDetail}) {
-    const {allProducts, setAllProducts} = useContext(ProductsContext)
+    const {allProducts, updateAllProduct} = useContext(ProductsContext)
     const [productData, setProductData] = useState({});
     const [isSpinnerShow, setIsSpinnerShow] = useState(true);
     const [activeTab, setActiveTab] = useState('base-info');
@@ -28,7 +26,7 @@ export default function ProductListItemDetail({id, setShowDetail}) {
     const [productRemoveMessage, setProductRemoveMessage] = useState('');
 
     useEffect(() => {
-        setAllProducts(allProducts.map(item => item.id === productData.id ? productData : item));
+        updateAllProduct(allProducts.map(item => item.id === productData.id ? productData : item));
     }, [productData]);
 
     useEffect(() => {
@@ -63,10 +61,10 @@ export default function ProductListItemDetail({id, setShowDetail}) {
                         setMessageModalData={setMessageModalData}
                         closeModalHanlder={closeMessageModal}
                     />}
-                    <ProductListNavigationTabs closeShowDetailClickHandler={closeShowDetailClickHandler}
-                                               setActiveTab={setActiveTab}
-                                               activeTab={activeTab}
-                    />
+                    {/*<ProductListNavigationTabs closeShowDetailClickHandler={closeShowDetailClickHandler}*/}
+                    {/*                           setActiveTab={setActiveTab}*/}
+                    {/*                           activeTab={activeTab}*/}
+                    {/*/>*/}
                     {activeTab === 'base-info' &&
                         <ProductDetailBaseInfo
                             id={id}

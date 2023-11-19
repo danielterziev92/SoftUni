@@ -2,10 +2,7 @@ import {useEffect, useState} from "react";
 
 import searchProductStyle from '../Main.module.css'
 
-export default function SearchProduct({
-                                          productState,
-                                          setProductState,
-                                      }) {
+export default function SearchProduct({setSearchProduct}) {
     const [value, setValue] = useState('');
 
     const placeholderWords = ['име', 'код'];
@@ -49,11 +46,8 @@ export default function SearchProduct({
             return;
         }
 
-        setProductState(state => ({
-            ...state,
-            searchedProductValue: value
-        }));
-    }, [value, setProductState]);
+        setSearchProduct(value)
+    }, [value]);
 
     useEffect(() => {
         if (value === '') {
@@ -62,13 +56,9 @@ export default function SearchProduct({
             return;
         }
 
-        setProductState((state) => ({
-            ...state,
-            searchedProductValue: value,
-        }));
-
+        setSearchProduct(value)
         setIsIntervalActive(false);
-    }, [value, setProductState]);
+    }, [value]);
 
     useEffect(() => {
         if (!isIntervalActive || !resetInterval) {

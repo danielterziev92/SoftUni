@@ -1,66 +1,53 @@
 import {useEffect, useState} from "react";
 
-import ProductList from "../product-list/ProductList.jsx";
 import SearchProduct from "../search-product/SearchProduct.jsx";
-import ProductForm from "../product-form/ProductForm.jsx";
 
 import {getAllProducts} from "../../services/productService.js";
 
 import navStyle from '../Main.module.css'
 import Spinner from "../spinner/Spinner.jsx";
-import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
+import {MessageContext} from "../../contexts/MessageContext.js";
+import ProductAddForm from "../product-add-form/ProductAddForm.jsx";
 
 const initialState = {
     title: 'Всички продукти',
     error: '',
-    searchedProductValue: '',
     isSpinnerShow: true,
     isShowAddProduct: false,
 };
 
 export default function Products() {
+    const [searchProduct, setSearchProduct] = useState('');
     const [productsState, setProductsState] = useState(initialState);
+    const [isShowAddProduct, setIsShowAddProduct] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
+    const [message, setMessage] = useState({message: '', status: ''})
+
 
     useEffect(() => {
         getAllProducts()
             .then(setAllProducts)
-            .catch(e => setProductsState(state => ({
-                ...state,
-                error: e
-            })))
-            .finally(() => setProductsState(state => ({
-                    ...state,
-                    isSpinnerShow: false
-                }))
-            )
+            .catch(e => setMessage({message: e, status: 'error'}))
+            .finally(() => setProductsState(state => ({...state, isSpinnerShow: false})))
     }, []);
 
+    useEffect(() => {
+        console.log(searchProduct);
+    }, [searchProduct]);
+
+    const updateAllProduct = (newProducts) => setAllProducts(newProducts);
+
+    const updateMessage = (newMessage) => setMessage(state => ({...state, message: newMessage}));
+
+    const updateStatus = (newStatus) => setMessage(state => ({...state, status: newStatus}));
+
     const showAddProductClickHandler = () => {
-        setProductsState(state => ({
-            ...state,
-            isShowCreateProduct: true
-        }));
+        setIsShowAddProduct(true);
     };
 
     const closeAddProductClickHandler = () => {
-        setProductsState(state => ({
-            ...state,
-            isShowCreateProduct: false,
-        }));
-    };
-
-    const addProductForm = () => {
-        return (
-            <ProductForm
-                productData={null}
-                submitHandler={productAddSubmitHandler}
-                removeProduct={null}
-                removeProductHandler={null}
-                closeModalHandler={closeAddProductClickHandler}
-            />
-        );
+        setIsShowAddProduct(false);
     };
 
     const productAddSubmitHandler = () => {
@@ -76,40 +63,30 @@ export default function Products() {
     }
 
     return (
-        <>
-            {/*{productsState.isShowAddProduct &&*/}
-            {/*    <MessageBoxModal*/}
-            {/*        title={'Добавяне на продукт'}*/}
-            {/*        message={addProductForm}*/}
-            {/*        successButtonMessage={'Добави'}*/}
-            {/*        errorButtonMessage={'Отказ'}*/}
-            {/*        successButtonHandler={successfullyAddProductHandler}*/}
-            {/*        errorButtonHandler={unsuccessfullyAddProductHandler}*/}
-            {/*        closeModalHanlder={closeAddProductClickHandler}*/}
-            {/*    />}*/}
+        <MessageContext.Provider value={{message, updateMessage, updateStatus}}>
+
             <nav className={navStyle.Nav}>
                 <ul>
-                    <li><h2>{productsState.title}</h2></li>
-                    <li><SearchProduct setProductState={setProductsState} productState={productsState}/></li>
+                    <li><h2>Всички продукти</h2></li>
+                    <li><SearchProduct setSearchProduct={setSearchProduct}/></li>
                     <li>
                         <div className={navStyle.addProduct} onClick={showAddProductClickHandler}>
-                            <i className="fa-solid fa-circle-plus"></i>
-                            Добави
+                            <i className="fa-solid fa-circle-plus"></i> Добави
                         </div>
                     </li>
                 </ul>
             </nav>
-            {/*{productsState.isShowAddProduct && <ProductForm/>}*/}
+            {isShowAddProduct && <ProductAddForm closeProductForm={closeAddProductClickHandler}/>}
 
-            {productsState.isSpinnerShow && <Spinner/>}
+            {/*{productsState.isSpinnerShow && <Spinner/>}*/}
 
-            {!productsState.isSpinnerShow &&
-                <ProductsContext.Provider value={{allProducts, setAllProducts}}>
-                    <section>
-                        <ProductList/>
-                    </section>
-                </ProductsContext.Provider>
-            }
-        </>
+            {/*{!productsState.isSpinnerShow &&*/}
+            {/*    <ProductsContext.Provider value={{allProducts, updateAllProduct}}>*/}
+            {/*        /!*<section>*!/*/}
+            {/*        /!*    <ProductList/>*!/*/}
+            {/*        /!*</section>*!/*/}
+            {/*    </ProductsContext.Provider>*/}
+            {/*}*/}
+        </MessageContext.Provider>
     );
 }
