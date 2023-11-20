@@ -86,7 +86,11 @@ export default function ProductForm() {
     };
 
     const removeProductHandler = () => {
-        console.log('Remove product');
+        const currProduct = product
+
+        updateMessage(`Успешно изтрихте пордукт ${currProduct.name}`);
+        updateStatus('success');
+        // console.log('Remove product');
     };
 
     const deleteModalBody = (
@@ -98,10 +102,7 @@ export default function ProductForm() {
 
     const showDeleteModalClickHandler = () => setIsDeleteModalShow(true);
 
-    const hideDeleteModalClickHandler = () => {
-        console.log('Close from here')
-        setIsDeleteModalShow(false);
-    }
+    const hideDeleteModalClickHandler = () => setIsDeleteModalShow(false);
 
     useEscapeKey(isDeleteModalShow ? hideDeleteModalClickHandler : closeModalHandler);
 
@@ -111,7 +112,7 @@ export default function ProductForm() {
         productData,
         updateProductData,
         updateProductDataByKey,
-    }
+    };
 
     return (
         <ProductFormContext.Provider value={{...formProductContext}}>

@@ -28,18 +28,12 @@ export default function ProductFormUpdate({closeModalHandler}) {
         updateStatus('success');
     }
 
-
-    const deleteClickHandler = () => {
-        console.log('delete product')
-        // deleteProductById(id).then(setProductRemoveMessage);
-    }
-
     const haveButtons = true;
 
     return (
         <div className={style.detail}>
             <FormContext.Provider
-                value={{haveButtons, closeModalHandler, formRef, onSubmitFormHandler, deleteClickHandler}}>
+                value={{haveButtons, closeModalHandler, formRef, onSubmitFormHandler}}>
                 <ProductForm/>
             </FormContext.Provider>
         </div>
