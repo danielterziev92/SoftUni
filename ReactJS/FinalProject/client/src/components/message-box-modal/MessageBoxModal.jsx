@@ -1,5 +1,5 @@
 import style from './MessageBoxModal.module.css';
-import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
+import useEscapeKey from "../../hooks/useEscapeKey.js";
 import {useEffect} from "react";
 
 export default function MessageBoxModal({
@@ -12,7 +12,7 @@ export default function MessageBoxModal({
                                             closeModalHanlder,
                                         }) {
 
-    useEscapeKeyHook(closeModalHanlder);
+    useEscapeKey(closeModalHanlder);
 
     return (
         <div className={style.overlay}>

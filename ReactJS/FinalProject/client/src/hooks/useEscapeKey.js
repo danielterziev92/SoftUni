@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 
-const useEscapeKeyHook = (handler) => {
+const useEscapeKey = (handler) => {
     useEffect(() => {
         const handleEscKey = (e) => {
             if (e.key === 'Escape') {
@@ -16,4 +16,4 @@ const useEscapeKeyHook = (handler) => {
     }, [handler]);
 };
 
-export default useEscapeKeyHook;
+export default useEscapeKey;

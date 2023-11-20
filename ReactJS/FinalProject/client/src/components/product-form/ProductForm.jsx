@@ -3,7 +3,7 @@ import {Fragment, useContext, useEffect, useState} from "react";
 import styleForm from './ProductForm.module.css';
 
 import ProductListNavigationTabs from "../product-detail-navigation-tabs/ProductDetailNavigationTabs.jsx";
-import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
+import useEscapeKey from "../../hooks/useEscapeKey.js";
 import useLoadAllGroups from "../../hooks/useLoadAllGroups.js";
 import ProductFormBaseInfo from "../product-form-base-info/ProductFormBaseInfo.jsx";
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
@@ -57,8 +57,6 @@ export default function ProductForm() {
         updateProductDataByKey('groups', groups);
     }, [groups]);
 
-    useEscapeKeyHook(closeModalHandler);
-
     const updateActiveTab = (newValue) => setActiveTab(newValue);
 
     const updateProductData = (newState) => {
@@ -104,6 +102,8 @@ export default function ProductForm() {
         console.log('Close from here')
         setIsDeleteModalShow(false);
     }
+
+    useEscapeKey(isDeleteModalShow ? hideDeleteModalClickHandler : closeModalHandler);
 
     const formProductContext = {
         activeTab,
