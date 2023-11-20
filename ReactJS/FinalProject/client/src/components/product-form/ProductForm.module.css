@@ -196,6 +196,24 @@
     outline: none;
 }
 
+.deleteModalBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.deleteModalBody p {
+    width: 100%;
+    text-align: center;
+}
+
 .productTitle {
     font-weight: bolder;
+}
+
+.attention {
+    color: #d51920;
+    font-size: 0.7rem;
 }

@@ -30,7 +30,7 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
     );
 }
 
-export default function ProductFormBaseInfo({submitHandler, removeProductHandler,}) {
+export default function ProductFormBaseInfo({submitHandler, showDeleteModal,}) {
     const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
     const {productData, updateProductDataByKey} = useContext(ProductFormContext);
 
@@ -97,7 +97,7 @@ export default function ProductFormBaseInfo({submitHandler, removeProductHandler
             <div className={formStyle.buttons}>
                 {haveButtons &&
                     <>
-                        <button type="button" onClick={removeProductHandler} className={formStyle.delete}>
+                        <button type="button" onClick={showDeleteModal} className={formStyle.delete}>
                             <i className="fa-solid fa-trash"></i> Изтрий
                         </button>
                         <button className={formStyle.save}>

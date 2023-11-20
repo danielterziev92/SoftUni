@@ -1,7 +1,10 @@
-import {useContext, useEffect, useRef} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
+
 import style from "./ProductFormUpdate.module.css";
-import {ProductsContext} from "../../contexts/ProductsContext.js";
+
 import ProductForm from "../product-form/ProductForm.jsx";
+
+import {ProductsContext} from "../../contexts/ProductsContext.js";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {MessageContext} from "../../contexts/MessageContext.js";
@@ -26,9 +29,6 @@ export default function ProductFormUpdate({closeModalHandler}) {
     }
 
 
-    // const closeDetailClickHandler = () => setIsSpinnerShow(false);
-    // const updateActiveTab = (value) => setActiveTab(value);
-    //
     const deleteClickHandler = () => {
         console.log('delete product')
         // deleteProductById(id).then(setProductRemoveMessage);

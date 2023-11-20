@@ -1,14 +1,18 @@
-import {useContext, useEffect, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
+
+import styleForm from './ProductForm.module.css';
 
 import ProductListNavigationTabs from "../product-detail-navigation-tabs/ProductDetailNavigationTabs.jsx";
 import useEscapeKeyHook from "../../hooks/useEscapeKeyHook.js";
 import useLoadAllGroups from "../../hooks/useLoadAllGroups.js";
 import ProductFormBaseInfo from "../product-form-base-info/ProductFormBaseInfo.jsx";
+import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
+
+import {getProductById} from "../../services/productService.js";
 
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {MessageContext} from "../../contexts/MessageContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
-import {getProductById} from "../../services/productService.js";
 import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 
 export const initialProductData = {
@@ -27,6 +31,8 @@ export default function ProductForm() {
 
     const [activeTab, setActiveTab] = useState('base-info');
     const [productData, setProductData] = useState(initialProductData);
+    const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
+
 
     const {product,} = useContext(SingleProductContext)
     const {closeModalHandler, onSubmitFormHandler} = useContext(FormContext);
@@ -53,9 +59,7 @@ export default function ProductForm() {
 
     useEscapeKeyHook(closeModalHandler);
 
-    const updateActiveTab = (newValue) => {
-        setActiveTab(newValue);
-    };
+    const updateActiveTab = (newValue) => setActiveTab(newValue);
 
     const updateProductData = (newState) => {
         setProductData(state => ({
@@ -87,6 +91,20 @@ export default function ProductForm() {
         console.log('Remove product');
     };
 
+    const deleteModalBody = (
+        <div className={styleForm.deleteModalBody}>
+            <p>Сигурни ли сте, че искате да изтриете <span className={styleForm.productTitle}>{product.name}</span></p>
+            <p className={styleForm.attention}>Този процес е необратим.</p>
+        </div>
+    );
+
+    const showDeleteModalClickHandler = () => setIsDeleteModalShow(true);
+
+    const hideDeleteModalClickHandler = () => {
+        console.log('Close from here')
+        setIsDeleteModalShow(false);
+    }
+
     const formProductContext = {
         activeTab,
         updateActiveTab,
@@ -95,12 +113,22 @@ export default function ProductForm() {
         updateProductDataByKey,
     }
 
-
     return (
         <ProductFormContext.Provider value={{...formProductContext}}>
+            {isDeleteModalShow &&
+                <MessageBoxModal
+                    title={'Изтриване на продукт'}
+                    body={deleteModalBody}
+                    closeModalHanlder={hideDeleteModalClickHandler}
+                    errorButtonMessage={'Отказ'}
+                    errorButtonHandler={hideDeleteModalClickHandler}
+                    successButtonMessage={'Да'}
+                    successButtonHandler={removeProductHandler}
+                />
+            }
             <ProductListNavigationTabs closeFormDialogSet={true}/>
             {activeTab === 'base-info' &&
-                <ProductFormBaseInfo submitHandler={submitHandler} removeProductHandler={removeProductHandler}/>
+                <ProductFormBaseInfo submitHandler={submitHandler} showDeleteModal={showDeleteModalClickHandler}/>
             }
         </ProductFormContext.Provider>
     );
