@@ -161,7 +161,7 @@
 
 .Form .active input[type="checkbox"]:checked::before,
 .Form .groups input[type="radio"]:checked::before {
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Free", serif;
     color: #4e45e3 !important;
     content: "\f00c" !important;
     font-weight: bolder;

@@ -5,11 +5,16 @@ import style from './MessageBoxDialog.module.css';
 import {MessageContext} from "../../contexts/MessageContext.js";
 
 export default function MessageBoxDialog() {
-    const {message: {text, status}} = useContext(MessageContext);
+    const {message: {text, status}, closeMessageBoxDialog} = useContext(MessageContext);
+
+    console.log(status)
 
     return (
-        <div className={style.MessageBox}>
-            {text}
+        <div className={`${style.MessageBox} ${style[status]}`}>
+            <div>
+                {text}
+                <i className="fas fa-times" onClick={closeMessageBoxDialog}></i>
+            </div>
         </div>
     );
 }
