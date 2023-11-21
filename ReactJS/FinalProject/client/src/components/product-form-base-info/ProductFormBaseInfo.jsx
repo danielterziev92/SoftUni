@@ -1,12 +1,13 @@
 import {useContext, useEffect} from "react";
 
-import useForm from "../../hooks/useForm.js";
-
 import formStyle from "./ProductFormBaseInfo.module.css";
+
+import useForm from "../../hooks/useForm.js";
 
 import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {initialProductData} from "../product-form/ProductForm.jsx";
+import compareObjects from "../../utils/compareObjects.js";
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
     if (!groups || groups.length === 0) {
@@ -35,8 +36,9 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
     );
 }
 
-export default function ProductFormBaseInfo() {
-    const {haveButtons, closeModalHandler, formRef, deleteProductClickHandler} = useContext(FormContext);
+export default function ProductFormBaseInfo({showModalClickHandler}) {
+
+    const {haveButtons, closeModalHandler, formRef, updateNewProductData} = useContext(FormContext);
     const {productData} = useContext(ProductFormContext);
     const {
         formValue,
@@ -47,8 +49,12 @@ export default function ProductFormBaseInfo() {
     } = useForm(initialProductData);
 
     useEffect(() => {
-        updateFormValue(productData)
+        updateFormValue(productData);
     }, [productData]);
+
+    useEffect(() => {
+        updateNewProductData(formValue);
+    }, [updateFormValue]);
 
     const changeSelectedGroupClickHandler = (e) => {
         updateFormValueByKeyAndValue('selectedGroup', Number(e.target.id));
@@ -97,10 +103,8 @@ export default function ProductFormBaseInfo() {
             <div className={formStyle.buttons}>
                 {haveButtons &&
                     <>
-                        <button type="button" onClick={() => {
-                            deleteProductClickHandler(formValue)
-                        }}
-                                className={formStyle.delete}>
+                        <button type="button" onClick={showModalClickHandler} className={formStyle.delete}
+                                disabled={!compareObjects(productData, formValue)}>
                             <i className="fa-solid fa-trash"></i> Изтрий
                         </button>
                         <button className={formStyle.save}>
@@ -115,5 +119,4 @@ export default function ProductFormBaseInfo() {
             </div>
         </form>
     );
-
 }

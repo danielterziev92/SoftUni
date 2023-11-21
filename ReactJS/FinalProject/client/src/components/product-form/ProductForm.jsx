@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 
 import styleForm from './ProductForm.module.css';
 
@@ -11,7 +11,6 @@ import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 import {getProductById} from "../../services/productService.js";
 
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
-import {MessageContext} from "../../contexts/MessageContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 
@@ -33,15 +32,9 @@ export default function ProductForm() {
     const [productData, setProductData] = useState(initialProductData);
     const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
 
-
-    const {product} = useContext(SingleProductContext)
-    const {closeModalHandler, onSubmitFormHandler} = useContext(FormContext);
-    const {updateMessage, updateStatus} = useContext(MessageContext);
+    const {product, updateProductDetailData,} = useContext(SingleProductContext)
+    const {closeModalHandler, deleteProductClickHandler} = useContext(FormContext);
     const groups = useLoadAllGroups();
-
-    useEffect(() => {
-        updateProductDataByKey('selectedGroup', productData.group);
-    }, [productData.group]);
 
     useEffect(() => {
         if (product.id === undefined) {
@@ -49,9 +42,16 @@ export default function ProductForm() {
         }
 
         getProductById(product.id)
-            .then(updateProductData)
+            .then(data => {
+                updateProductData(data);
+                updateProductDetailData(data);
+            })
             .catch(e => console.log(e));
     }, []);
+
+    useEffect(() => {
+        updateProductDataByKey('selectedGroup', productData.group);
+    }, [productData.group]);
 
     useEffect(() => {
         updateProductDataByKey('groups', groups);
@@ -73,12 +73,6 @@ export default function ProductForm() {
         }))
     }
 
-    const removeProductHandler = () => {
-        const currProduct = product
-
-
-    };
-
     const deleteModalBody = (
         <div className={styleForm.deleteModalBody}>
             <p>Сигурни ли сте, че искате да изтриете <span className={styleForm.productTitle}>{product.name}</span></p>
@@ -87,6 +81,8 @@ export default function ProductForm() {
     );
 
     const hideDeleteModalClickHandler = () => setIsDeleteModalShow(false);
+
+    const showModalClickHandler = () => setIsDeleteModalShow(true);
 
     useEscapeKey(isDeleteModalShow ? hideDeleteModalClickHandler : closeModalHandler);
 
@@ -108,12 +104,15 @@ export default function ProductForm() {
                     errorButtonMessage={'Отказ'}
                     errorButtonHandler={hideDeleteModalClickHandler}
                     successButtonMessage={'Да'}
-                    successButtonHandler={removeProductHandler}
+                    successButtonHandler={() => {
+                        deleteProductClickHandler(productData)
+                    }
+                    }
                 />
             }
             <ProductListNavigationTabs closeFormDialogSet={true}/>
             {activeTab === 'base-info' &&
-                <ProductFormBaseInfo/>
+                <ProductFormBaseInfo showModalClickHandler={showModalClickHandler}/>
             }
         </ProductFormContext.Provider>
     );

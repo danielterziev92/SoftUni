@@ -1,4 +1,4 @@
-import {useContext, useEffect, useRef} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 
 import style from "./ProductFormUpdate.module.css";
 
@@ -8,12 +8,15 @@ import {ProductsContext} from "../../contexts/ProductsContext.js";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {MessageContext} from "../../contexts/MessageContext.js";
+import compareObjects from "../../utils/compareObjects.js";
 
 
 export default function ProductFormUpdate({closeModalHandler}) {
+    const [newProductData, setNewProductData] = useState({});
+
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const {allProducts, updateAllProduct} = useContext(ProductsContext);
-    const {product} = useContext(SingleProductContext);
+    const {product, productDetailData} = useContext(SingleProductContext);
     const formRef = useRef();
 
 
@@ -21,12 +24,18 @@ export default function ProductFormUpdate({closeModalHandler}) {
         updateAllProduct(allProducts.map(item => item.id === product.id ? product : item));
     }, [product]);
 
-    const onSubmitFormHandler = (data) => {
+    const updateNewProductData = (newData) => setNewProductData(newData);
+
+    const onSubmitFormHandler = (productData) => {
         formRef.current.requestSubmit();
-        console.log('Submit From Product Update Form')
-        console.log(data);
-        updateMessage('Успено добавихте продукт');
-        updateStatus('success');
+        const data = getPureData(productData)
+        const oldData = getPureData(productDetailData)
+
+
+        function getPureData(obj) {
+            const {selectedGroup, groups, ...data} = obj;
+            return data;
+        }
     }
 
     const deleteProductClickHandler = (productData) => {
@@ -37,6 +46,8 @@ export default function ProductFormUpdate({closeModalHandler}) {
 
 
     const contextValue = {
+        newProductData,
+        updateNewProductData,
         haveButtons: true,
         closeModalHandler,
         formRef,

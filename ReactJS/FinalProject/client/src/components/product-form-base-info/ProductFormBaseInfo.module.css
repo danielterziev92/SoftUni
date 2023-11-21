@@ -94,6 +94,11 @@
     color: #ffffff;
 }
 
+.Form .buttons button.delete:disabled {
+    background-color: #a70511;
+    text-decoration: line-through;
+}
+
 .Form .buttons button.cancel {
     background-color: #ea5e66;
     color: #ffffff;

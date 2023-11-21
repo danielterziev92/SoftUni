@@ -28,13 +28,20 @@ export default function ProductAddForm({closeModalHandler}) {
 
     const product = initialProductData;
 
-    const contextValue = {
+    const singleProductContextValue = {
+        product,
+        productDetailData: {},
+        updateProductDetailData: null,
+    }
+
+    const formContextValue = {
+        newProductData: null,
+        updateNewProductData: null,
         deleteClickHandler: null,
         haveButtons: false,
         formRef,
         onSubmitFormHandler,
-        deleteProductClickHandler: () => {
-        },
+        deleteProductClickHandler: null,
         closeModalHandler,
     };
 
@@ -42,8 +49,8 @@ export default function ProductAddForm({closeModalHandler}) {
         <MessageBoxModal
             title={'Добавяне на продукт'}
             body={
-                <SingleProductContext.Provider value={{product}}>
-                    <FormContext.Provider value={{contextValue}}>
+                <SingleProductContext.Provider value={{...singleProductContextValue}}>
+                    <FormContext.Provider value={{formContextValue}}>
                         <ProductForm/>
                     </FormContext.Provider>
                 </SingleProductContext.Provider>

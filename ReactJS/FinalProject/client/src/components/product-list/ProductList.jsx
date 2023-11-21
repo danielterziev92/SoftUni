@@ -25,6 +25,7 @@ export default function ProductList() {
     });
     const [isAscending, setIsAscending] = useState(true);
     const [selectedItem, setSelectedItem] = useState('');
+    const [productDetailData, setProductDetailData] = useState({});
     const detailModuleShowed = useRef(false);
 
     const changeOrderClickHandler = (e) => {
@@ -34,6 +35,14 @@ export default function ProductList() {
         } else {
             setIsAscending(state => !state);
         }
+    }
+
+    const updateProductDetailData = (newData) => setProductDetailData(newData);
+
+    const contextValue = {
+        productDetailData,
+        updateProductDetailData,
+        detailModuleShowed,
     }
 
     return (
@@ -57,7 +66,7 @@ export default function ProductList() {
                 </div>
                 <div className={style.body}>
                     {allProducts.slice(paginationState.startIndex, paginationState.endIndex).map((product, index) => (
-                        <SingleProductContext.Provider key={product.id} value={{product, detailModuleShowed}}>
+                        <SingleProductContext.Provider key={product.id} value={{product, ...contextValue}}>
                             <ProductListItem rowNumb={index + paginationState.startIndex + 1}/>
                         </SingleProductContext.Provider>
                     ))}
