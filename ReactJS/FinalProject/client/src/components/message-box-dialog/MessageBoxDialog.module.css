@@ -21,10 +21,12 @@
 
 .success i {
     position: absolute;
-    top: 7px;
-    right: 7px;
+    top: 8px;
+    right: 8px;
     padding: 4px;
     border: 2px solid #0caf64;
     border-radius: 50%;
     font-size: 0.7rem;
+    width: 22px;
+    height: 22px;
 }

@@ -1,26 +1,39 @@
 import {useContext, useRef} from "react";
+
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 import ProductForm, {initialProductData} from "../product-form/ProductForm.jsx";
+
+import {createProduct} from '../../services/productService.js'
 
 import {MessageContext} from "../../contexts/MessageContext.js";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
+import {ProductsContext} from "../../contexts/ProductsContext.js";
 
 export default function ProductAddForm({closeModalHandler}) {
     const {message, updateMessage, updateStatus} = useContext(MessageContext);
+    const {updateProducts} = useContext(ProductsContext)
     const formRef = useRef(null);
 
-    const onSubmitFormHandler = () => {
+    const onSubmitFormHandler = async () => {
         formRef.current.requestSubmit();
+
+        const result = await createProduct()
+
         console.log('Submit From Product Add Form')
-        updateMessage('Успено добавихте продукт');
+        updateMessage('Успешно добавихте продукт');
         updateStatus('success');
     }
 
-    const deleteClickHandler = null;
-
-    const haveButtons = false;
     const product = initialProductData;
+
+    const contextValue = {
+        deleteClickHandler: null,
+        haveButtons: false,
+        formRef,
+        onSubmitFormHandler,
+        closeModalHandler,
+    };
 
     return (
         <MessageBoxModal
@@ -28,7 +41,7 @@ export default function ProductAddForm({closeModalHandler}) {
             body={
                 <SingleProductContext.Provider value={{product}}>
                     <FormContext.Provider
-                        value={{haveButtons, closeModalHandler, formRef, onSubmitFormHandler, deleteClickHandler}}>
+                        value={{contextValue}}>
                         <ProductForm/>
                     </FormContext.Provider>
                 </SingleProductContext.Provider>

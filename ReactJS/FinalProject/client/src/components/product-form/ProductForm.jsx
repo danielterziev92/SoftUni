@@ -34,7 +34,7 @@ export default function ProductForm() {
     const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
 
 
-    const {product,} = useContext(SingleProductContext)
+    const {product} = useContext(SingleProductContext)
     const {closeModalHandler, onSubmitFormHandler} = useContext(FormContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const groups = useLoadAllGroups();
@@ -75,14 +75,9 @@ export default function ProductForm() {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        console.log('submitHandler')
 
         onSubmitFormHandler();
-
-        // const data = {...productData, group: productData.selectedGroup}
-        // delete data.groups;
-        // delete data.selectedGroup;
-        //
-        // console.log('Submit')
     };
 
     const removeProductHandler = () => {
@@ -90,7 +85,6 @@ export default function ProductForm() {
 
         updateMessage(`Успешно изтрихте пордукт ${currProduct.name}`);
         updateStatus('success');
-        // console.log('Remove product');
     };
 
     const deleteModalBody = (

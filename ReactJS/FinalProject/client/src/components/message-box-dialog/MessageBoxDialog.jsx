@@ -7,8 +7,6 @@ import {MessageContext} from "../../contexts/MessageContext.js";
 export default function MessageBoxDialog() {
     const {message: {text, status}, closeMessageBoxDialog} = useContext(MessageContext);
 
-    console.log(status)
-
     return (
         <div className={`${style.MessageBox} ${style[status]}`}>
             <div>
