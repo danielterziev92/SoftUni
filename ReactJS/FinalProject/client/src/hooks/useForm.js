@@ -1,7 +1,11 @@
-import {useEffect, useState} from "react";
+import {useContext, useState} from "react";
+
+import {FormContext} from "../contexts/FormContext.js";
 
 export default function useForm(initialData) {
     const [formValue, setFormValue] = useState(initialData);
+
+    const {onSubmitFormHandler} = useContext(FormContext);
 
     const typeHandlers = {
         'number': (target) => Number(target.value),
@@ -33,11 +37,17 @@ export default function useForm(initialData) {
         }));
     };
 
+    const onSubmitForm = (e) => {
+        e.preventDefault();
+        onSubmitFormHandler(formValue);
+    }
+
 
     return {
         formValue,
         updateFormValue,
         updateFormValueByKeyAndValue,
         changeDataHandler,
+        onSubmitForm,
     }
 }

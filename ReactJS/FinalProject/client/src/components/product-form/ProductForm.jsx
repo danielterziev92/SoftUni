@@ -73,18 +73,10 @@ export default function ProductForm() {
         }))
     }
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        console.log('submitHandler')
-
-        onSubmitFormHandler();
-    };
-
     const removeProductHandler = () => {
         const currProduct = product
 
-        updateMessage(`Успешно изтрихте пордукт ${currProduct.name}`);
-        updateStatus('success');
+
     };
 
     const deleteModalBody = (
@@ -93,8 +85,6 @@ export default function ProductForm() {
             <p className={styleForm.attention}>Този процес е необратим.</p>
         </div>
     );
-
-    const showDeleteModalClickHandler = () => setIsDeleteModalShow(true);
 
     const hideDeleteModalClickHandler = () => setIsDeleteModalShow(false);
 
@@ -123,7 +113,7 @@ export default function ProductForm() {
             }
             <ProductListNavigationTabs closeFormDialogSet={true}/>
             {activeTab === 'base-info' &&
-                <ProductFormBaseInfo submitHandler={submitHandler} showDeleteModal={showDeleteModalClickHandler}/>
+                <ProductFormBaseInfo/>
             }
         </ProductFormContext.Provider>
     );

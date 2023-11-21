@@ -15,10 +15,11 @@ export default function ProductAddForm({closeModalHandler}) {
     const {updateProducts} = useContext(ProductsContext)
     const formRef = useRef(null);
 
-    const onSubmitFormHandler = async () => {
+    const onSubmitFormHandler = async (data) => {
         formRef.current.requestSubmit();
 
-        const result = await createProduct()
+        console.log(data)
+        // const result = await createProduct()
 
         console.log('Submit From Product Add Form')
         updateMessage('Успешно добавихте продукт');
@@ -32,6 +33,8 @@ export default function ProductAddForm({closeModalHandler}) {
         haveButtons: false,
         formRef,
         onSubmitFormHandler,
+        deleteProductClickHandler: () => {
+        },
         closeModalHandler,
     };
 
@@ -40,8 +43,7 @@ export default function ProductAddForm({closeModalHandler}) {
             title={'Добавяне на продукт'}
             body={
                 <SingleProductContext.Provider value={{product}}>
-                    <FormContext.Provider
-                        value={{contextValue}}>
+                    <FormContext.Provider value={{contextValue}}>
                         <ProductForm/>
                     </FormContext.Provider>
                 </SingleProductContext.Provider>

@@ -35,21 +35,27 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
     );
 }
 
-export default function ProductFormBaseInfo({submitHandler, showDeleteModal,}) {
-    const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
-    const {productData, updateProductDataByKey} = useContext(ProductFormContext);
-    const {formValue, updateFormValue, updateFormValueByKeyAndValue, changeDataHandler,} = useForm(initialProductData);
+export default function ProductFormBaseInfo() {
+    const {haveButtons, closeModalHandler, formRef, deleteProductClickHandler} = useContext(FormContext);
+    const {productData} = useContext(ProductFormContext);
+    const {
+        formValue,
+        updateFormValue,
+        updateFormValueByKeyAndValue,
+        changeDataHandler,
+        onSubmitForm
+    } = useForm(initialProductData);
 
     useEffect(() => {
         updateFormValue(productData)
     }, [productData]);
 
     const changeSelectedGroupClickHandler = (e) => {
-        updateProductDataByKey('selectedGroup', Number(e.target.id));
+        updateFormValueByKeyAndValue('selectedGroup', Number(e.target.id));
     };
 
     return (
-        <form ref={formRef} onSubmit={submitHandler} className={formStyle.Form}>
+        <form ref={formRef} onSubmit={onSubmitForm} className={formStyle.Form}>
             <div className={formStyle.name}>
                 <label htmlFor="name">Име:</label>
                 <input id="name" type="text" name="name" value={formValue.name}
@@ -91,7 +97,10 @@ export default function ProductFormBaseInfo({submitHandler, showDeleteModal,}) {
             <div className={formStyle.buttons}>
                 {haveButtons &&
                     <>
-                        <button type="button" onClick={showDeleteModal} className={formStyle.delete}>
+                        <button type="button" onClick={() => {
+                            deleteProductClickHandler(formValue)
+                        }}
+                                className={formStyle.delete}>
                             <i className="fa-solid fa-trash"></i> Изтрий
                         </button>
                         <button className={formStyle.save}>

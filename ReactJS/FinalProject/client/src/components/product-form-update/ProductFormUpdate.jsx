@@ -1,4 +1,4 @@
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef} from "react";
 
 import style from "./ProductFormUpdate.module.css";
 
@@ -21,19 +21,32 @@ export default function ProductFormUpdate({closeModalHandler}) {
         updateAllProduct(allProducts.map(item => item.id === product.id ? product : item));
     }, [product]);
 
-    const onSubmitFormHandler = () => {
+    const onSubmitFormHandler = (data) => {
         formRef.current.requestSubmit();
         console.log('Submit From Product Update Form')
+        console.log(data);
         updateMessage('Успено добавихте продукт');
         updateStatus('success');
     }
 
-    const haveButtons = true;
+    const deleteProductClickHandler = (productData) => {
+        console.log(productData)
+        updateMessage(`Успешно изтрихте пордукт ${productData.name}`);
+        updateStatus('success');
+    }
+
+
+    const contextValue = {
+        haveButtons: true,
+        closeModalHandler,
+        formRef,
+        onSubmitFormHandler,
+        deleteProductClickHandler,
+    }
 
     return (
         <div className={style.detail}>
-            <FormContext.Provider
-                value={{haveButtons, closeModalHandler, formRef, onSubmitFormHandler}}>
+            <FormContext.Provider value={{...contextValue}}>
                 <ProductForm/>
             </FormContext.Provider>
         </div>
