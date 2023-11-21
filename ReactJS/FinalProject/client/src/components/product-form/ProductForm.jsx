@@ -59,12 +59,7 @@ export default function ProductForm() {
             return;
         }
 
-        getProductById(product.id)
-            .then(data => {
-                updateProductData(data);
-            })
-            .catch(e => console.log(e));
-
+        updateProductData(product);
         updateProductChanged(false);
     }, [productChanged]);
 
