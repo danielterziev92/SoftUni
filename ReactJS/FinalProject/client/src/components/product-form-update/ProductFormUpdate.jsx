@@ -13,11 +13,11 @@ import {updateProductById} from "../../services/productService.js";
 
 
 export default function ProductFormUpdate({closeModalHandler}) {
-    const [newProductData, setNewProductData] = useState({});
 
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const {allProducts, updateAllProducts, updateExistedProducts} = useContext(ProductsContext);
-    const {product, productDetailData} = useContext(SingleProductContext);
+    const {product} = useContext(SingleProductContext);
+    const [productChanged, setProductChanged] = useState(false);
     const formRef = useRef();
 
 
@@ -25,7 +25,7 @@ export default function ProductFormUpdate({closeModalHandler}) {
         updateAllProducts(allProducts.map(item => item.id === product.id ? product : item));
     }, [product]);
 
-    const updateNewProductData = (newData) => setNewProductData(newData);
+    const updateProductChanged = (newValue) => setProductChanged(newValue);
 
     const onSubmitFormHandler = async (productData) => {
         formRef.current.requestSubmit();
@@ -35,6 +35,7 @@ export default function ProductFormUpdate({closeModalHandler}) {
         if (compareObjects(data, result)) {
             updateMessage(`Успешно променихте продукт ${data.name}`);
             updateStatus('success');
+            setProductChanged(true);
             updateExistedProducts(result);
         } else {
             updateMessage('Нещо се обърка. Моля опитайте по-късно или се свържете с наш представител');
@@ -50,6 +51,8 @@ export default function ProductFormUpdate({closeModalHandler}) {
 
 
     const contextValue = {
+        productChanged,
+        updateProductChanged,
         haveButtons: true,
         closeModalHandler,
         formRef,

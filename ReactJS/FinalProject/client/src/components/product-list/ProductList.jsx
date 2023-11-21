@@ -1,7 +1,10 @@
-import style from './ProductList.module.css';
 import {useContext, useRef, useState} from "react";
+
+import style from './ProductList.module.css';
+
 import ProductListItem from "../product-list-item/ProductListItem.jsx";
 import ProductPagination from "../product-pagination/ProductPagination.jsx";
+
 import {ProductsContext} from "../../contexts/ProductsContext.js";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 
@@ -25,7 +28,6 @@ export default function ProductList() {
     });
     const [isAscending, setIsAscending] = useState(true);
     const [selectedItem, setSelectedItem] = useState('');
-    const [productDetailData, setProductDetailData] = useState({});
     const detailModuleShowed = useRef(false);
 
     const changeOrderClickHandler = (e) => {
@@ -37,11 +39,7 @@ export default function ProductList() {
         }
     }
 
-    const updateProductDetailData = (newData) => setProductDetailData(newData);
-
     const contextValue = {
-        productDetailData,
-        updateProductDetailData,
         detailModuleShowed,
     }
 

@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 
 import styleForm from './ProductForm.module.css';
 
@@ -27,13 +27,18 @@ export const initialProductData = {
 };
 
 export default function ProductForm() {
-
     const [activeTab, setActiveTab] = useState('base-info');
     const [productData, setProductData] = useState(initialProductData);
     const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
+    const isFirstRender = useRef(true);
 
-    const {product, updateProductDetailData,} = useContext(SingleProductContext)
-    const {closeModalHandler, deleteProductClickHandler} = useContext(FormContext);
+    const {product} = useContext(SingleProductContext)
+    const {
+        closeModalHandler,
+        deleteProductClickHandler,
+        productChanged,
+        updateProductChanged
+    } = useContext(FormContext);
     const groups = useLoadAllGroups();
 
     useEffect(() => {
@@ -44,10 +49,24 @@ export default function ProductForm() {
         getProductById(product.id)
             .then(data => {
                 updateProductData(data);
-                updateProductDetailData(data);
             })
             .catch(e => console.log(e));
     }, []);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
+        getProductById(product.id)
+            .then(data => {
+                updateProductData(data);
+            })
+            .catch(e => console.log(e));
+
+        updateProductChanged(false);
+    }, [productChanged]);
 
     useEffect(() => {
         updateProductDataByKey('selectedGroup', productData.group);
