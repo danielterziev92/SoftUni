@@ -38,7 +38,7 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
 
 export default function ProductFormBaseInfo({showModalClickHandler}) {
 
-    const {haveButtons, closeModalHandler, formRef, updateNewProductData} = useContext(FormContext);
+    const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
     const {productData} = useContext(ProductFormContext);
     const {
         formValue,
@@ -51,10 +51,6 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
     useEffect(() => {
         updateFormValue(productData);
     }, [productData]);
-
-    useEffect(() => {
-        updateNewProductData(formValue);
-    }, [updateFormValue]);
 
     const changeSelectedGroupClickHandler = (e) => {
         updateFormValueByKeyAndValue('selectedGroup', Number(e.target.id));

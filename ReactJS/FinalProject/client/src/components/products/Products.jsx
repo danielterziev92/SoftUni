@@ -1,17 +1,19 @@
-import {useContext, useEffect, useState} from "react";
-
-import SearchProduct from "../search-product/SearchProduct.jsx";
-
-import {getAllProducts} from "../../services/productService.js";
+import {useEffect, useState} from "react";
 
 import navStyle from '../Main.module.css'
-import {MessageContext} from "../../contexts/MessageContext.js";
+
 import ProductAddForm from "../product-form-add/ProductAddForm.jsx";
+import MessageBoxDialog from "../message-box-dialog/MessageBoxDialog.jsx";
+import SearchProduct from "../search-product/SearchProduct.jsx";
 import Spinner from "../spinner/Spinner.jsx";
 import ProductList from "../product-list/ProductList.jsx";
+
+import {MessageContext} from "../../contexts/MessageContext.js";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
+
 import useMessage from "../../hooks/useMessage.js";
-import MessageBoxDialog from "../message-box-dialog/MessageBoxDialog.jsx";
+
+import {getAllProducts} from "../../services/productService.js";
 
 const initialState = {
     title: 'Всички продукти',
@@ -40,30 +42,16 @@ export default function Products() {
         console.log(searchProduct);
     }, [searchProduct]);
 
-    const updateAllProduct = (newProducts) => setAllProducts(newProducts);
+    const updateAllProducts = (newProducts) => setAllProducts(newProducts);
+
+    const updateExistedProducts = (existedProduct) => setAllProducts(allProducts.map(item => item.id === existedProduct.id ? existedProduct : item))
+
+    const showAddProductClickHandler = () => setIsShowAddProduct(true);
+
+    const closeAddProductClickHandler = () => setIsShowAddProduct(false);
 
 
-    const showAddProductClickHandler = () => {
-        setIsShowAddProduct(true);
-    };
-
-    const closeAddProductClickHandler = () => {
-        setIsShowAddProduct(false);
-    };
-
-    const productAddSubmitHandler = () => {
-        console.log('productAddSubmitHandler')
-    };
-
-    const successfullyAddProductHandler = () => {
-        console.log('successfullyAddProductHandler')
-    }
-
-    const unsuccessfullyAddProductHandler = () => {
-        console.log('unsuccessfullyAddProductHandler')
-    }
-
-    const messageValues = {
+    const messageContextValues = {
         message,
         updateMessage,
         updateStatus,
@@ -71,9 +59,15 @@ export default function Products() {
         closeMessageBoxDialog,
     }
 
+    const productsContextValue = {
+        allProducts,
+        updateAllProducts,
+        updateExistedProducts,
+    }
+
     return (
         <>
-            <MessageContext.Provider value={messageValues}>
+            <MessageContext.Provider value={messageContextValues}>
                 {isMessageBoxShow && <MessageBoxDialog/>}
                 <nav className={navStyle.Nav}>
                     <ul>
@@ -91,7 +85,7 @@ export default function Products() {
                 {productsState.isSpinnerShow && <Spinner/>}
 
                 {!productsState.isSpinnerShow &&
-                    <ProductsContext.Provider value={{allProducts, updateAllProduct}}>
+                    <ProductsContext.Provider value={productsContextValue}>
                         <section>
                             <ProductList/>
                         </section>

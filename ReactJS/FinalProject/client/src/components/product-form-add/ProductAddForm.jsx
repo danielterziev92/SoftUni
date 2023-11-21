@@ -35,8 +35,6 @@ export default function ProductAddForm({closeModalHandler}) {
     }
 
     const formContextValue = {
-        newProductData: null,
-        updateNewProductData: null,
         deleteClickHandler: null,
         haveButtons: false,
         formRef,
