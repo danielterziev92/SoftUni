@@ -3,30 +3,123 @@
     top: 20px;
     left: 50%;
     transform: translateX(-25%);
-    padding: 20px 40px 20px 20px;
-    border-radius: 20px;
+    /*padding: 20px 20px 20px 0;*/
+    padding-right: 20px;
+    border-radius: 10px;
     font-size: 1.2rem;
     box-sizing: border-box;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
 }
 
-.error {
+.icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 0 0 10px;
+}
 
+.MessageBox.success {
+    border-bottom: 2px solid #2b6b55;
+}
+
+.icon.success {
+    background-color: #39b088 !important;
 }
 
 .success {
-    background-color: #ffffff;
-    border: 3px solid #0caf64;
-    color: #0caf64;
+    background-color: #339e7a;
 }
 
-.success i {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px;
-    border: 2px solid #0caf64;
+.success i:last-child {
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+.icon.success i {
+    font-size: 1.7rem;
+    margin-left: 0;
+    color: #57ddb1;
     border-radius: 50%;
-    font-size: 0.7rem;
-    width: 22px;
-    height: 22px;
+    border-bottom: 2px solid #2b6b55;
+}
+
+.MessageBox.error {
+    border-bottom: 2px solid #8f050e;
+}
+
+.icon.error {
+    background-color: #ba0613 !important;
+}
+
+.error {
+    background-color: #a70511;
+}
+
+.error i:last-child {
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+.icon.error i {
+    font-size: 1.7rem;
+    margin-left: 0;
+    color: #fda5ab;
+    border-radius: 50%;
+    border-bottom: 2px solid #8f050e;
+}
+
+.MessageBox.warning {
+    border-bottom: 2px solid #e3a200;
+}
+
+.icon.warning {
+    background-color: #fdb400 !important;
+}
+
+.warning {
+    background-color: #e3a200;
+}
+
+.warning i:last-child {
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+.icon.warning i {
+    font-size: 1.7rem;
+    margin-left: 0;
+    color: #fddb89;
+    border-radius: 50%;
+    border-bottom: 2px solid #e3a200;
+}
+
+
+.MessageBox.info {
+    border-bottom: 2px solid #30383f;
+}
+
+.icon.info {
+    background-color: #4f5d68 !important;
+}
+
+.info {
+    background-color: #47535d;
+}
+
+.info i:last-child {
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+.icon.info i {
+    font-size: 1.7rem;
+    margin-left: 0;
+    color: #8c9ca8;
+    border-radius: 50%;
+    border-bottom: 2px solid #30383f;
 }
