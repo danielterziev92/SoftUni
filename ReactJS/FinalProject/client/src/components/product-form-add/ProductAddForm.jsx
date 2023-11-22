@@ -11,19 +11,30 @@ import {FormContext} from "../../contexts/FormContext.js";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
 
 export default function ProductAddForm({closeModalHandler}) {
-    const {message, updateMessage, updateStatus} = useContext(MessageContext);
-    const {updateProducts} = useContext(ProductsContext)
-    const formRef = useRef(null);
+    const {updateMessage, updateStatus} = useContext(MessageContext);
+    const {addToAllProducts} = useContext(ProductsContext)
+    const formRef = useRef();
 
     const onSubmitFormHandler = async (data) => {
         formRef.current.requestSubmit();
+        if (data === undefined) {
+            return;
+        }
+        const {groups, selectedGroup, ...productData} = data;
 
-        console.log(data)
-        // const result = await createProduct()
+        try {
+            const result = await createProduct({...productData, group: selectedGroup});
+            console.log(result)
+            addToAllProducts(result);
+            updateMessage('Успешно добавихте продукт');
+            updateStatus('success');
+            closeModalHandler();
+        } catch (e) {
+            console.log(e)
+            updateMessage(e.code[0]);
+            updateStatus('error');
+        }
 
-        console.log('Submit From Product Add Form')
-        updateMessage('Успешно добавихте продукт');
-        updateStatus('success');
     }
 
     const product = initialProductData;
@@ -35,11 +46,13 @@ export default function ProductAddForm({closeModalHandler}) {
     }
 
     const formContextValue = {
-        deleteClickHandler: null,
-        haveButtons: false,
-        formRef,
+        productChanged: false,
+        updateProductChanged: () => {
+        },
         onSubmitFormHandler,
+        haveButtons: false,
         deleteProductClickHandler: null,
+        formRef,
         closeModalHandler,
     };
 
@@ -48,14 +61,14 @@ export default function ProductAddForm({closeModalHandler}) {
             title={'Добавяне на продукт'}
             body={
                 <SingleProductContext.Provider value={{...singleProductContextValue}}>
-                    <FormContext.Provider value={{formContextValue}}>
+                    <FormContext.Provider value={{...formContextValue}}>
                         <ProductForm/>
                     </FormContext.Provider>
                 </SingleProductContext.Provider>
             }
             successButtonMessage={'Добави'}
             errorButtonMessage={'Отказ'}
-            successButtonHandler={onSubmitFormHandler}
+            successButtonHandler={() => onSubmitFormHandler()}
             errorButtonHandler={closeModalHandler}
             closeModalHanlder={closeModalHandler}
         />

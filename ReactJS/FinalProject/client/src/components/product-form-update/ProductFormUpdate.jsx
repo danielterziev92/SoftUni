@@ -8,8 +8,10 @@ import {ProductsContext} from "../../contexts/ProductsContext.js";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {MessageContext} from "../../contexts/MessageContext.js";
-import compareObjects from "../../utils/compareObjects.js";
+
 import {updateProductById} from "../../services/productService.js";
+
+import compareObjects from "../../utils/compareObjects.js";
 
 
 export default function ProductFormUpdate({closeModalHandler}) {
@@ -53,11 +55,11 @@ export default function ProductFormUpdate({closeModalHandler}) {
     const contextValue = {
         productChanged,
         updateProductChanged,
-        haveButtons: true,
-        closeModalHandler,
-        formRef,
         onSubmitFormHandler,
+        haveButtons: true,
         deleteProductClickHandler,
+        formRef,
+        closeModalHandler,
     }
 
     return (

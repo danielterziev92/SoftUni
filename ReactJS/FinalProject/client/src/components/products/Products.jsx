@@ -46,6 +46,10 @@ export default function Products() {
 
     const updateExistedProducts = (existedProduct) => setAllProducts(allProducts.map(item => item.id === existedProduct.id ? existedProduct : item))
 
+    const addToAllProducts = (newProduct) => {
+        setAllProducts(state => ([...state, newProduct]));
+    }
+
     const showAddProductClickHandler = () => setIsShowAddProduct(true);
 
     const closeAddProductClickHandler = () => setIsShowAddProduct(false);
@@ -63,6 +67,7 @@ export default function Products() {
         allProducts,
         updateAllProducts,
         updateExistedProducts,
+        addToAllProducts,
     }
 
     return (
@@ -80,17 +85,18 @@ export default function Products() {
                         </li>
                     </ul>
                 </nav>
-                {isShowAddProduct && <ProductAddForm closeModalHandler={closeAddProductClickHandler}/>}
 
-                {productsState.isSpinnerShow && <Spinner/>}
+                <ProductsContext.Provider value={{...productsContextValue}}>
+                    {isShowAddProduct && <ProductAddForm closeModalHandler={closeAddProductClickHandler}/>}
 
-                {!productsState.isSpinnerShow &&
-                    <ProductsContext.Provider value={productsContextValue}>
+                    {productsState.isSpinnerShow && <Spinner/>}
+
+                    {!productsState.isSpinnerShow &&
                         <section>
                             <ProductList/>
                         </section>
-                    </ProductsContext.Provider>
-                }
+                    }
+                </ProductsContext.Provider>
             </MessageContext.Provider>
         </>
     );

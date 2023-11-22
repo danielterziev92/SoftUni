@@ -38,7 +38,7 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
 
 export default function ProductFormBaseInfo({showModalClickHandler}) {
 
-    const {haveButtons, closeModalHandler, formRef, productChanged} = useContext(FormContext);
+    const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
     const {productData} = useContext(ProductFormContext);
     const {
         formValue,
