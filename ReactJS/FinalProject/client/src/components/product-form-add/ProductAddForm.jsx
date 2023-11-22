@@ -30,8 +30,7 @@ export default function ProductAddForm({closeModalHandler}) {
             updateStatus('success');
             closeModalHandler();
         } catch (e) {
-            console.log(e)
-            updateMessage(e.code[0]);
+            updateMessage(e.message);
             updateStatus('error');
         }
 
