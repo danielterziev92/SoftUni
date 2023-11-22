@@ -3,6 +3,7 @@ import {useContext} from "react";
 import style from './MessageBoxDialog.module.css';
 
 import {MessageContext} from "../../contexts/MessageContext.js";
+
 import useAutoDisappear from "../../hooks/useAutoDisappear.js";
 
 const statusIcons = {
@@ -12,9 +13,9 @@ const statusIcons = {
     info: <i className="fas fa-info-circle"></i>,
 }
 export default function MessageBoxDialog() {
-    const isVisible = useAutoDisappear(5000);
     const {message: {text, status}, closeMessageBoxDialog} = useContext(MessageContext);
 
+    const isVisible = useAutoDisappear(5000, text);
 
     return (
         <>

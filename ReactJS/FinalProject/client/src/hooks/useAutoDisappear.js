@@ -1,23 +1,22 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 
-export default function useAutoDisappear(duration) {
+export default function useAutoDisappear(duration, dependencyValue) {
     const [isVisible, setIsVisible] = useState(true);
-    const [timeoutIds, setTimeoutIds] = useState([]);
-    const isFirstRender = useRef(true);
+    const [timeoutId, setTimeoutId] = useState(0);
 
     useEffect(() => {
-        if (isFirstRender) {
-            timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
-            return;
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+            setIsVisible(true);
         }
 
         const timer = setTimeout(() => {
             setIsVisible(false);
         }, duration);
-        setTimeoutIds(timer);
 
-        return () => clearTimeout(timer);
-    }, []);
+        setTimeoutId(timer);
+    }, [dependencyValue]);
 
-    return isVisible;
+
+    return {isVisible};
 }
