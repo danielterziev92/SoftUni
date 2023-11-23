@@ -44,6 +44,7 @@ class ProductBaseInformation(models.Model):
 
     barcode = models.CharField(
         max_length=128,
+        unique=True,
         null=True,
         blank=True,
     )
