@@ -13,6 +13,7 @@
 
 .Form div {
     width: 100%;
+    max-width: 380px;
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
@@ -201,9 +202,13 @@
     outline: none;
 }
 
-.Form div .inputErrorMessage {
-    width: 100%;
+.inputErrorMessage {
+    max-width: 380px;
     color: red;
+}
+
+.inputErrorMessage li {
+    list-style: none;
 }
 
 .productTitle {

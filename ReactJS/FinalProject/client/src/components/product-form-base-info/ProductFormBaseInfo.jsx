@@ -122,8 +122,12 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
                 <input id={FormKey.Quantity} type="number" step="1" name={FormKey.Quantity}
                        value={formValue[FormKey.Quantity]}
                        onChange={inputChangeHandler}/>
-                {validationErrors[FormKey.Quantity] && validationErrors[FormKey.Quantity].map((error, index) =>
-                    <div key={index} className={formStyle.inputErrorMessage}>{error}</div>
+                {validationErrors[FormKey.Quantity] && (
+                    <ul className={formStyle.inputErrorMessage}>
+                        {validationErrors[FormKey.Quantity].map((error, index) =>
+                            <li key={index}>{error}</li>
+                        )}
+                    </ul>
                 )}
             </div>
             <div className={formStyle.price}>
