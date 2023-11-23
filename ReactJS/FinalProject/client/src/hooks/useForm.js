@@ -31,7 +31,7 @@ export default function useForm(initialData) {
     }
 
     const updateFormValueByKeyAndValue = (key, value) => {
-        setFormValue(state => ({
+        setFormValue((state) => ({
             ...state,
             [key]: value,
         }));

@@ -3,11 +3,16 @@ import {useContext, useEffect} from "react";
 import formStyle from "./ProductFormBaseInfo.module.css";
 
 import useForm from "../../hooks/useForm.js";
+import useFormValidation from "../../hooks/useFormValidation.js";
+
 
 import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {initialProductData} from "../product-form/ProductForm.jsx";
+import {validationFormRules} from "./validationFormRules.js";
+
 import compareObjects from "../../utils/compareObjects.js";
+import {MessageContext} from "../../contexts/MessageContext.js";
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
     if (!groups || groups.length === 0) {
@@ -46,7 +51,6 @@ const FormKey = {
 }
 
 export default function ProductFormBaseInfo({showModalClickHandler}) {
-
     const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
     const {productData} = useContext(ProductFormContext);
     const {
@@ -56,10 +60,28 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
         changeDataHandler,
         onSubmitForm
     } = useForm(initialProductData);
+    const {validationErrors, validateForm} = useFormValidation(validationFormRules);
 
     useEffect(() => {
         updateFormValue(productData);
     }, [productData]);
+
+    const inputChangeHandler = (e) => {
+        const typeHandlers = {
+            'number': (target) => Number(target.value),
+            'checkbox': (target) => target.checked,
+            'radio': (target) => target.id,
+        }
+
+        let {type, value} = e.target;
+
+        if (typeHandlers[type]) {
+            value = typeHandlers[type](e.target);
+        }
+
+        changeDataHandler(e);
+        validateForm(value);
+    }
 
     const changeSelectedGroupClickHandler = (e) => {
         updateFormValueByKeyAndValue('selectedGroup', Number(e.target.id));
@@ -70,28 +92,37 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
             <div className={formStyle.name}>
                 <label htmlFor={FormKey.Name}>Име:</label>
                 <input id={FormKey.Name} type="text" name={FormKey.Name} value={formValue[FormKey.Name]}
-                       onChange={changeDataHandler}/>
+                       onChange={inputChangeHandler}/>
+                {Object.keys(validationErrors[FormKey.Name]).length > 0 && (
+                    <div className="error-message">
+                        {Object.values(validationErrors[FormKey.Name]).map((error, index) => (
+                            <div key={index}>{error}</div>
+                        ))}
+                    </div>
+                )}
             </div>
             <div className={formStyle.code}>
                 <label htmlFor={FormKey.Code}>Код:</label>
                 <input id={FormKey.Code} type="text" name={FormKey.Code} value={formValue[FormKey.Code]}
-                       onChange={changeDataHandler}/>
+                       onChange={inputChangeHandler}/>
                 <div className="error-message">{}</div>
             </div>
             <div className={formStyle.barcode}>
                 <label htmlFor={FormKey.Barcode}>Баркод:</label>
                 <input id={FormKey.Barcode} type="text" name={FormKey.Barcode} value={formValue[FormKey.Barcode]}
-                       onChange={changeDataHandler}/>
+                       onChange={inputChangeHandler}/>
             </div>
             <div className={formStyle.quantity}>
                 <label htmlFor={FormKey.Quantity}>Количество:</label>
                 <input id={FormKey.Quantity} type="number" step="1" name={FormKey.Quantity}
-                       value={formValue[FormKey.Quantity]} onChange={changeDataHandler}/>
+                       value={formValue[FormKey.Quantity]}
+                       onChange={inputChangeHandler}/>
             </div>
             <div className={formStyle.price}>
                 <label htmlFor={FormKey.Price}>Цена:</label>
                 <input id={FormKey.Price} type="number" step="0.01" name={FormKey.Price}
-                       value={formValue[FormKey.Price]} onChange={changeDataHandler}/>
+                       value={formValue[FormKey.Price]}
+                       onChange={inputChangeHandler}/>
             </div>
             <div className={formStyle.active}>
                 <label htmlFor={FormKey.IsActive}>Активен:</label>
@@ -103,7 +134,10 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
                 <AllGroupsElement
                     groups={formValue.groups}
                     changeHandler={changeSelectedGroupClickHandler}
-                    selectedId={formValue.selectedGroup}/>
+                    selectedId={formValue.selectedGroup}
+                    onChange={e => {
+                        console.log(Number(e.target))
+                    }}/>
             </div>
             <div className={formStyle.buttons}>
                 {haveButtons &&

@@ -21,7 +21,7 @@ export const initialProductData = {
     quantity: 0,
     price: 0,
     group: 0,
-    is_active: false,
+    is_active: true,
     groups: [],
     selectedGroup: 0,
 };
