@@ -12,6 +12,7 @@ import {MessageContext} from "../../contexts/MessageContext.js";
 import {updateProductById} from "../../services/productService.js";
 
 import compareObjects from "../../utils/compareObjects.js";
+import useFormValidation from "../../hooks/useFormValidation.js";
 
 
 export default function ProductFormUpdate({closeModalHandler}) {
@@ -21,6 +22,7 @@ export default function ProductFormUpdate({closeModalHandler}) {
     const {product} = useContext(SingleProductContext);
     const [productChanged, setProductChanged] = useState(false);
     const formRef = useRef();
+    const {validationErrors, validateForm} = useFormValidation();
 
 
     useEffect(() => {

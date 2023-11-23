@@ -52,6 +52,7 @@ const FormKey = {
 
 export default function ProductFormBaseInfo({showModalClickHandler}) {
     const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
+    const {updateMessage, updateStatus} = useContext(MessageContext);
     const {productData} = useContext(ProductFormContext);
     const {
         formValue,
@@ -63,7 +64,15 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
     const {validationErrors, validateForm} = useFormValidation(validationFormRules);
 
     useEffect(() => {
-        console.log(validationErrors)
+        updateMessage(Object.values(validationErrors));
+        updateStatus('error');
+        // console.log(validationErrors)
+        // Object.keys(validationErrors).forEach(key => {
+        //     if (validationErrors[key].length > 0) {
+        //         updateMessage(validationErrors[key]);
+        //         updateStatus('error');
+        //     }
+        // });
     }, [validationErrors]);
 
     useEffect(() => {
@@ -71,6 +80,7 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
     }, [productData]);
 
     const inputChangeHandler = (e) => {
+        // console.log(e.target)
         const typeHandlers = {
             'number': (target) => Number(target.value),
             'checkbox': (target) => target.checked,
@@ -97,47 +107,28 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
                 <label htmlFor={FormKey.Name}>Име:</label>
                 <input id={FormKey.Name} type="text" name={FormKey.Name} value={formValue[FormKey.Name]}
                        onChange={inputChangeHandler}/>
-                {validationErrors[FormKey.Name] && validationErrors[FormKey.Name].map((error, index) =>
-                    <div key={index} className={formStyle.inputErrorMessage}>{error}</div>
-                )}
             </div>
             <div className={formStyle.code}>
                 <label htmlFor={FormKey.Code}>Код:</label>
                 <input id={FormKey.Code} type="text" name={FormKey.Code} value={formValue[FormKey.Code]}
                        onChange={inputChangeHandler}/>
-                {validationErrors[FormKey.Code] && validationErrors[FormKey.Code].map((error, index) =>
-                    <div key={index} className={formStyle.inputErrorMessage}>{error}</div>
-                )}
             </div>
             <div className={formStyle.barcode}>
                 <label htmlFor={FormKey.Barcode}>Баркод:</label>
                 <input id={FormKey.Barcode} type="text" name={FormKey.Barcode} value={formValue[FormKey.Barcode]}
                        onChange={inputChangeHandler}/>
-                {validationErrors[FormKey.Barcode] && validationErrors[FormKey.Barcode].map((error, index) =>
-                    <div key={index} className={formStyle.inputErrorMessage}>{error}</div>
-                )}
             </div>
             <div className={formStyle.quantity}>
                 <label htmlFor={FormKey.Quantity}>Количество:</label>
                 <input id={FormKey.Quantity} type="number" step="1" name={FormKey.Quantity}
                        value={formValue[FormKey.Quantity]}
                        onChange={inputChangeHandler}/>
-                {validationErrors[FormKey.Quantity] && (
-                    <ul className={formStyle.inputErrorMessage}>
-                        {validationErrors[FormKey.Quantity].map((error, index) =>
-                            <li key={index}>{error}</li>
-                        )}
-                    </ul>
-                )}
             </div>
             <div className={formStyle.price}>
                 <label htmlFor={FormKey.Price}>Цена:</label>
                 <input id={FormKey.Price} type="number" step="0.01" name={FormKey.Price}
                        value={formValue[FormKey.Price]}
                        onChange={inputChangeHandler}/>
-                {validationErrors[FormKey.Price] && validationErrors[FormKey.Price].map((error, index) =>
-                    <div key={index} className={formStyle.inputErrorMessage}>{error}</div>
-                )}
             </div>
             <div className={formStyle.active}>
                 <label htmlFor={FormKey.IsActive}>Активен:</label>
@@ -149,10 +140,7 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
                 <AllGroupsElement
                     groups={formValue.groups}
                     changeHandler={changeSelectedGroupClickHandler}
-                    selectedId={formValue.selectedGroup}
-                    onChange={e => {
-                        console.log(Number(e.target))
-                    }}/>
+                    selectedId={formValue.selectedGroup}/>
             </div>
             <div className={formStyle.buttons}>
                 {haveButtons &&

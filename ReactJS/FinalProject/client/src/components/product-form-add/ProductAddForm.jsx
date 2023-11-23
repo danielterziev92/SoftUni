@@ -9,30 +9,54 @@ import {MessageContext} from "../../contexts/MessageContext.js";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
+import useFormValidation from "../../hooks/useFormValidation.js";
+import {validationFormRules} from "../product-form-base-info/validationFormRules.js";
 
 export default function ProductAddForm({closeModalHandler}) {
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const {addToAllProducts} = useContext(ProductsContext)
     const formRef = useRef();
+    const {validationErrors, validateForm} = useFormValidation(validationFormRules);
 
     const onSubmitFormHandler = async (data) => {
         formRef.current.requestSubmit();
-        if (data === undefined) {
-            return;
-        }
         const {groups, selectedGroup, ...productData} = data;
 
-        try {
-            const result = await createProduct({...productData, group: selectedGroup});
-            console.log(result)
-            addToAllProducts(result);
-            updateMessage('Успешно добавихте продукт');
-            updateStatus('success');
-            closeModalHandler();
-        } catch (e) {
-            updateMessage(e.message);
+        if (Object.entries(productData).map(([filed, value]) => {
+            if (filed === 'is_active') {
+                return;
+            }
+            validateForm(filed, value)
+        })) {
+            updateMessage('Моля попълнете всички полета');
             updateStatus('error');
+            return;
         }
+
+        // if (areAllFalsyExceptField(productData, 'is_active')) {
+        //     updateMessage('Моля попълнете всички полета');
+        //     updateStatus('error');
+        //     return;
+        // }
+
+        // if (data === undefined) {
+        //     console.log(data)
+        //     return;
+        // }
+
+        console.log(productData)
+
+        // try {
+        //     const result = await createProduct({...productData, group: selectedGroup});
+        //     console.log(result)
+        //     addToAllProducts(result);
+        //     updateMessage('Успешно добавихте продукт');
+        //     updateStatus('success');
+        //     closeModalHandler();
+        // } catch (e) {
+        //     updateMessage(e.message);
+        //     updateStatus('error');
+        // }
 
     }
 

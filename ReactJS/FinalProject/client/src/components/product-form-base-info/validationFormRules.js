@@ -49,7 +49,7 @@ export const validationFormRules = {
     ],
     group: [
         {
-            condition: (value) => isValueEmpty(value),
+            condition: (value) => Number.isInteger(value) && value > 0,
             errorMessage: 'Трябва да изберете група',
         }
     ]
