@@ -36,6 +36,15 @@ function AllGroupsElement({groups, changeHandler, selectedId}) {
     );
 }
 
+const FormKey = {
+    Name: 'name',
+    Code: 'code',
+    Barcode: 'barcode',
+    Quantity: 'quantity',
+    Price: 'price',
+    IsActive: 'is_active',
+}
+
 export default function ProductFormBaseInfo({showModalClickHandler}) {
 
     const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
@@ -59,35 +68,35 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
     return (
         <form ref={formRef} onSubmit={onSubmitForm} className={formStyle.Form}>
             <div className={formStyle.name}>
-                <label htmlFor="name">Име:</label>
-                <input id="name" type="text" name="name" value={formValue.name}
+                <label htmlFor={FormKey.Name}>Име:</label>
+                <input id={FormKey.Name} type="text" name={FormKey.Name} value={formValue[FormKey.Name]}
                        onChange={changeDataHandler}/>
             </div>
             <div className={formStyle.code}>
-                <label htmlFor="code">Код:</label>
-                <input id="code" type="text" name="code" value={formValue.code}
+                <label htmlFor={FormKey.Code}>Код:</label>
+                <input id={FormKey.Code} type="text" name={FormKey.Code} value={formValue[FormKey.Code]}
                        onChange={changeDataHandler}/>
                 <div className="error-message">{}</div>
             </div>
             <div className={formStyle.barcode}>
-                <label htmlFor="barcode">Баркод:</label>
-                <input id="barcode" type="text" name="barcode" value={formValue.barcode}
+                <label htmlFor={FormKey.Barcode}>Баркод:</label>
+                <input id={FormKey.Barcode} type="text" name={FormKey.Barcode} value={formValue[FormKey.Barcode]}
                        onChange={changeDataHandler}/>
             </div>
             <div className={formStyle.quantity}>
-                <label htmlFor="quantity">Количество:</label>
-                <input id="quantity" type="number" step="1" name="quantity" value={formValue.quantity}
-                       onChange={changeDataHandler}/>
+                <label htmlFor={FormKey.Quantity}>Количество:</label>
+                <input id={FormKey.Quantity} type="number" step="1" name={FormKey.Quantity}
+                       value={formValue[FormKey.Quantity]} onChange={changeDataHandler}/>
             </div>
             <div className={formStyle.price}>
-                <label htmlFor="price">Цена:</label>
-                <input id="price" type="number" step="0.01" name="price" value={formValue.price}
-                       onChange={changeDataHandler}/>
+                <label htmlFor={FormKey.Price}>Цена:</label>
+                <input id={FormKey.Price} type="number" step="0.01" name={FormKey.Price}
+                       value={formValue[FormKey.Price]} onChange={changeDataHandler}/>
             </div>
             <div className={formStyle.active}>
-                <label htmlFor="is_active">Активен:</label>
-                <input id="is_active" type="checkbox" name="is_active" checked={formValue.is_active}
-                       onChange={changeDataHandler}/>
+                <label htmlFor={FormKey.IsActive}>Активен:</label>
+                <input id={FormKey.IsActive} type="checkbox" name={FormKey.IsActive}
+                       checked={formValue[FormKey.IsActive]} onChange={changeDataHandler}/>
             </div>
             <div className={formStyle.groups}>
                 <span>Групи:</span>
