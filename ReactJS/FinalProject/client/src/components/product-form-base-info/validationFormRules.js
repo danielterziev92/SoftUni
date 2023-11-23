@@ -1,5 +1,5 @@
 const isValueEmpty = (value) => value.trim() !== '';
-const checkMaxLength = (value, maxLength) => value.length > maxLength;
+const checkMaxLength = (value, maxLength) => value.length < maxLength;
 
 const fieldsMaxLength = {
     name: 100,
@@ -33,7 +33,7 @@ export const validationFormRules = {
     ],
     quantity: [
         {
-            condition: (value) => value > 100,
+            condition: (value) => Number.isInteger(value) && value > 0,
             errorMessage: 'Количеството трябва да бъде позитивно число',
         },
         {

@@ -201,6 +201,11 @@
     outline: none;
 }
 
+.Form div .inputErrorMessage {
+    width: 100%;
+    color: red;
+}
+
 .productTitle {
     font-weight: bolder;
 }

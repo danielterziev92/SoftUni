@@ -1,27 +1,29 @@
 import {useState} from "react";
 
-export default function useFormValidation(validationRules) {
-    const [validationErrors, setValidationErrors] = useState(validationRules);
+export default function useFormValidation(initialValidationRules) {
+    const [validationRules] = useState(initialValidationRules);
+    const [validationErrors, setValidationErrors] = useState({});
 
-    const validateForm = (value) => {
-        let isValid = true;
-        const newErrors = {};
+    const validateForm = (name, value) => {
+        const allErrorMessages = [];
 
-        Object.entries(validationRules).forEach(([fieldName, rules]) => {
-            rules.forEach(rule => {
-                if (!rule.condition && rule.condition(value)) {
-                    return;
-                }
-
-                isValid = false;
-                newErrors[fieldName] = rule.errorMessage;
-            });
+        validationRules[name].map(rule => {
+            if (rule.condition && !rule.condition(value)) {
+                allErrorMessages.push(rule.errorMessage);
+            }
         });
 
-        setValidationErrors(newErrors);
-        console.log(newErrors)
-
-        return isValid;
+        if (allErrorMessages.length > 0) {
+            setValidationErrors(state => ({
+                ...state,
+                [name]: allErrorMessages,
+            }))
+        } else {
+            setValidationErrors(state => ({
+                ...state,
+                [name]: [],
+            }))
+        }
     };
 
     return {validationErrors, validateForm};
