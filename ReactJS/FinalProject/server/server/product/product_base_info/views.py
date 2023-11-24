@@ -8,41 +8,49 @@ class ProductValidationMixin:
     def check_all_fields(self):
         serializer = self.get_serializer(data=self.request.data)
 
-        fields_to_check = {
-            'name': serializer.initial_data.get('name'),
-            'code': serializer.initial_data.get('code'),
-            'barcode': serializer.initial_data.get('barcode'),
-            'quantity': serializer.initial_data.get('quantity'),
-            'price': serializer.initial_data.get('price'),
-            'group': serializer.initial_data.get('group'),
-        }
+        fields_to_check = {key: serializer.initial_data.get(key) for key in serializer.initial_data.keys()}
 
-        for field in fields_to_check.keys():
-            self.check_is_already_exist(field, fields_to_check[field])
+        if fields_to_check.get('name') == '':
+            self.raise_error_message('Името не може да бъде празно')
+
+        for field in ['code', 'barcode']:
+            value = fields_to_check[field]
+            error_messages = {
+                'code': f'Продукт с този код: {value} вече съществува.',
+                'barcode': f'Продукт с този баркод: {value} вече съществува.',
+            }
+            if fields_to_check.get('id'):
+                self.check_is_already_exist(field, fields_to_check[field], error_messages[field],
+                                            fields_to_check.get('id'))
+            else:
+                self.check_is_already_exist(field, fields_to_check[field], error_messages[field])
+
+        for field in ['price', 'quantity', 'group']:
+            value = fields_to_check[field]
+            error_messages = {
+                'quantity': f'Количеството не може да бъде {value}',
+                'price': f'Цената не може да бъде {value}',
+                'group': f'Трабва да изберете група',
+            }
+
+            self.check_is_value_zero(value, error_messages[field])
+
+    def check_is_value_zero(self, value, error_message):
+        if value == 0:
+            self.raise_error_message(error_message)
+
+    def check_is_already_exist(self, key, value, error_message, pk=None):
+        if pk:
+            queryset = ProductBaseInformation.objects.exclude(pk=pk)
+        else:
+            queryset = ProductBaseInformation.objects.all()
+
+        if queryset.filter(**{key: value}).exists():
+            self.raise_error_message(error_message)
 
     @staticmethod
-    def check_is_already_exist(key, value):
-        error_messages = {
-            'code': f'Продукт с този код: {value} вече съществува.',
-            'barcode': f'Продукт с този баркод: {value} вече съществува.',
-            'quantity': f'Количеството не може да бъде {value}',
-            'price': f'Цената не може да бъде {value}',
-            'group': f'Трабва да изберете група',
-        }
-
-        if type(value) == str:
-            if ProductBaseInformation.objects.filter(**{key: value}).exists():
-                error_message = {'message': error_messages[key]}
-                raise serializers.ValidationError(error_message)
-
-        if type(value) == int:
-            if value == 0:
-                error_message = {'message': error_messages[key]}
-                raise serializers.ValidationError(error_message)
-
-        if not value:
-            error_message = {'message': 'Всички полета са задължителни'}
-            raise serializers.ValidationError(error_message)
+    def raise_error_message(message):
+        raise serializers.ValidationError({'message': message})
 
 
 class ProductListView(rest_views.ListAPIView):
