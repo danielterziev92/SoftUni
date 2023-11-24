@@ -12,6 +12,10 @@ import {ProductsContext} from "../../contexts/ProductsContext.js";
 import useFormValidation from "../../hooks/useFormValidation.js";
 import {validationFormRules} from "../product-form-base-info/validationFormRules.js";
 
+function areAllFalsyExceptField(obj) {
+    return Object.values(obj).every(value => !value);
+}
+
 export default function ProductAddForm({closeModalHandler}) {
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const {addToAllProducts} = useContext(ProductsContext)
@@ -21,42 +25,34 @@ export default function ProductAddForm({closeModalHandler}) {
     const onSubmitFormHandler = async (data) => {
         formRef.current.requestSubmit();
         const {groups, selectedGroup, ...productData} = data;
+        productData.group = selectedGroup;
 
-        if (Object.entries(productData).map(([filed, value]) => {
+        Object.entries(productData).map(([filed, value]) => {
             if (filed === 'is_active') {
                 return;
             }
             validateForm(filed, value)
-        })) {
+        })
+
+        if (areAllFalsyExceptField(validationErrors)) {
             updateMessage('Моля попълнете всички полета');
             updateStatus('error');
             return;
         }
 
-        // if (areAllFalsyExceptField(productData, 'is_active')) {
-        //     updateMessage('Моля попълнете всички полета');
-        //     updateStatus('error');
-        //     return;
-        // }
-
-        // if (data === undefined) {
-        //     console.log(data)
-        //     return;
-        // }
-
-        console.log(productData)
-
-        // try {
-        //     const result = await createProduct({...productData, group: selectedGroup});
-        //     console.log(result)
-        //     addToAllProducts(result);
-        //     updateMessage('Успешно добавихте продукт');
-        //     updateStatus('success');
-        //     closeModalHandler();
-        // } catch (e) {
-        //     updateMessage(e.message);
-        //     updateStatus('error');
-        // }
+        try {
+            const result = await createProduct({...productData});
+            console.log(result)
+            // addToAllProducts(result);
+            // updateMessage('Успешно добавихте продукт');
+            // updateStatus('success');
+            // closeModalHandler();
+        } catch (e) {
+            const messages = Object.values(e)
+            updateMessage(messages)
+            // updateMessage(e.message);
+            // updateStatus('error');
+        }
 
     }
 

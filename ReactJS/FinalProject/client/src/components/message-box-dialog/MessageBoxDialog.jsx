@@ -30,6 +30,7 @@ export default function MessageBoxDialog() {
             </div>
         );
     };
+    ``
 
     const ShowSingleMessage = ({message, status}) => {
         return (
@@ -42,7 +43,8 @@ export default function MessageBoxDialog() {
     const ShowMultipleMessages = ({messages, status}) => {
         return (
             <div className={`${style.MessageBox}`}>
-                {messages.map((message, index) => <MessageBody key={index} message={message} status={status}/>)}
+                {messages.map((message, index) => message.length > 0 &&
+                    <MessageBody key={index} message={message} status={status}/>)}
             </div>
         );
     }
