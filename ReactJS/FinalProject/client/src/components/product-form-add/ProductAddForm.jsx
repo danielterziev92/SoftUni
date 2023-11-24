@@ -20,7 +20,7 @@ export default function ProductAddForm({closeModalHandler}) {
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const {addToAllProducts} = useContext(ProductsContext)
     const formRef = useRef();
-    const {validationErrors, validateForm} = useFormValidation(validationFormRules);
+    const {validateForm} = useFormValidation(validationFormRules);
 
     const onSubmitFormHandler = async (data) => {
         formRef.current.requestSubmit();

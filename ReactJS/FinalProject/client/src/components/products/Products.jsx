@@ -46,6 +46,8 @@ export default function Products() {
 
     const updateExistedProducts = (existedProduct) => setAllProducts(allProducts.map(item => item.id === existedProduct.id ? existedProduct : item))
 
+    const deleteExistedProduct = (existedProduct) => setAllProducts(allProducts.filter(item => item.id !== existedProduct.id))
+
     const addToAllProducts = (newProduct) => {
         setAllProducts(state => ([...state, newProduct]));
     }
@@ -67,6 +69,7 @@ export default function Products() {
         allProducts,
         updateAllProducts,
         updateExistedProducts,
+        deleteExistedProduct,
         addToAllProducts,
     }
 

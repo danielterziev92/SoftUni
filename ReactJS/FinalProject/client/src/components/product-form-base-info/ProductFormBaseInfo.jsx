@@ -119,7 +119,7 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
                 </div>
                 <div className={formStyle.price}>
                     <label htmlFor={FormKey.Price}>Цена:</label>
-                    <input id={FormKey.Price} type="number" step="0.01" name={FormKey.Price}
+                    <input id={FormKey.Price} type="number" step="0.001" name={FormKey.Price}
                            value={formValue[FormKey.Price]}
                            onChange={inputChangeHandler}/>
                 </div>

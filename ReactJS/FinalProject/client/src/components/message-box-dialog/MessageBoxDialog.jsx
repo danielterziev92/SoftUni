@@ -15,7 +15,7 @@ const statusIcons = {
 export default function MessageBoxDialog() {
     const {message: {text, status}, closeMessageBoxDialog} = useContext(MessageContext);
 
-    const isVisible = useAutoDisappear(5000, text);
+    const {isVisible} = useAutoDisappear(5000, text);
 
     return (
         <>

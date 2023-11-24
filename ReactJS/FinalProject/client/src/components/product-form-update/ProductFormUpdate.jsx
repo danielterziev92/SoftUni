@@ -9,7 +9,7 @@ import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {MessageContext} from "../../contexts/MessageContext.js";
 
-import {updateProductById} from "../../services/productService.js";
+import {deleteProductById, updateProductById} from "../../services/productService.js";
 
 import compareObjects from "../../utils/compareObjects.js";
 import useFormValidation from "../../hooks/useFormValidation.js";
@@ -18,11 +18,10 @@ import useFormValidation from "../../hooks/useFormValidation.js";
 export default function ProductFormUpdate({closeModalHandler}) {
 
     const {updateMessage, updateStatus} = useContext(MessageContext);
-    const {allProducts, updateAllProducts, updateExistedProducts} = useContext(ProductsContext);
+    const {allProducts, updateAllProducts, updateExistedProducts, deleteExistedProduct} = useContext(ProductsContext);
     const {product} = useContext(SingleProductContext);
     const [productChanged, setProductChanged] = useState(false);
     const formRef = useRef();
-    const {validationErrors, validateForm} = useFormValidation();
 
 
     useEffect(() => {
@@ -34,8 +33,18 @@ export default function ProductFormUpdate({closeModalHandler}) {
     const onSubmitFormHandler = async (productData) => {
         formRef.current.requestSubmit();
         const {selectedGroup, groups, ...data} = productData;
+        let result;
+        try {
+            result = await updateProductById(data.id, data);
+            console.log(result)
+        } catch (e) {
+            const messages = Object.values(e)
+            console.log(messages)
+            updateMessage(messages);
+            updateStatus('error');
+            return;
+        }
 
-        const result = await updateProductById(data.id, data);
         if (compareObjects(data, result)) {
             updateMessage(`Успешно променихте продукт ${data.name}`);
             updateStatus('success');
@@ -48,9 +57,15 @@ export default function ProductFormUpdate({closeModalHandler}) {
     }
 
     const deleteProductClickHandler = (productData) => {
-        console.log(productData)
-        updateMessage(`Успешно изтрихте пордукт ${productData.name}`);
-        updateStatus('success');
+        try {
+            deleteProductById(productData.id);
+            deleteExistedProduct(productData);
+            updateMessage(`Успешно изтрихте пордукт ${productData.name}`);
+            updateStatus('success');
+            closeModalHandler();
+        } catch (e) {
+            console.log(e);
+        }
     }
 
 
