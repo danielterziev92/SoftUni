@@ -13,7 +13,6 @@
 
 .Form div {
     width: 100%;
-    max-width: 380px;
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
@@ -202,12 +201,12 @@
     outline: none;
 }
 
-.inputErrorMessage {
-    max-width: 380px;
+.errors {
+    /*max-width: 380px;*/
     color: red;
 }
 
-.inputErrorMessage li {
+.errors li {
     list-style: none;
 }
 

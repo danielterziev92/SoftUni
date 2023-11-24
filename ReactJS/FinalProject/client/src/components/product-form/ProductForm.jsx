@@ -124,10 +124,7 @@ export default function ProductForm() {
                     }
                 />
             }
-            <ProductListNavigationTabs closeFormDialogSet={true}/>
-            {activeTab === 'base-info' &&
-                <ProductFormBaseInfo showModalClickHandler={showModalClickHandler}/>
-            }
+            <ProductFormBaseInfo showModalClickHandler={showModalClickHandler}/>
         </ProductFormContext.Provider>
     );
 }

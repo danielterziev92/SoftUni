@@ -15,48 +15,23 @@ const statusIcons = {
 export default function MessageBoxDialog() {
     const {message: {text, status}, closeMessageBoxDialog} = useContext(MessageContext);
 
-    // const isVisible = useAutoDisappear(5000, text);
-
-    const MessageBody = ({message, status}) => {
-        return (
-            <div className={style[status]}>
-                <div className={`${style.icon} ${style[status]}`}>
-                    {statusIcons[status]}
-                </div>
-                <div>
-                    {message}
-                </div>
-                <i className="fas fa-times-circle" onClick={closeMessageBoxDialog}></i>
-            </div>
-        );
-    };
-    ``
-
-    const ShowSingleMessage = ({message, status}) => {
-        return (
-            <div className={`${style.MessageBox} ${style[status]}`}>
-                <MessageBody message={message} status={status}/>
-            </div>
-        );
-    };
-
-    const ShowMultipleMessages = ({messages, status}) => {
-        return (
-            <div className={`${style.MessageBox}`}>
-                {messages.map((message, index) => message.length > 0 &&
-                    <MessageBody key={index} message={message} status={status}/>)}
-            </div>
-        );
-    }
-
+    const isVisible = useAutoDisappear(5000, text);
 
     return (
         <>
-            {
-                typeof text === 'string'
-                    ? <ShowSingleMessage message={text} status={status}/>
-                    : <ShowMultipleMessages messages={text} status={status}/>
-            }
+            {isVisible && (
+                <div className={`${style.MessageBox}`}>
+                    <div className={style[status]}>
+                        <div className={`${style.icon} ${style[status]}`}>
+                            {statusIcons[status]}
+                        </div>
+                        <div>
+                            {text}
+                        </div>
+                        <i className="fas fa-times-circle" onClick={closeMessageBoxDialog}></i>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

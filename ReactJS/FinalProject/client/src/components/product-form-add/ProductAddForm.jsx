@@ -24,17 +24,21 @@ export default function ProductAddForm({closeModalHandler}) {
 
     const onSubmitFormHandler = async (data) => {
         formRef.current.requestSubmit();
+        if (!data) {
+            return;
+        }
+
         const {groups, selectedGroup, ...productData} = data;
         productData.group = selectedGroup;
 
-        Object.entries(productData).map(([filed, value]) => {
+        const result = Object.entries(productData).map(([filed, value]) => {
             if (filed === 'is_active') {
                 return;
             }
             validateForm(filed, value)
         })
 
-        if (areAllFalsyExceptField(validationErrors)) {
+        if (!areAllFalsyExceptField(result)) {
             updateMessage('Моля попълнете всички полета');
             updateStatus('error');
             return;
@@ -42,16 +46,14 @@ export default function ProductAddForm({closeModalHandler}) {
 
         try {
             const result = await createProduct({...productData});
-            console.log(result)
-            // addToAllProducts(result);
-            // updateMessage('Успешно добавихте продукт');
-            // updateStatus('success');
-            // closeModalHandler();
+            addToAllProducts(result);
+            updateMessage('Успешно добавихте продукт');
+            updateStatus('success');
+            closeModalHandler();
         } catch (e) {
             const messages = Object.values(e)
             updateMessage(messages)
-            // updateMessage(e.message);
-            // updateStatus('error');
+            updateStatus('error');
         }
 
     }
@@ -87,7 +89,7 @@ export default function ProductAddForm({closeModalHandler}) {
             }
             successButtonMessage={'Добави'}
             errorButtonMessage={'Отказ'}
-            successButtonHandler={() => onSubmitFormHandler()}
+            successButtonHandler={() => onSubmitFormHandler(null)}
             errorButtonHandler={closeModalHandler}
             closeModalHanlder={closeModalHandler}
         />
