@@ -9,6 +9,7 @@ class ProductValidationMixin:
         serializer = self.get_serializer(data=self.request.data)
 
         fields_to_check = {key: serializer.initial_data.get(key) for key in serializer.initial_data.keys()}
+        fields_to_check.update({'price': float(fields_to_check.get('price'))})
 
         if fields_to_check.get('name') == '':
             self.raise_error_message('Името не може да бъде празно')
@@ -29,7 +30,7 @@ class ProductValidationMixin:
             value = fields_to_check[field]
             error_messages = {
                 'quantity': f'Количеството не може да бъде {value}',
-                'price': f'Цената не може да бъде {value}',
+                'price': f'Цената не може да бъде {value:.3f}',
                 'group': f'Трабва да изберете група',
             }
 
