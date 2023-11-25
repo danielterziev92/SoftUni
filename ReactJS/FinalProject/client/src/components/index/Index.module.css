@@ -10,3 +10,58 @@
     justify-content: center;
     align-items: center;
 }
+
+.Form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 400px;
+    padding: 20px;
+    /*border: 1px solid #2C3344;*/
+    border-radius: 20px;
+    gap: 20px;
+}
+
+.Form div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.Form div label,
+.Form div input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Form div label {
+    color: #2C3344;
+}
+
+.Form div input {
+    padding: 10px;
+    border-radius: 10px;
+    appearance: none;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+.Form div input:focus {
+    border: 1px solid #4e45e3;
+    outline: none;
+}
+
+.Form div button {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    background-color: #4f46e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.Form div a {
+    text-decoration: none;
+}
