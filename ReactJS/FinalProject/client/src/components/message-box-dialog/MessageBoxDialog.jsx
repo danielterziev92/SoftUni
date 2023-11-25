@@ -2,7 +2,7 @@ import {useContext} from "react";
 
 import style from './MessageBoxDialog.module.css';
 
-import {MessageContext} from "../../contexts/MessageContext.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 import useAutoDisappear from "../../hooks/useAutoDisappear.js";
 

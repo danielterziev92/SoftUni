@@ -1,6 +1,15 @@
-import {useState} from "react";
+import {createContext, useState} from "react";
 
-export default function useMessage() {
+const initialState = {
+    message: '',
+    status: '',
+}
+
+export const MessageContext = createContext(initialState);
+
+MessageContext.displayName = 'MessageContext';
+
+export default function MessageProvider({children}) {
     const [message, setMessage] = useState({text: '', status: ''});
     const [isMessageBoxShow, setIsMessageBoxShow] = useState(false);
 
@@ -21,12 +30,17 @@ export default function useMessage() {
 
     const closeMessageBoxDialog = () => setIsMessageBoxShow(false);
 
-
-    return {
+    const messageContextValues = {
         message,
-        isMessageBoxShow,
         updateMessage,
         updateStatus,
-        closeMessageBoxDialog
-    };
+        isMessageBoxShow,
+        closeMessageBoxDialog,
+    }
+
+    return (
+        <MessageContext.Provider value={{...messageContextValues}}>
+            {children}
+        </MessageContext.Provider>
+    );
 }

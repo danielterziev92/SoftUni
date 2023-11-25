@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 
 import navStyle from '../Main.module.css'
 
@@ -8,12 +8,10 @@ import SearchProduct from "../search-product/SearchProduct.jsx";
 import Spinner from "../spinner/Spinner.jsx";
 import ProductList from "../product-list/ProductList.jsx";
 
-import {MessageContext} from "../../contexts/MessageContext.js";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
 
-import useMessage from "../../hooks/useMessage.js";
-
 import {getAllProducts} from "../../services/productService.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 const initialState = {
     title: 'Всички продукти',
@@ -27,8 +25,7 @@ export default function Products() {
     const [productsState, setProductsState] = useState(initialState);
     const [isShowAddProduct, setIsShowAddProduct] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
-
-    const {message, isMessageBoxShow, updateMessage, updateStatus, closeMessageBoxDialog} = useMessage();
+    const {updateMessage, isMessageBoxShow} = useContext(MessageContext);
 
 
     useEffect(() => {
@@ -56,15 +53,6 @@ export default function Products() {
 
     const closeAddProductClickHandler = () => setIsShowAddProduct(false);
 
-
-    const messageContextValues = {
-        message,
-        updateMessage,
-        updateStatus,
-        isMessageBoxShow,
-        closeMessageBoxDialog,
-    }
-
     const productsContextValue = {
         allProducts,
         updateAllProducts,
@@ -75,32 +63,30 @@ export default function Products() {
 
     return (
         <>
-            <MessageContext.Provider value={messageContextValues}>
-                {isMessageBoxShow && <MessageBoxDialog/>}
-                <nav className={navStyle.Nav}>
-                    <ul>
-                        <li><h2>Всички продукти</h2></li>
-                        <li><SearchProduct setSearchProduct={setSearchProduct}/></li>
-                        <li>
-                            <div className={navStyle.addProduct} onClick={showAddProductClickHandler}>
-                                <i className="fa-solid fa-circle-plus"></i> Добави
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+            {isMessageBoxShow && <MessageBoxDialog/>}
+            <nav className={navStyle.Nav}>
+                <ul>
+                    <li><h2>Всички продукти</h2></li>
+                    <li><SearchProduct setSearchProduct={setSearchProduct}/></li>
+                    <li>
+                        <div className={navStyle.addProduct} onClick={showAddProductClickHandler}>
+                            <i className="fa-solid fa-circle-plus"></i> Добави
+                        </div>
+                    </li>
+                </ul>
+            </nav>
 
-                <ProductsContext.Provider value={{...productsContextValue}}>
-                    {isShowAddProduct && <ProductAddForm closeModalHandler={closeAddProductClickHandler}/>}
+            <ProductsContext.Provider value={{...productsContextValue}}>
+                {isShowAddProduct && <ProductAddForm closeModalHandler={closeAddProductClickHandler}/>}
 
-                    {productsState.isSpinnerShow && <Spinner/>}
+                {productsState.isSpinnerShow && <Spinner/>}
 
-                    {!productsState.isSpinnerShow &&
-                        <section>
-                            <ProductList/>
-                        </section>
-                    }
-                </ProductsContext.Provider>
-            </MessageContext.Provider>
+                {!productsState.isSpinnerShow &&
+                    <section>
+                        <ProductList/>
+                    </section>
+                }
+            </ProductsContext.Provider>
         </>
     );
 }

@@ -5,7 +5,7 @@ import ProductForm, {initialProductData} from "../product-form/ProductForm.jsx";
 
 import {createProduct} from '../../services/productService.js'
 
-import {MessageContext} from "../../contexts/MessageContext.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {ProductsContext} from "../../contexts/ProductsContext.js";

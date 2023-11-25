@@ -7,17 +7,23 @@ import NavigationGroups from "../navigation-groups/NavigationGroups.jsx";
 import {sections} from "./asideSections.js";
 
 import asideStyle from './Aside.module.css';
+import {useContext} from "react";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 
 export default function Aside() {
+    const {updateMessage, updateStatus} = useContext(MessageContext);
+
     const userEmail = 'brian.hughes@company.com'
 
     const handleEmail = async () => {
         try {
             await clipboard(userEmail);
-            alert(`${userEmail} is copied to clipboard`);
+            updateMessage(`Имейл адрес:${userEmail} беше копиран в клипборда`);
+            updateStatus('success');
         } catch (error) {
-            alert('Copy failed. Please try again.');
+            updateMessage('Грешка при копирането в клипборда');
+            updateStatus('error');
         }
     }
 

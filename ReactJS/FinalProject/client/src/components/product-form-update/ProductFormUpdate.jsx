@@ -7,7 +7,7 @@ import ProductForm from "../product-form/ProductForm.jsx";
 import {ProductsContext} from "../../contexts/ProductsContext.js";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
-import {MessageContext} from "../../contexts/MessageContext.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 import {deleteProductById, updateProductById} from "../../services/productService.js";
 

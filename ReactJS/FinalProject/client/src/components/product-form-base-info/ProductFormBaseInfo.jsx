@@ -12,7 +12,7 @@ import {initialProductData} from "../product-form/ProductForm.jsx";
 import {validationFormRules} from "./validationFormRules.js";
 
 import compareObjects from "../../utils/compareObjects.js";
-import {MessageContext} from "../../contexts/MessageContext.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
     if (!groups || groups.length === 0) {
