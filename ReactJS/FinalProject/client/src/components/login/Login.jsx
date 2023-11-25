@@ -1,4 +1,4 @@
-import {useContext, useRef} from "react";
+import {useContext, useEffect, useRef} from "react";
 
 import loginStyle from './Login.module.css';
 
@@ -21,6 +21,10 @@ export default function Login() {
     const {formRef} = useContext(FormContext);
     const {formValue, updateFormValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData);
 
+    useEffect(() => {
+        focusedInput.current.focus();
+    }, [focusedInput]);
+
 
     // <div className={formStyle.name}>
     //     <label htmlFor={FormKey.Name}>Име:</label>
@@ -34,7 +38,7 @@ export default function Login() {
                     <div key={key}>
                         <label htmlFor={key}>{FormKeyTranslation[key]}</label>
                         <input id={key} value={value} name={formValue[key]} onChange={changeDataHandler}
-                               ref={focusedInput === key}/>
+                               ref={focusedInput.current === key ? focusedInput : null}/>
                     </div>
                 ))}
                 <button>Вход</button>
