@@ -18,7 +18,7 @@
     text-decoration: none;
 }
 
-
+.active,
 .verticalNavGroupItems a:hover {
     background-color: var(--aside-button-hover);
     border-radius: 5px 0 0 5px;

@@ -8,15 +8,15 @@ export const sections = [
                 itemIClassName: 'fa-solid fa-boxes-stacked',
             },
             {
-                itemTitle: 'Продажба',
-                itemHREF: '/sale',
-                itemIClassName: 'fa-solid fa-cash-register',
+                itemTitle: 'Групи',
+                itemHREF: '/groups',
+                itemIClassName: 'fa-solid fa-folder-tree',
             },
-            {
-                itemTitle: 'Продажба',
-                itemHREF: '/sale',
-                itemIClassName: 'fa-solid fa-truck-medical',
-            }
+            // {
+            //     itemTitle: 'Продажба',
+            //     itemHREF: '/sale',
+            //     itemIClassName: 'fa-solid fa-cash-register',
+            // },
             // {
             //     itemTitle: "Чат",
             //     itemHREF: "#",

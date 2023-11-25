@@ -29,7 +29,7 @@ export default function Aside() {
                         <img src="/public/logo.png" alt="Logo"/>
                     </Link>
                 </li>
-                <li className={asideStyle.notification}><i className="fa-solid fa-bell"></i><span>3</span></li>
+                {/*<li className={asideStyle.notification}><i className="fa-solid fa-bell"></i><span>3</span></li>*/}
                 <li className={asideStyle.profile}><i className="fa-solid fa-user"></i></li>
             </ul>
             <div className={asideStyle.profile}>
@@ -49,7 +49,8 @@ export default function Aside() {
                 </div>
             </div>
             {sections.map((section, index) =>
-                <NavigationGroups key={index} {...section}/>)}
+                <NavigationGroups key={index} {...section}/>)
+            }
         </aside>
     );
 }
