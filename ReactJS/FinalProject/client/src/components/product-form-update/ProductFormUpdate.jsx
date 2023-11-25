@@ -4,7 +4,7 @@ import style from "./ProductFormUpdate.module.css";
 
 import ProductForm from "../product-form/ProductForm.jsx";
 
-import {ProductsContext} from "../../contexts/ProductsContext.js";
+import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import {MessageContext} from "../../contexts/MessageContext.jsx";

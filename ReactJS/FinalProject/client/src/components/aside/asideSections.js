@@ -3,6 +3,11 @@ export const sections = [
         name: 'Табло',
         listItems: [
             {
+                itemTitle: 'Начало',
+                itemHREF: '/',
+                itemIClassName: 'fa-solid fa-house',
+            },
+            {
                 itemTitle: 'Продукти',
                 itemHREF: '/products',
                 itemIClassName: 'fa-solid fa-boxes-stacked',

@@ -5,7 +5,7 @@ import style from './ProductList.module.css';
 import ProductListItem from "../product-list-item/ProductListItem.jsx";
 import ProductPagination from "../product-pagination/ProductPagination.jsx";
 
-import {ProductsContext} from "../../contexts/ProductsContext.js";
+import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
 
 const tableKeys = [

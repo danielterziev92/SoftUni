@@ -16,7 +16,7 @@ export default function Aside() {
 
     const userEmail = 'brian.hughes@company.com'
 
-    const handleEmail = async () => {
+    const copyEmailOnClickHandler = async () => {
         try {
             await clipboard(userEmail);
             updateMessage(`Имейл адрес:${userEmail} беше копиран в клипборда`);
@@ -47,7 +47,7 @@ export default function Aside() {
                 <p>Brian Hughes</p>
                 <div className={asideStyle.profileEmail}>
                     {userEmail}
-                    <span onClick={handleEmail}>
+                    <span onClick={copyEmailOnClickHandler}>
                         <i className="fa-solid fa-copy">
                             <span className={asideStyle.tooltip}>Copy email</span>
                         </i>

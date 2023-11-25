@@ -8,7 +8,7 @@ import SearchProduct from "../search-product/SearchProduct.jsx";
 import Spinner from "../spinner/Spinner.jsx";
 import ProductList from "../product-list/ProductList.jsx";
 
-import {ProductsContext} from "../../contexts/ProductsContext.js";
+import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 
 import {getAllProducts} from "../../services/productService.js";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
@@ -21,16 +21,16 @@ const initialState = {
 };
 
 export default function Products() {
-    const [searchProduct, setSearchProduct] = useState('');
     const [productsState, setProductsState] = useState(initialState);
+    const [searchProduct, setSearchProduct] = useState('');
     const [isShowAddProduct, setIsShowAddProduct] = useState(false);
-    const [allProducts, setAllProducts] = useState([]);
-    const {updateMessage, isMessageBoxShow} = useContext(MessageContext);
 
+    const {updateMessage, isMessageBoxShow} = useContext(MessageContext);
+    const {updateAllProducts} = useContext(ProductsContext);
 
     useEffect(() => {
         getAllProducts()
-            .then(setAllProducts)
+            .then(updateAllProducts)
             .catch(e => updateMessage({message: e, status: 'error'}))
             .finally(() => setProductsState(state => ({...state, isSpinnerShow: false})));
     }, []);
@@ -39,27 +39,10 @@ export default function Products() {
         console.log(searchProduct);
     }, [searchProduct]);
 
-    const updateAllProducts = (newProducts) => setAllProducts(newProducts);
-
-    const updateExistedProducts = (existedProduct) => setAllProducts(allProducts.map(item => item.id === existedProduct.id ? existedProduct : item))
-
-    const deleteExistedProduct = (existedProduct) => setAllProducts(allProducts.filter(item => item.id !== existedProduct.id))
-
-    const addToAllProducts = (newProduct) => {
-        setAllProducts(state => ([...state, newProduct]));
-    }
-
     const showAddProductClickHandler = () => setIsShowAddProduct(true);
 
     const closeAddProductClickHandler = () => setIsShowAddProduct(false);
 
-    const productsContextValue = {
-        allProducts,
-        updateAllProducts,
-        updateExistedProducts,
-        deleteExistedProduct,
-        addToAllProducts,
-    }
 
     return (
         <>
@@ -76,17 +59,15 @@ export default function Products() {
                 </ul>
             </nav>
 
-            <ProductsContext.Provider value={{...productsContextValue}}>
-                {isShowAddProduct && <ProductAddForm closeModalHandler={closeAddProductClickHandler}/>}
+            {isShowAddProduct && <ProductAddForm closeModalHandler={closeAddProductClickHandler}/>}
 
-                {productsState.isSpinnerShow && <Spinner/>}
+            {productsState.isSpinnerShow && <Spinner/>}
 
-                {!productsState.isSpinnerShow &&
-                    <section>
-                        <ProductList/>
-                    </section>
-                }
-            </ProductsContext.Provider>
+            {!productsState.isSpinnerShow &&
+                <section>
+                    <ProductList/>
+                </section>
+            }
         </>
     );
 }

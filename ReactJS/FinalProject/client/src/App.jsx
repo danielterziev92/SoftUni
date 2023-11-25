@@ -4,9 +4,10 @@ import mainStyle from "./components/Main.module.css";
 
 import Aside from "./components/aside/Aside.jsx";
 import Products from "./components/products/Products.jsx";
-import Login from "./components/login/Login.jsx";
+import Index from "./components/index/Index.jsx";
 
 import MessageProvider from "./contexts/MessageContext.jsx";
+import ProductsProvider from "./contexts/ProductsContext.jsx";
 
 export default function App() {
     return (
@@ -14,8 +15,8 @@ export default function App() {
             <Aside/>
             <main className={mainStyle.Main}>
                 <Routes>
-                    <Route path="/products/" element={<Products/>}/>
-                    <Route path="/login/" element={<Login/>}/>
+                    <Route index element={<Index/>}/>
+                    <Route path="/products/" element={<ProductsProvider><Products/></ProductsProvider>}/>
                     {/*<Route path="/groups/" element={</>}/>*/}
                 </Routes>
             </main>

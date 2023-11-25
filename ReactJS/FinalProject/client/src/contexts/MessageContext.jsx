@@ -6,7 +6,6 @@ const initialState = {
 }
 
 export const MessageContext = createContext(initialState);
-
 MessageContext.displayName = 'MessageContext';
 
 export default function MessageProvider({children}) {
