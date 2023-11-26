@@ -1,5 +1,5 @@
 import {useContext, useEffect, useRef} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 
 import authStyle from "../Authentication.module.css";
@@ -12,6 +12,7 @@ import useForm from "../../hooks/useForm.js";
 import {loginUser} from "../../services/userServices.js";
 
 import Paths from "../../utils/Paths.js";
+import {setCookie} from "../../utils/cookieManager.js";
 
 const initialUserData = {
     username: '',
@@ -27,6 +28,7 @@ export default function Login() {
     const {updateAuthToken, updateUser,} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const focusedInput = useRef('username');
+    const navigate = useNavigate();
 
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
 
@@ -40,7 +42,12 @@ export default function Login() {
         try {
             const response = await loginUser(data);
             updateAuthToken(response);
-            updateUser(jwtDecode(response.access))
+            updateUser(jwtDecode(response.access));
+
+            setCookie('user', response.access, 20);
+            updateMessage('Вписахте се успешно');
+            updateStatus('success');
+            navigate(Paths.products);
         } catch (e) {
             updateMessage('sadasdsa');
             updateStatus('error');
