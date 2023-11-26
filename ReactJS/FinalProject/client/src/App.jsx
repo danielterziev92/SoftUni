@@ -16,12 +16,11 @@ import Paths from "./utils/Paths.js";
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 
 export default function App() {
-
     const [isLogin, setIsLogin] = useState(false);
 
     return (
         <MessageProvider>
-            <AuthenticationProvider>
+            <AuthenticationProvider setIsLogin={setIsLogin}>
                 {isLogin && <Aside/>}
                 <main className={mainStyle.Main}>
                     <Routes>
@@ -34,5 +33,6 @@ export default function App() {
                 </main>
             </AuthenticationProvider>
         </MessageProvider>
-    );
+    )
+        ;
 }

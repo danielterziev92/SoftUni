@@ -1,9 +1,15 @@
-import {useEffect, useRef} from "react";
+import {useContext, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 
 import authStyle from "../Authentication.module.css";
 
+import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
+
 import useForm from "../../hooks/useForm.js";
+
+import {loginUser} from "../../services/userServices.js";
 
 import Paths from "../../utils/Paths.js";
 
@@ -18,6 +24,8 @@ const FormInformation = {
 }
 
 export default function Login() {
+    const {updateAuthToken, updateUser,} = useContext(AuthenticationContext);
+    const {updateMessage, updateStatus} = useContext(MessageContext);
     const focusedInput = useRef('username');
 
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
@@ -28,9 +36,17 @@ export default function Login() {
         }
     }, [focusedInput]);
 
-    async function loginSubmitFormHandler(value) {
-        console.log('Login Function');
-        console.log(value)
+    async function loginSubmitFormHandler(data) {
+        try {
+            const response = await loginUser(data);
+            updateAuthToken(response);
+            updateUser(jwtDecode(response.access))
+        } catch (e) {
+            updateMessage('sadasdsa');
+            updateStatus('error');
+            console.log('This come from error')
+            console.log(e);
+        }
     }
 
 

@@ -34,10 +34,8 @@ export default function ProductFormUpdate({closeModalHandler}) {
         let result;
         try {
             result = await updateProductById(data.id, data);
-            console.log(result)
         } catch (e) {
             const messages = Object.values(e)
-            console.log(messages)
             updateMessage(messages);
             updateStatus('error');
             return;

@@ -38,7 +38,7 @@ export default function MessageProvider({children}) {
     }
 
     return (
-        <MessageContext.Provider value={{...messageContextValues}}>
+        <MessageContext.Provider value={messageContextValues}>
             {children}
         </MessageContext.Provider>
     );
