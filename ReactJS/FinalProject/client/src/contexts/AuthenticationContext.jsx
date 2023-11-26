@@ -1,4 +1,4 @@
-import {createContext, useEffect, useLayoutEffect, useState} from "react";
+import {createContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import compareObjects from "../utils/compareObjects.js";
 import {getCookie} from "../utils/cookieManager.js";
 import {jwtDecode} from "jwt-decode";
@@ -23,13 +23,16 @@ export default function AuthenticationProvider({children, setIsLogin}) {
     const [authToken, setAuthToken] = useState({});
     const [user, setUser] = useState({});
     const navigate = useNavigate();
+    const tokenName = useRef('authToken');
 
     useLayoutEffect(() => {
-        const accessToken = getCookie('authToken')
+        const accessToken = getCookie(tokenName.current)
         if (accessToken) {
             setUser(jwtDecode(accessToken));
             setIsLogin(true);
             navigate(Paths.afterLogin);
+        } else {
+            navigate(Paths.login);
         }
     }, []);
 
@@ -51,6 +54,8 @@ export default function AuthenticationProvider({children, setIsLogin}) {
         updateTokenByKey,
         user,
         updateUser,
+        tokenName,
+        setIsLogin,
     }
 
     return (

@@ -19,5 +19,5 @@ export const getCookie = (key) => {
 }
 
 export const deleteCookie = (key) => {
-    document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure;`;
 }

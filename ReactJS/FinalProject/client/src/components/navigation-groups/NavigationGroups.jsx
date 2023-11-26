@@ -1,8 +1,12 @@
-import asideStyle from './NavigationGroups.module.css';
+import {useContext, useLayoutEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
-import {useLayoutEffect, useState} from "react";
+
+import asideStyle from './NavigationGroups.module.css';
+
+import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 
 export default function NavigationGroups({name, listItems}) {
+    const {user} = useContext(AuthenticationContext);
     const [activeTab, setActiveTab] = useState('');
     const location = useLocation();
 
@@ -17,7 +21,8 @@ export default function NavigationGroups({name, listItems}) {
             </h3>
             {listItems.map((item, index) => (
                 <div key={index}>
-                    <Link to={item.itemHREF} className={activeTab === item.itemHREF ? asideStyle.active : ''}>
+                    <Link to={item.itemHREF}
+                          className={activeTab === item.itemHREF ? asideStyle.active : ''}>
                         <i className={item.itemIClassName}></i>
                         <span>{item.itemTitle}</span>
                     </Link>

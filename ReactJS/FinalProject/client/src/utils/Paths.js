@@ -3,6 +3,7 @@ const Paths = {
     login: '/login',
     afterLogin: '/products',
     logout: '/logout',
+    afterLogout: '/',
     register: '/register',
     products: '/products',
     groups: '/groups',

@@ -46,7 +46,7 @@ export const sections = [
             },
             {
                 itemTitle: 'Изход',
-                itemHREF: Paths.profile,
+                itemHREF: Paths.logout,
                 itemIClassName: 'fa-solid fa-right-from-bracket',
             }
         ]

@@ -10,6 +10,7 @@ import MessageProvider from "./contexts/MessageContext.jsx";
 import ProductsProvider from "./contexts/ProductsContext.jsx";
 import AuthenticationProvider from "./contexts/AuthenticationContext.jsx";
 import Login from "./components/login/Login.jsx";
+import Logout from "./components/logout/Logout.jsx";
 import Register from "./components/register/Register.jsx";
 
 import Paths from "./utils/Paths.js";
@@ -25,6 +26,7 @@ export default function App() {
                 <main className={mainStyle.Main}>
                     <Routes>
                         <Route path={Paths.login} element={<Login/>}/>
+                        <Route path={Paths.logout} element={<Logout/>}/>
                         <Route path={Paths.register} element={<Register/>}/>
                         <Route element={<PrivateRoutes/>}>
                             <Route path={Paths.products} element={<ProductsProvider><Products/></ProductsProvider>}/>
@@ -33,6 +35,5 @@ export default function App() {
                 </main>
             </AuthenticationProvider>
         </MessageProvider>
-    )
-        ;
+    );
 }

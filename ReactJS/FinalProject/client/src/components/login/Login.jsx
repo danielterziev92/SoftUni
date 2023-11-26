@@ -13,6 +13,7 @@ import {loginUser} from "../../services/userServices.js";
 
 import Paths from "../../utils/Paths.js";
 import {setCookie} from "../../utils/cookieManager.js";
+import compareObjects from "../../utils/compareObjects.js";
 
 const initialUserData = {
     username: '',
@@ -25,15 +26,16 @@ const FormInformation = {
 }
 
 export default function Login() {
-    const {updateAuthToken, updateUser, user} = useContext(AuthenticationContext);
+    const {updateAuthToken, updateUser, user, tokenName} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const focusedInput = useRef('username');
     const navigate = useNavigate();
 
+
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
 
     useLayoutEffect(() => {
-        if (user) {
+        if (!compareObjects(user, {})) {
             navigate(Paths.afterLogin);
         }
     }, []);
@@ -50,7 +52,7 @@ export default function Login() {
             updateAuthToken(response);
             updateUser(jwtDecode(response.access));
 
-            setCookie('authToken', response.access, 20);
+            setCookie(tokenName.current, response.access, 20);
             updateMessage('Вписахте се успешно');
             updateStatus('success');
             navigate(Paths.afterLogin);
