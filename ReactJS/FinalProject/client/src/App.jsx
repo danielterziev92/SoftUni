@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useLayoutEffect, useState} from "react";
 import {Route, Routes} from "react-router-dom";
 
 import mainStyle from "./components/Main.module.css";
@@ -16,6 +16,7 @@ import Paths from "./utils/Paths.js";
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 
 export default function App() {
+
     const [isLogin, setIsLogin] = useState(false);
 
     return (
