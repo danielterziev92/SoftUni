@@ -1,4 +1,4 @@
-import {useContext, useEffect, useRef} from "react";
+import {useContext, useEffect, useLayoutEffect, useRef} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 
@@ -25,12 +25,18 @@ const FormInformation = {
 }
 
 export default function Login() {
-    const {updateAuthToken, updateUser,} = useContext(AuthenticationContext);
+    const {updateAuthToken, updateUser, user} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const focusedInput = useRef('username');
     const navigate = useNavigate();
 
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
+
+    useLayoutEffect(() => {
+        if (user) {
+            navigate(Paths.afterLogin);
+        }
+    }, []);
 
     useEffect(() => {
         if (focusedInput.current) {
@@ -44,10 +50,10 @@ export default function Login() {
             updateAuthToken(response);
             updateUser(jwtDecode(response.access));
 
-            setCookie('user', response.access, 20);
+            setCookie('authToken', response.access, 20);
             updateMessage('Вписахте се успешно');
             updateStatus('success');
-            navigate(Paths.products);
+            navigate(Paths.afterLogin);
         } catch (e) {
             updateMessage('sadasdsa');
             updateStatus('error');

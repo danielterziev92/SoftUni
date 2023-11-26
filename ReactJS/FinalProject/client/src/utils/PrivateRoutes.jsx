@@ -7,6 +7,7 @@ import compareObjects from "./compareObjects.js";
 
 const PrivateRoutes = () => {
     const {user} = useContext(AuthenticationContext);
+    console.log(user)
 
     return compareObjects(user, {}) ? <Navigate to={Paths.login} replace/> : <Outlet/>;
 };
