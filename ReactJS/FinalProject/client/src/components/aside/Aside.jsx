@@ -9,17 +9,19 @@ import {sections} from "./asideSections.js";
 import asideStyle from './Aside.module.css';
 import {useContext} from "react";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
+import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 
 
 export default function Aside() {
+    const {user} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
     const userEmail = 'brian.hughes@company.com'
 
     const copyEmailOnClickHandler = async () => {
         try {
-            await clipboard(userEmail);
-            updateMessage(`Имейл адрес:${userEmail} беше копиран в клипборда`);
+            await clipboard(user.email);
+            updateMessage(`Имейл адрес:${user.email} беше копиран в клипборда`);
             updateStatus('success');
         } catch (error) {
             updateMessage('Грешка при копирането в клипборда');
@@ -29,15 +31,11 @@ export default function Aside() {
 
     return (
         <aside className={asideStyle.Aside}>
-            <ul className={asideStyle.navigationBar}>
-                <li>
-                    <Link to={"/"}>
-                        <img src="/public/logo.png" alt="Logo"/>
-                    </Link>
-                </li>
-                {/*<li className={asideStyle.notification}><i className="fa-solid fa-bell"></i><span>3</span></li>*/}
-                <li className={asideStyle.profile}><i className="fa-solid fa-user"></i></li>
-            </ul>
+            <div className={asideStyle.Logo}>
+                <figure>
+                    <img src="/public/logo.png" alt="Logo"/>
+                </figure>
+            </div>
             <div className={asideStyle.profile}>
                 <figure>
                     <img
@@ -46,7 +44,7 @@ export default function Aside() {
                 </figure>
                 <p>Brian Hughes</p>
                 <div className={asideStyle.profileEmail}>
-                    {userEmail}
+                    {user.email}
                     <span onClick={copyEmailOnClickHandler}>
                         <i className="fa-solid fa-copy">
                             <span className={asideStyle.tooltip}>Copy email</span>
@@ -54,9 +52,11 @@ export default function Aside() {
                     </span>
                 </div>
             </div>
-            {sections.map((section, index) =>
-                <NavigationGroups key={index} {...section}/>)
-            }
+            <div className={asideStyle.verticalNavGroupItems}>
+                {sections.map((section, index) =>
+                    <NavigationGroups key={index} {...section}/>)
+                }
+            </div>
         </aside>
     );
 }

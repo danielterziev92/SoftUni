@@ -11,15 +11,17 @@ export default function NavigationGroups({name, listItems}) {
     }, [location]);
 
     return (
-        <div className={asideStyle.verticalNavGroupItems}>
+        <div className={asideStyle.verticalNavGroupItem}>
             <h3 className={asideStyle.verticalNavGroupName}>
                 {name}
             </h3>
             {listItems.map((item, index) => (
-                <Link to={item.itemHREF} key={index} className={activeTab === item.itemHREF ? asideStyle.active : ''}>
-                    <i className={item.itemIClassName}></i>
-                    <span>{item.itemTitle}</span>
-                </Link>
+                <div key={index}>
+                    <Link to={item.itemHREF} className={activeTab === item.itemHREF ? asideStyle.active : ''}>
+                        <i className={item.itemIClassName}></i>
+                        <span>{item.itemTitle}</span>
+                    </Link>
+                </div>
             ))}
         </div>
     );

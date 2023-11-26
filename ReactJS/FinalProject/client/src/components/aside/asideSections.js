@@ -36,4 +36,19 @@ export const sections = [
             // },
         ]
     },
+    {
+        name: 'Настройки',
+        listItems: [
+            {
+                itemTitle: 'Профил',
+                itemHREF: Paths.profile,
+                itemIClassName: 'fa-solid fa-circle-user',
+            },
+            {
+                itemTitle: 'Изход',
+                itemHREF: Paths.profile,
+                itemIClassName: 'fa-solid fa-right-from-bracket',
+            }
+        ]
+    },
 ]

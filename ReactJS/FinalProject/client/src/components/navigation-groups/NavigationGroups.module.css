@@ -1,4 +1,17 @@
-.verticalNavGroupItems .verticalNavGroupName {
+.verticalNavGroupItem {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.verticalNavGroupItem:last-child {
+    margin-top: auto;
+}
+
+.verticalNavGroupItem div {
+    width: 100%;
+}
+
+.verticalNavGroupItem .verticalNavGroupName {
     width: 100%;
     padding: 10px 0 10px 15px;
     color: #7E8AD9;
@@ -6,12 +19,8 @@
     user-select: none;
 }
 
-.verticalNavGroupItems {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.verticalNavGroupItems a {
+.verticalNavGroupItem a {
+    display: inherit;
     width: 100%;
     margin: 5px 0 5px 15px;
     padding: 10px 0 10px 15px;
@@ -19,17 +28,17 @@
 }
 
 .active,
-.verticalNavGroupItems a:hover {
+.verticalNavGroupItem a:hover {
     background-color: var(--aside-button-hover);
     border-radius: 5px 0 0 5px;
 }
 
-.verticalNavGroupItems a i,
-.verticalNavGroupItems a span {
+.verticalNavGroupItem a i,
+.verticalNavGroupItem a span {
     color: white;
 }
 
-.verticalNavGroupItems a span {
+.verticalNavGroupItem a span {
     text-decoration: none;
     margin-left: 10px;
 }
