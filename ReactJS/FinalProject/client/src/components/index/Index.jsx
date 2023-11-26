@@ -1,7 +1,6 @@
 import {useRef, useState} from "react";
 import {Route, Routes} from "react-router-dom";
 
-import indexStyle from './Index.module.css'
 
 import Login from "../login/Login.jsx";
 import Register from "../register/Register.jsx";
@@ -14,11 +13,6 @@ export default function Index() {
     const loginFormRef = useRef();
     const registerFormRef = useRef();
 
-    const loginSubmitFormHandler = async (value) => {
-        loginFormRef.current.requestSubmit();
-        console.log('Login Function');
-        console.log(value)
-    }
 
     const registerSubmitFormHandler = async (value) => {
         registerFormRef.current.requestSubmit();
@@ -26,32 +20,23 @@ export default function Index() {
         console.log(value)
     }
 
-    const loginContextValues = {
-        onSubmitFormHandler: loginSubmitFormHandler,
-        formRef: loginFormRef,
-    }
 
-    const registerContextValues = {
-        onSubmitFormHandler: registerSubmitFormHandler,
-        formRef: registerFormRef,
-    }
-
-    return (
-        <section className={indexStyle.Index}>
-            <Routes>
-                <Route path={Paths.login}
-                       element={
-                           <FormContext.Provider value={{...loginContextValues}}>
-                               <Login/>
-                           </FormContext.Provider>
-                       }/>
-                <Route path={Paths.register}
-                       element={
-                           <FormContext.Provider value={{...registerContextValues}}>
-                               <Register/>
-                           </FormContext.Provider>
-                       }/>
-            </Routes>
-        </section>
-    );
+    // return (
+    //
+    //         <Routes>
+    //             <Route path={Paths.login}
+    //                    element={
+    //                        <FormContext.Provider value={{...loginContextValues}}>
+    //                            <Login/>
+    //                        </FormContext.Provider>
+    //                    }/>
+    //             <Route path={Paths.register}
+    //                    element={
+    //                        <FormContext.Provider value={{...registerContextValues}}>
+    //                            <Register/>
+    //                        </FormContext.Provider>
+    //                    }/>
+    //         </Routes>
+    //     </section>
+    // );
 }

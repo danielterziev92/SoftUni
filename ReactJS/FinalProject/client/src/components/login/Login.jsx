@@ -1,11 +1,12 @@
 import {useContext, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
 
-import loginStyle from '../index/Index.module.css';
+import loginStyle from '../Authentication.module.css';
 
 import useForm from "../../hooks/useForm.js";
 import {FormContext} from "../../contexts/FormContext.js";
 import Paths from "../../utils/Paths.js";
+import sectionStyle from "../Authentication.module.css";
 
 const initialUserData = {
     username: '',
@@ -19,33 +20,42 @@ const FormInformation = {
 
 export default function Login() {
     const focusedInput = useRef('username');
-    const {formRef} = useContext(FormContext);
-    const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData);
+
+    const loginSubmitFormHandler = async (value) => {
+        console.log('Login Function');
+        console.log(value)
+    }
+
+    const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
+
+    useEffect(() => {
+        if (focusedInput.current) {
+            focusedInput.current.focus();
+        }
+    }, [focusedInput]);
 
 
-
-    // <label htmlFor={FormKey.Name}>Име:</label>
-    // <input id={FormKey.Name} type="text" name={FormKey.Name} value={formValue[FormKey.Name]}
-    //        onChange={inputChangeHandler}/>
     return (
-        <article>
-            <form ref={formRef} onSubmit={onSubmitForm} className={loginStyle.Form}>
-                {Object.entries(formValue).map(([key, value]) => (
-                    <div key={key}>
-                        <label htmlFor={key}>{FormInformation[key].label}</label>
-                        <input id={key} value={formValue[key]} name={key} type={FormInformation[key].type}
-                               onChange={changeDataHandler}
-                               ref={focusedInput.current === key ? focusedInput : null}
-                        />
+        <section className={sectionStyle.Section}>
+            <article>
+                <form onSubmit={onSubmitForm} className={loginStyle.Form}>
+                    {Object.entries(formValue).map(([key, value]) => (
+                        <div key={key}>
+                            <label htmlFor={key}>{FormInformation[key].label}</label>
+                            <input id={key} value={formValue[key]} name={key} type={FormInformation[key].type}
+                                   onChange={changeDataHandler}
+                                   ref={focusedInput.current === key ? focusedInput : null}
+                            />
+                        </div>
+                    ))}
+                    <div>
+                        <button>Вход</button>
                     </div>
-                ))}
-                <div>
-                    <button>Вход</button>
-                </div>
-                <div>
-                    <Link to={Paths.register}>Регистрация</Link>
-                </div>
-            </form>
-        </article>
+                    <div>
+                        <Link to={Paths.register}>Регистрация</Link>
+                    </div>
+                </form>
+            </article>
+        </section>
     );
 }

@@ -1,4 +1,4 @@
-.Index {
+.Section {
     width: 100%;
     height: 100%;
     background-image: url("public/5968949.jpg");
@@ -41,13 +41,16 @@
 }
 
 .Form div input {
+    background-color: transparent;
     padding: 10px;
-    border-radius: 10px;
     appearance: none;
-    border: 1px solid rgb(0, 0, 0, 0.2);
+    border: none;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
 }
 
 .Form div input:focus {
+    background-color: #ffffff;
+    border-radius: 10px;
     border: 1px solid #4e45e3;
     outline: none;
 }
