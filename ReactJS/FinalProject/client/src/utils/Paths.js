@@ -1,5 +1,5 @@
 const Paths = {
-    index: '',
+    index: '/',
     login: '/login',
     register: '/register',
     products: '/products',

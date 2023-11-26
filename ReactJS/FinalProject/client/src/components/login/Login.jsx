@@ -22,11 +22,6 @@ export default function Login() {
     const {formRef} = useContext(FormContext);
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData);
 
-    useEffect(() => {
-        if (focusedInput.current) {
-            focusedInput.current.focus();
-        }
-    }, [focusedInput]);
 
 
     // <label htmlFor={FormKey.Name}>Име:</label>

@@ -1,4 +1,5 @@
 import {useRef, useState} from "react";
+import {Route, Routes} from "react-router-dom";
 
 import indexStyle from './Index.module.css'
 
@@ -6,6 +7,7 @@ import Login from "../login/Login.jsx";
 import Register from "../register/Register.jsx";
 
 import {FormContext} from "../../contexts/FormContext.js";
+import Paths from "../../utils/Paths.js";
 
 export default function Index() {
     const [isLogin, setIsLogin] = useState(true);
@@ -24,18 +26,32 @@ export default function Index() {
         console.log(value)
     }
 
+    const loginContextValues = {
+        onSubmitFormHandler: loginSubmitFormHandler,
+        formRef: loginFormRef,
+    }
+
+    const registerContextValues = {
+        onSubmitFormHandler: registerSubmitFormHandler,
+        formRef: registerFormRef,
+    }
+
     return (
         <section className={indexStyle.Index}>
-            {isLogin
-                ? (<FormContext.Provider value={{onSubmitFormHandler: loginSubmitFormHandler, formRef: loginFormRef}}>
-                    <Login/>
-                </FormContext.Provider>)
-                :
-                (< FormContext.Provider
-                    value={{onSubmitFormHandler: registerSubmitFormHandler, formRef: registerFormRef}}>
-                    <Register/>
-                </FormContext.Provider>)
-            }
+            <Routes>
+                <Route path={Paths.login}
+                       element={
+                           <FormContext.Provider value={{...loginContextValues}}>
+                               <Login/>
+                           </FormContext.Provider>
+                       }/>
+                <Route path={Paths.register}
+                       element={
+                           <FormContext.Provider value={{...registerContextValues}}>
+                               <Register/>
+                           </FormContext.Provider>
+                       }/>
+            </Routes>
         </section>
     );
 }

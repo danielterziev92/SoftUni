@@ -1,8 +1,11 @@
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useReducer, useRef, useState} from "react";
+
+import {SingleProductContext} from "../../contexts/SingleProductContext.js";
+import {ProductFormContext} from "../../contexts/ProductFormContext.js";
+import ProductDataContext from "../../contexts/ProductDataContext.js";
 
 import styleForm from './ProductForm.module.css';
 
-import ProductListNavigationTabs from "../product-detail-navigation-tabs/ProductDetailNavigationTabs.jsx";
 import useEscapeKey from "../../hooks/useEscapeKey.js";
 import useLoadAllGroups from "../../hooks/useLoadAllGroups.js";
 import ProductFormBaseInfo from "../product-form-base-info/ProductFormBaseInfo.jsx";
@@ -10,9 +13,6 @@ import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 
 import {getProductById} from "../../services/productService.js";
 
-import {SingleProductContext} from "../../contexts/SingleProductContext.js";
-import {FormContext} from "../../contexts/FormContext.js";
-import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 
 export const initialProductData = {
     name: '',
@@ -26,19 +26,29 @@ export const initialProductData = {
     selectedGroup: 0,
 };
 
+const productDataReducer = (state, action) => {
+    switch (action.type) {
+        case 'updateState':
+            return {...state, ...action.payload};
+        case 'updateByKey':
+            return {...state, [action.key]: action.value};
+        default:
+            return state;
+    }
+}
+
 export default function ProductForm() {
-    const [activeTab, setActiveTab] = useState('base-info');
-    const [productData, setProductData] = useState(initialProductData);
+    const [productData, dispatch] = useReducer(productDataReducer, initialProductData);
     const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
     const isFirstRender = useRef(true);
 
     const {product} = useContext(SingleProductContext)
     const {
-        closeModalHandler,
-        deleteProductClickHandler,
         productChanged,
-        updateProductChanged
-    } = useContext(FormContext);
+        updateProductChanged,
+        deleteProductClickHandler,
+        closeModalHandler
+    } = useContext(ProductFormContext);
     const groups = useLoadAllGroups();
 
     useEffect(() => {
@@ -47,9 +57,7 @@ export default function ProductForm() {
         }
 
         getProductById(product.id)
-            .then(data => {
-                updateProductData(data);
-            })
+            .then(updateProductState)
             .catch(e => console.log(e));
     }, []);
 
@@ -59,7 +67,7 @@ export default function ProductForm() {
             return;
         }
 
-        updateProductData(product);
+        updateProductState(product);
         updateProductChanged(false);
     }, [productChanged]);
 
@@ -71,20 +79,12 @@ export default function ProductForm() {
         updateProductDataByKey('groups', groups);
     }, [groups]);
 
-    const updateActiveTab = (newValue) => setActiveTab(newValue);
-
-    const updateProductData = (newState) => {
-        setProductData(state => ({
-            ...state,
-            ...newState,
-        }));
-    };
+    const updateProductState = (newState) => {
+        dispatch({type: 'updateState', payload: newState});
+    }
 
     const updateProductDataByKey = (key, newValue) => {
-        setProductData(state => ({
-            ...state,
-            [key]: newValue,
-        }))
+        dispatch({type: 'updateByKey', key: key, value: newValue});
     }
 
     const deleteModalBody = (
@@ -100,16 +100,14 @@ export default function ProductForm() {
 
     useEscapeKey(isDeleteModalShow ? hideDeleteModalClickHandler : closeModalHandler);
 
-    const formProductContext = {
-        activeTab,
-        updateActiveTab,
+    const productDataContextValue = {
         productData,
-        updateProductData,
-        updateProductDataByKey,
-    };
+        updateProductState,
+        updateProductDataByKey
+    }
 
     return (
-        <ProductFormContext.Provider value={{...formProductContext}}>
+        <ProductDataContext.Provider value={{...productDataContextValue}}>
             {isDeleteModalShow &&
                 <MessageBoxModal
                     title={'Изтриване на продукт'}
@@ -120,11 +118,10 @@ export default function ProductForm() {
                     successButtonMessage={'Да'}
                     successButtonHandler={() => {
                         deleteProductClickHandler(productData)
-                    }
-                    }
+                    }}
                 />
             }
             <ProductFormBaseInfo showModalClickHandler={showModalClickHandler}/>
-        </ProductFormContext.Provider>
+        </ProductDataContext.Provider>
     );
 }

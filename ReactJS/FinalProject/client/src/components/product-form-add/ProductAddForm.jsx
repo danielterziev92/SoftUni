@@ -12,6 +12,7 @@ import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 import {validationFormRules} from "../product-form-base-info/validationFormRules.js";
 
 import useFormValidation from "../../hooks/useFormValidation.js";
+import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 
 function areAllFalsyExceptField(obj) {
     return Object.values(obj).every(value => !value);
@@ -67,7 +68,7 @@ export default function ProductAddForm({closeModalHandler}) {
         updateProductDetailData: null,
     }
 
-    const formContextValue = {
+    const productFormContextValue = {
         productChanged: false,
         updateProductChanged: () => {
         },
@@ -83,9 +84,9 @@ export default function ProductAddForm({closeModalHandler}) {
             title={'Добавяне на продукт'}
             body={
                 <SingleProductContext.Provider value={{...singleProductContextValue}}>
-                    <FormContext.Provider value={{...formContextValue}}>
+                    <ProductFormContext.Provider value={{...productFormContextValue}}>
                         <ProductForm/>
-                    </FormContext.Provider>
+                    </ProductFormContext.Provider>
                 </SingleProductContext.Provider>
             }
             successButtonMessage={'Добави'}

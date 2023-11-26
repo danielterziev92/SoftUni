@@ -1,20 +1,17 @@
+import Paths from "../../utils/Paths.js";
+
 export const sections = [
     {
         name: 'Табло',
         listItems: [
             {
-                itemTitle: 'Начало',
-                itemHREF: '/',
-                itemIClassName: 'fa-solid fa-house',
-            },
-            {
                 itemTitle: 'Продукти',
-                itemHREF: '/products',
+                itemHREF: Paths.products,
                 itemIClassName: 'fa-solid fa-boxes-stacked',
             },
             {
                 itemTitle: 'Групи',
-                itemHREF: '/groups',
+                itemHREF: Paths.groups,
                 itemIClassName: 'fa-solid fa-folder-tree',
             },
             // {

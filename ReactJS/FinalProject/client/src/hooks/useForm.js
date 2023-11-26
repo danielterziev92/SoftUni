@@ -1,11 +1,8 @@
-import {useContext, useState} from "react";
+import {useState} from "react";
 
-import {FormContext} from "../contexts/FormContext.js";
 
-export default function useForm(initialData) {
+export default function useForm(initialData, onSubmitFormHandler) {
     const [formValue, setFormValue] = useState(initialData);
-
-    const {onSubmitFormHandler} = useContext(FormContext);
 
     const typeHandlers = {
         'number': (target) => Number(target.value),

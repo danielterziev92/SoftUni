@@ -1,18 +1,16 @@
 import {useContext, useEffect, useState} from "react";
 
+import {ProductFormContext} from "../../contexts/ProductFormContext.js";
+import {initialProductData} from "../product-form/ProductForm.jsx";
+import {validationFormRules} from "./validationFormRules.js";
+
 import formStyle from "./ProductFormBaseInfo.module.css";
 
 import useForm from "../../hooks/useForm.js";
 import useFormValidation from "../../hooks/useFormValidation.js";
 
-
-import {ProductFormContext} from "../../contexts/ProductFormContext.js";
-import {FormContext} from "../../contexts/FormContext.js";
-import {initialProductData} from "../product-form/ProductForm.jsx";
-import {validationFormRules} from "./validationFormRules.js";
-
 import compareObjects from "../../utils/compareObjects.js";
-import {MessageContext} from "../../contexts/MessageContext.jsx";
+import ProductDataContext from "../../contexts/ProductDataContext.js";
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
     if (!groups || groups.length === 0) {
@@ -51,16 +49,15 @@ const FormKey = {
 }
 
 export default function ProductFormBaseInfo({showModalClickHandler}) {
-    const {haveButtons, closeModalHandler, formRef} = useContext(FormContext);
-    const {updateMessage, updateStatus} = useContext(MessageContext);
-    const {productData} = useContext(ProductFormContext);
+    const {formRef, onSubmitFormHandler, haveButtons, closeModalHandler} = useContext(ProductFormContext);
+    const {productData, updateProductState, updateProductDataByKey,} = useContext(ProductDataContext);
     const {
         formValue,
         updateFormValue,
         updateFormValueByKeyAndValue,
         changeDataHandler,
         onSubmitForm
-    } = useForm(initialProductData);
+    } = useForm(initialProductData, onSubmitFormHandler);
     const {validationErrors, validateForm} = useFormValidation(validationFormRules);
     const [errorMessages, setErrorMessages] = useState([]);
 

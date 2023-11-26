@@ -8,6 +8,7 @@ import Index from "./components/index/Index.jsx";
 
 import MessageProvider from "./contexts/MessageContext.jsx";
 import ProductsProvider from "./contexts/ProductsContext.jsx";
+import Paths from "./utils/Paths.js";
 
 export default function App() {
     return (
@@ -15,8 +16,8 @@ export default function App() {
             <Aside/>
             <main className={mainStyle.Main}>
                 <Routes>
-                    <Route index element={<Index/>}/>
-                    <Route path="/products/" element={<ProductsProvider><Products/></ProductsProvider>}/>
+                    <Route path={Paths.login} element={<Index/>}/>
+                    <Route path={Paths.products} element={<ProductsProvider><Products/></ProductsProvider>}/>
                     {/*<Route path="/groups/" element={</>}/>*/}
                 </Routes>
             </main>

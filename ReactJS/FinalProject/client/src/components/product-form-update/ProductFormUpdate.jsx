@@ -6,17 +6,15 @@ import ProductForm from "../product-form/ProductForm.jsx";
 
 import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
-import {FormContext} from "../../contexts/FormContext.js";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
+import {ProductFormContext} from '../../contexts/ProductFormContext.js'
 
 import {deleteProductById, updateProductById} from "../../services/productService.js";
 
 import compareObjects from "../../utils/compareObjects.js";
-import useFormValidation from "../../hooks/useFormValidation.js";
 
 
 export default function ProductFormUpdate({closeModalHandler}) {
-
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const {allProducts, updateAllProducts, updateExistedProducts, deleteExistedProduct} = useContext(ProductsContext);
     const {product} = useContext(SingleProductContext);
@@ -81,9 +79,9 @@ export default function ProductFormUpdate({closeModalHandler}) {
 
     return (
         <div className={style.detail}>
-            <FormContext.Provider value={{...contextValue}}>
+            <ProductFormContext.Provider value={{...contextValue}}>
                 <ProductForm/>
-            </FormContext.Provider>
+            </ProductFormContext.Provider>
         </div>
     );
 }
