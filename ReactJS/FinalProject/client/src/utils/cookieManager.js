@@ -17,3 +17,7 @@ export const getCookie = (key) => {
     }
     return null;
 }
+
+export const deleteCookie = (key) => {
+    document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
