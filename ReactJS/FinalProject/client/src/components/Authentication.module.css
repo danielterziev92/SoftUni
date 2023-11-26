@@ -17,7 +17,6 @@
     justify-content: center;
     width: 400px;
     padding: 20px;
-    /*border: 1px solid #2C3344;*/
     border-radius: 20px;
     gap: 20px;
 }
@@ -50,8 +49,8 @@
 
 .Form div input:focus {
     background-color: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #4e45e3;
+    /*border-radius: 10px;*/
+    border-bottom: 2px solid #4e45e3;
     outline: none;
 }
 
@@ -67,4 +66,5 @@
 
 .Form div a {
     text-decoration: none;
+    color: #4f46e5;
 }
