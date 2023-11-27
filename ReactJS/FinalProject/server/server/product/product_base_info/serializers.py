@@ -12,6 +12,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    picture = serializers.ImageField(required=False)
 
     class Meta:
         model = ProductBaseInformation

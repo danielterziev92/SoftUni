@@ -62,11 +62,6 @@ class ProductBaseInformation(models.Model):
         blank=True,
     )
 
-    picture = cloudinary_models.CloudinaryField(
-        null=True,
-        blank=True,
-    )
-
     is_active = models.BooleanField(
         default=True,
     )
@@ -89,6 +84,11 @@ class ProductBaseInformation(models.Model):
 class ProductAdditionalInfo(models.Model):
     product = models.AutoField(
         primary_key=True
+    )
+
+    picture = cloudinary_models.CloudinaryField(
+        null=True,
+        blank=True,
     )
 
     description = models.CharField(
