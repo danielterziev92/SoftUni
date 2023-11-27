@@ -8,10 +8,12 @@ export default function useForm(initialData, onSubmitFormHandler) {
         'number': (target) => Number(target.value),
         'checkbox': (target) => target.checked,
         'radio': (target) => target.id,
+        'file': (target) => target.files[0],
     }
 
     const changeDataHandler = (e) => {
-        let {type, name, value} = e.target;
+        const {type, name} = e.target;
+        let {value} = e.target.value;
 
         if (typeHandlers[type]) {
             value = typeHandlers[type](e.target);

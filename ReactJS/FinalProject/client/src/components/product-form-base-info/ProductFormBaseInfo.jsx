@@ -125,6 +125,10 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
                     <input id={FormKey.IsActive} type="checkbox" name={FormKey.IsActive}
                            checked={formValue[FormKey.IsActive]} onChange={changeDataHandler}/>
                 </div>
+                <div className={formStyle.file}>
+                    <label htmlFor={FormKey.File}>Файл:</label>
+                    <input id={FormKey.File} type="file" name={FormKey.File} onChange={changeDataHandler}/>
+                </div>
                 <div className={formStyle.groups}>
                     <span>Групи:</span>
                     <AllGroupsElement
