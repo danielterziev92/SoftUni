@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from cloudinary import models as cloudinary_models
 
@@ -61,8 +62,20 @@ class ProductBaseInformation(models.Model):
         blank=True,
     )
 
+    picture = cloudinary_models.CloudinaryField(
+        null=True,
+        blank=True,
+    )
+
     is_active = models.BooleanField(
         default=True,
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.RESTRICT,
+        null=False,
+        blank=False,
     )
 
     group = models.ForeignKey(
@@ -80,11 +93,6 @@ class ProductAdditionalInfo(models.Model):
 
     description = models.CharField(
         max_length=255,
-        null=True,
-        blank=True,
-    )
-
-    picture = cloudinary_models.CloudinaryField(
         null=True,
         blank=True,
     )
