@@ -52,5 +52,6 @@ export const validationFormRules = {
             condition: (value) => Number.isInteger(value) && value > 0,
             errorMessage: 'Трябва да изберете група',
         }
-    ]
+    ],
+    user: []
 }

@@ -24,6 +24,7 @@ export const initialProductData = {
     is_active: true,
     groups: [],
     selectedGroup: 0,
+    user: 0,
 };
 
 const productDataReducer = (state, action) => {

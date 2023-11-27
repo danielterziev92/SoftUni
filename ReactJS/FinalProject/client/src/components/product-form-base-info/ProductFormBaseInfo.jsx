@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useLayoutEffect, useState} from "react";
 
 import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 import {initialProductData} from "../product-form/ProductForm.jsx";
@@ -11,6 +11,7 @@ import useFormValidation from "../../hooks/useFormValidation.js";
 
 import compareObjects from "../../utils/compareObjects.js";
 import ProductDataContext from "../../contexts/ProductDataContext.js";
+import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
     if (!groups || groups.length === 0) {
@@ -46,11 +47,13 @@ const FormKey = {
     Quantity: 'quantity',
     Price: 'price',
     IsActive: 'is_active',
+    user: 0,
 }
 
 export default function ProductFormBaseInfo({showModalClickHandler}) {
+    const {user} = useContext(AuthenticationContext);
     const {formRef, onSubmitFormHandler, haveButtons, closeModalHandler} = useContext(ProductFormContext);
-    const {productData, updateProductState, updateProductDataByKey,} = useContext(ProductDataContext);
+    const {productData} = useContext(ProductDataContext);
     const {
         formValue,
         updateFormValue,
@@ -67,6 +70,7 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
 
     useEffect(() => {
         updateFormValue(productData);
+        updateFormValueByKeyAndValue('user', user.user_id);
     }, [productData]);
 
     const inputChangeHandler = (e) => {
@@ -124,10 +128,6 @@ export default function ProductFormBaseInfo({showModalClickHandler}) {
                     <label htmlFor={FormKey.IsActive}>Активен:</label>
                     <input id={FormKey.IsActive} type="checkbox" name={FormKey.IsActive}
                            checked={formValue[FormKey.IsActive]} onChange={changeDataHandler}/>
-                </div>
-                <div className={formStyle.file}>
-                    <label htmlFor={FormKey.File}>Файл:</label>
-                    <input id={FormKey.File} type="file" name={FormKey.File} onChange={changeDataHandler}/>
                 </div>
                 <div className={formStyle.groups}>
                     <span>Групи:</span>

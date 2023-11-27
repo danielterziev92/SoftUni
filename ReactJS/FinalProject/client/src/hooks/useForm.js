@@ -12,8 +12,7 @@ export default function useForm(initialData, onSubmitFormHandler) {
     }
 
     const changeDataHandler = (e) => {
-        const {type, name} = e.target;
-        let {value} = e.target.value;
+        let {type, name, value} = e.target;
 
         if (typeHandlers[type]) {
             value = typeHandlers[type](e.target);

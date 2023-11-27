@@ -4,10 +4,9 @@
             "name name groups"
             "code barcode groups"
             "quantity price groups"
-            "file buttons active";
+            "active buttons groups";
     flex-wrap: wrap;
     padding: 0 20px 20px 20px;
-    max-width: calc(100vw - 220px - 300px);
     background-color: #ffffff;
 }
 
@@ -114,7 +113,7 @@
     max-width: 420px;
     padding: 10px;
     overflow: scroll;
-    max-height: 265px;
+    max-height: 365px;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
