@@ -3,7 +3,7 @@ const BASE_URL = 'http://localhost:8000/api'
 const Urls = {
     baseUrl: BASE_URL,
     token: `${BASE_URL}/token/`,
-    refreshToken: `${BASE_URL}/refresh/`,
+    refreshToken: `${BASE_URL}/token/refresh/`,
     products: `${BASE_URL}/products/`,
     productCreate: `${BASE_URL}/product/create/`,
     productDetail: id => `${BASE_URL}/product/${id}/`,

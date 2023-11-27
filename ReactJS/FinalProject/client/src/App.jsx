@@ -21,7 +21,7 @@ export default function App() {
 
     return (
         <MessageProvider>
-            <AuthenticationProvider setIsLogin={setIsLogin}>
+            <AuthenticationProvider setIsLogin={setIsLogin} isLogin={isLogin}>
                 {isLogin && <Aside/>}
                 <main className={mainStyle.Main}>
                     <Routes>

@@ -26,7 +26,7 @@ const FormInformation = {
 }
 
 export default function Login() {
-    const {updateAuthToken, updateUser, user, tokenName} = useContext(AuthenticationContext);
+    const {updateAuthToken, updateUser, user, tokenName, dayToExpire} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const focusedInput = useRef('username');
     const navigate = useNavigate();
@@ -52,7 +52,7 @@ export default function Login() {
             updateAuthToken(response);
             updateUser(jwtDecode(response.access));
 
-            setCookie(tokenName.current, response.access, 20);
+            setCookie(tokenName.current, response.access, dayToExpire.current);
             updateMessage('Вписахте се успешно');
             updateStatus('success');
             navigate(Paths.afterLogin);
