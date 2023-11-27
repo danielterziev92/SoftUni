@@ -4,6 +4,8 @@
     max-height: 100vh;
     overflow: scroll;
     background-color: var(--background-secondary);
+    box-sizing: content-box;
+    position: relative;
 }
 
 .Main .Nav {

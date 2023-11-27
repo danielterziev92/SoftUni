@@ -8,9 +8,9 @@ const initialState = {
 export const MessageContext = createContext(initialState);
 MessageContext.displayName = 'MessageContext';
 
-export default function MessageProvider({children}) {
+export default function MessageProvider({children, isMessageBoxShow, setIsMessageBoxShow}) {
     const [message, setMessage] = useState({text: '', status: ''});
-    const [isMessageBoxShow, setIsMessageBoxShow] = useState(false);
+
 
     const updateMessage = (newMessage) => {
         setIsMessageBoxShow(true);

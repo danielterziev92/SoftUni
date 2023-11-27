@@ -15,20 +15,23 @@ import Register from "./components/register/Register.jsx";
 
 import Paths from "./utils/Paths.js";
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
+import MessageBoxDialog from "./components/message-box-dialog/MessageBoxDialog.jsx";
 
 export default function App() {
     const [isLogin, setIsLogin] = useState(false);
+    const [isMessageBoxShow, setIsMessageBoxShow] = useState(false);
 
     return (
-        <MessageProvider>
+        <MessageProvider setIsMessageBoxShow={setIsMessageBoxShow} isMessageBoxShow={isMessageBoxShow}>
             <AuthenticationProvider setIsLogin={setIsLogin} isLogin={isLogin}>
                 {isLogin && <Aside/>}
                 <main className={mainStyle.Main}>
+                    {isMessageBoxShow && <MessageBoxDialog/>}
                     <Routes>
                         <Route path={Paths.login} element={<Login/>}/>
-                        <Route path={Paths.logout} element={<Logout/>}/>
                         <Route path={Paths.register} element={<Register/>}/>
                         <Route element={<PrivateRoutes/>}>
+                            <Route path={Paths.logout} element={<Logout/>}/>
                             <Route path={Paths.products} element={<ProductsProvider><Products/></ProductsProvider>}/>
                         </Route>
                     </Routes>

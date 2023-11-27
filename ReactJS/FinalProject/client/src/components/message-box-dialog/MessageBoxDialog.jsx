@@ -21,14 +21,16 @@ export default function MessageBoxDialog() {
         <>
             {isVisible && (
                 <div className={`${style.MessageBox}`}>
-                    <div className={style[status]}>
-                        <div className={`${style.icon} ${style[status]}`}>
-                            {statusIcons[status]}
+                    <div>
+                        <div className={style[status]}>
+                            <div className={`${style.icon} ${style[status]}`}>
+                                {statusIcons[status]}
+                            </div>
+                            <div>
+                                {text}
+                            </div>
+                            <i className="fas fa-times-circle" onClick={closeMessageBoxDialog}></i>
                         </div>
-                        <div>
-                            {text}
-                        </div>
-                        <i className="fas fa-times-circle" onClick={closeMessageBoxDialog}></i>
                     </div>
                 </div>
             )}

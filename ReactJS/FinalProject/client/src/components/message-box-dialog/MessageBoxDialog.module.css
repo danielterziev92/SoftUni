@@ -1,20 +1,17 @@
 .MessageBox {
     position: absolute;
     top: 20px;
-    left: 50%;
-    transform: translateX(-25%);
+    width: 100%;
     font-size: 1.2rem;
-    box-sizing: border-box;
     color: #ffffff;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
     z-index: 999;
 }
 
-.MessageBox > div {
+.MessageBox > div > div {
     padding-right: 20px;
     border-radius: 10px;
     display: grid;
@@ -24,7 +21,7 @@
 }
 
 
-.MessageBox > div > div:nth-child(2) {
+.MessageBox > div > div > div:nth-child(2) {
     margin-top: 10px;
     margin-bottom: 10px;
 }
