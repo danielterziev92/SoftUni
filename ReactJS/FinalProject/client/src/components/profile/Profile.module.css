@@ -1,5 +1,9 @@
 .ProfileForm {
     padding: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .ProfileForm div {
@@ -27,4 +31,15 @@
 .ProfileForm div input:focus {
     border: 1px solid #4f46e5;
     outline: none;
+}
+
+
+.ProfileForm button {
+    margin-top: 30px;
+    background-color: #4f46e5;
+    padding: 15px;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    color: #ffffff;
 }

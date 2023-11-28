@@ -4,7 +4,7 @@ const Urls = {
     baseUrl: BASE_URL,
     token: `${BASE_URL}/token/`,
     refreshToken: `${BASE_URL}/token/refresh/`,
-    userDetail: `${BASE_URL}/user/:id`,
+    userDetail: `${BASE_URL}/user/:id/`,
     products: `${BASE_URL}/products/`,
     productCreate: `${BASE_URL}/product/create/`,
     productDetail: `${BASE_URL}/product/:id/`,

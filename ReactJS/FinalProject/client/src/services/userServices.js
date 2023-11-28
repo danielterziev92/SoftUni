@@ -8,7 +8,7 @@ export const loginUser = async (data) => {
 
 export const getRefreshToken = async (oldToken) => {
     const response = await fetch(Urls.refreshToken, {
-        method: "POST",
+        method: 'POST',
         headers: {
             'Content-type': 'application/json',
         },
@@ -25,7 +25,7 @@ export const getRefreshToken = async (oldToken) => {
 export const getUserById = async (id, token) => {
     const url = pathToUrl(Urls.userDetail, {id});
     const response = await fetch(url, {
-        method: "GET",
+        method: 'GET',
         headers: {
             'Content-type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -34,6 +34,25 @@ export const getUserById = async (id, token) => {
 
     if (!response.ok) {
         throw new Error('Грешна заявка. Моля свържете се с администратор');
+    }
+
+    return await response.json();
+}
+
+export const updateUserById = async (id, token, data) => {
+    const {is_staff, is_active, ...dataToSend} = data
+    const url = pathToUrl(Urls.userDetail, {id});
+    const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(dataToSend),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     return await response.json();

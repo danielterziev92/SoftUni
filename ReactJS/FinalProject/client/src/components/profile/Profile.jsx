@@ -6,7 +6,8 @@ import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 import useForm from "../../hooks/useForm.js";
 import useRefreshToken from "../../hooks/useRefreshToken.js";
 
-import {getUserById} from "../../services/userServices.js";
+import {getUserById, updateUserById} from "../../services/userServices.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 const FormKey = {
     Email: 'email',
@@ -21,9 +22,12 @@ const FormKey = {
 
 export default function Profile() {
     const {user,} = useContext(AuthenticationContext);
+    const {updateMessage, updateStatus} = useContext(MessageContext);
     const {newToken} = useRefreshToken();
     const isFirstRender = useRef(true);
-    const {formValue, updateFormValue, changeDataHandler, onSubmitForm,} = useForm({});
+    const {formValue, updateFormValue, changeDataHandler, onSubmitForm,} = useForm(
+        Object.fromEntries(Object.keys(FormKey).map(key => [FormKey[key], '']))
+        , updateUserDataOnSubmit);
 
 
     useEffect(() => {
@@ -36,6 +40,18 @@ export default function Profile() {
             .then(updateFormValue)
             .catch(e => console.log(e));
     }, [newToken]);
+
+    async function updateUserDataOnSubmit(data) {
+        try {
+            await updateUserById(formValue.id, newToken.access, data);
+            updateMessage('Успешно успяхте да редактирате профила си');
+            updateStatus('success');
+        } catch (e) {
+            updateMessage(e);
+            updateStatus('error');
+        }
+
+    }
 
 
     return (
@@ -56,8 +72,8 @@ export default function Profile() {
                        onChange={changeDataHandler}/>
             </div>
             <div>
-                <label htmlFor={FormKey.FirstName}>Фамилия:</label>
-                <input type="text" name={FormKey.FirstName} value={formValue[FormKey.FirstName]}
+                <label htmlFor={FormKey.LastName}>Фамилия:</label>
+                <input type="text" name={FormKey.LastName} value={formValue[FormKey.LastName]}
                        onChange={changeDataHandler}/>
             </div>
             <div>
@@ -75,7 +91,7 @@ export default function Profile() {
                 <input type="text" name={FormKey.IsActive} value={formValue[FormKey.IsActive] ? 'Да' : 'Не'}
                        onChange={changeDataHandler}/>
             </div>
-
+            <button>Редактирай</button>
         </form>
     );
 }
