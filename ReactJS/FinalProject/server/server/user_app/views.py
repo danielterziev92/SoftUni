@@ -25,4 +25,3 @@ class UserRetrieveUpdateView(api_views.RetrieveUpdateAPIView):
 class UserListView(api_views.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    # permission_classes = [IsAuthenticated]

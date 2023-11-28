@@ -15,6 +15,8 @@ ALLOWED_HOSTS = ('*',)
 
 CSRF_TRUSTED_ORIGINS = ('https://localhost:8000', 'http://localhost:5173')
 
+CORS_ALLOWED_HEADERS = ['x-authorization', ]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 DJANGO_APPS = (

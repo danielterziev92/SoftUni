@@ -10,10 +10,6 @@ class AppTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         token['username'] = user.username
         token['email'] = user.email
-        token['first_name'] = user.first_name
-        token['last_name'] = user.last_name
-        token['is_staff'] = user.is_staff
-        token['is_superuser'] = user.is_superuser
 
         return token
 
@@ -21,8 +17,8 @@ class AppTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password']  # Add other fields as needed
-        extra_kwargs = {'password': {'write_only': True}}
+        # fields = '__all__'
+        exclude = ('password', 'date_joined', 'groups', 'user_permissions')
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
