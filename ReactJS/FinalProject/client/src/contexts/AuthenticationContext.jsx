@@ -1,10 +1,11 @@
 import {createContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import compareObjects from "../utils/compareObjects.js";
-import {getCookie, setCookie} from "../utils/cookieManager.js";
+import {deleteCookie, getCookie, setCookie} from "../utils/cookieManager.js";
 import {jwtDecode} from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import Paths from "../utils/Paths.js";
-import {refreshToken} from "../services/userServices.js";
+import {getRefreshToken} from "../services/userServices.js";
+import checkToken from "../utils/tokenManager.js";
 
 export const AuthenticationContext = createContext();
 AuthenticationContext.displayName = 'AuthenticationContext';
@@ -29,13 +30,16 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
     const isFirstRender = useRef(true);
 
     useLayoutEffect(() => {
-        const accessToken = getCookie(tokenName.current)
+        const accessToken = getCookie(tokenName.current);
+
+        if (!checkToken(accessToken)) {
+            navigate(Paths.login);
+        }
+
         if (accessToken) {
             setUser(jwtDecode(accessToken));
             setIsLogin(true);
             navigate(Paths.afterLogin);
-        } else {
-            navigate(Paths.login);
         }
     }, []);
 
@@ -56,7 +60,7 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
         if (!compareObjects(authToken, {}) && authToken.refresh) {
             const intervalTime = 4 * 60 * 1000;
             intervalId = setInterval(() => {
-                refreshToken(authToken).then(newToken => {
+                getRefreshToken(authToken).then(newToken => {
                     updateAuthToken(newToken);
                     setCookie(tokenName.current, newToken.access, dayToExpire.current);
                 });
@@ -72,12 +76,20 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
 
     const updateUser = (newUser) => setUser(newUser);
 
+    const logoutUser = () => {
+        updateUser({});
+        updateAuthToken({});
+        deleteCookie(tokenName.current);
+        deleteCookie('refresh');
+    }
+
     const authenticationContextValues = {
         authToken,
         updateAuthToken,
         updateTokenByKey,
         user,
         updateUser,
+        logoutUser,
         tokenName,
         dayToExpire,
         setIsLogin,
@@ -89,4 +101,3 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
         </AuthenticationContext.Provider>
     )
 }
-// 1:38:12

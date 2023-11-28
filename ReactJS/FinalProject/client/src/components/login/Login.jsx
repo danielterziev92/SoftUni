@@ -53,6 +53,7 @@ export default function Login() {
             updateUser(jwtDecode(response.access));
 
             setCookie(tokenName.current, response.access, dayToExpire.current);
+            setCookie('refresh', response.refresh, 90);
             updateMessage('Вписахте се успешно');
             updateStatus('success');
             navigate(Paths.afterLogin);

@@ -21,7 +21,7 @@ const request = async (method, url, data) => {
         return {};
     }
 
-    const result = await response.json()
+    const result = await response.json();
 
     if (!response.ok) {
         throw result;

@@ -7,7 +7,7 @@ const Paths = {
     register: '/register',
     products: '/products',
     groups: '/groups',
-    profile: (id) => `/profile/${id}`,
+    profile: '/profile/:id',
 }
 
 export default Paths;
