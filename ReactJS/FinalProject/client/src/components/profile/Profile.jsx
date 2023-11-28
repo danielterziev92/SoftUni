@@ -1,16 +1,20 @@
-import {useContext, useEffect, useRef, useState} from "react";
-import {getUserById} from "../../services/userServices.js";
+import {useContext, useEffect, useRef} from "react";
+
+import style from './Profile.module.css';
+
 import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
-import useRefreshToken from "../../hooks/useRefreshToken.js";
 import useForm from "../../hooks/useForm.js";
+import useRefreshToken from "../../hooks/useRefreshToken.js";
+
+import {getUserById} from "../../services/userServices.js";
 
 const FormKey = {
+    Email: 'email',
     Username: 'username',
-    LastLogin: 'last_login',
-    IsSuperUser: 'is_superuser',
     FirstName: 'first_name',
     LastName: 'last_name',
-    Email: 'email',
+    LastLogin: 'last_login',
+    IsSuperUser: 'is_superuser',
     IsActive: 'is_active',
 }
 
@@ -24,7 +28,6 @@ export default function Profile() {
 
     useEffect(() => {
         if (isFirstRender.current) {
-            console.log('first render')
             isFirstRender.current = false;
             return;
         }
@@ -36,10 +39,43 @@ export default function Profile() {
 
 
     return (
-        <>
-            <form onSubmit={onSubmitForm}>
+        <form onSubmit={onSubmitForm} className={style.ProfileForm}>
+            <div>
+                <label htmlFor={FormKey.Email}>Имейл:</label>
+                <input type="email" name={FormKey.Email} value={formValue[FormKey.Email]}
+                       onChange={changeDataHandler}/>
+            </div>
+            <div>
+                <label htmlFor={FormKey.Username}>Потребителско име:</label>
+                <input type="text" name={FormKey.Username} value={formValue[FormKey.Username]}
+                       onChange={changeDataHandler}/>
+            </div>
+            <div>
+                <label htmlFor={FormKey.FirstName}>Име:</label>
+                <input type="text" name={FormKey.FirstName} value={formValue[FormKey.FirstName]}
+                       onChange={changeDataHandler}/>
+            </div>
+            <div>
+                <label htmlFor={FormKey.FirstName}>Фамилия:</label>
+                <input type="text" name={FormKey.FirstName} value={formValue[FormKey.FirstName]}
+                       onChange={changeDataHandler}/>
+            </div>
+            <div>
+                <label htmlFor={FormKey.LastLogin}>Последно посещение:</label>
+                <input type="text" name={FormKey.LastLogin} value={formValue[FormKey.LastLogin]}
+                       onChange={changeDataHandler}/>
+            </div>
+            <div>
+                <label htmlFor={FormKey.IsSuperUser}>Админ ли сте?</label>
+                <input type="text" name={FormKey.IsSuperUser} value={formValue[FormKey.IsSuperUser] ? 'Да' : 'Не'}
+                       onChange={changeDataHandler}/>
+            </div>
+            <div>
+                <label htmlFor={FormKey.IsActive}>Служител ли сте?</label>
+                <input type="text" name={FormKey.IsActive} value={formValue[FormKey.IsActive] ? 'Да' : 'Не'}
+                       onChange={changeDataHandler}/>
+            </div>
 
-            </form>
-        </>
+        </form>
     );
 }
