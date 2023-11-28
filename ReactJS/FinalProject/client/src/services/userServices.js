@@ -40,7 +40,7 @@ export const getUserById = async (id, token) => {
 }
 
 export const updateUserById = async (id, token, data) => {
-    const {is_staff, is_active, ...dataToSend} = data
+    const {is_staff, is_superuser, is_active, ...dataToSend} = data
     const url = pathToUrl(Urls.userDetail, {id});
     const response = await fetch(url, {
         method: 'PATCH',

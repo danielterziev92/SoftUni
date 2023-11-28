@@ -15,6 +15,7 @@ const FormKey = {
     FirstName: 'first_name',
     LastName: 'last_name',
     LastLogin: 'last_login',
+    IsStaff: 'is_staff',
     IsSuperUser: 'is_superuser',
     IsActive: 'is_active',
 }
@@ -78,18 +79,26 @@ export default function Profile() {
             </div>
             <div>
                 <label htmlFor={FormKey.LastLogin}>Последно посещение:</label>
-                <input type="text" name={FormKey.LastLogin} value={formValue[FormKey.LastLogin]}
-                       onChange={changeDataHandler}/>
+                <input type="datetime-local" name={FormKey.LastLogin}
+                       value={formValue[FormKey.LastLogin].slice(0, -1).slice(0, 16)}
+                       onChange={changeDataHandler}
+                       disabled={true}
+                />
             </div>
             <div>
-                <label htmlFor={FormKey.IsSuperUser}>Админ ли сте?</label>
+                <label htmlFor={FormKey.IsSuperUser}>Админ ли сте ?</label>
                 <input type="text" name={FormKey.IsSuperUser} value={formValue[FormKey.IsSuperUser] ? 'Да' : 'Не'}
-                       onChange={changeDataHandler}/>
+                       onChange={changeDataHandler} disabled={true}/>
             </div>
             <div>
-                <label htmlFor={FormKey.IsActive}>Служител ли сте?</label>
+                <label htmlFor={FormKey.IsStaff}>Служител ли сте ?</label>
+                <input type="text" name={FormKey.IsStaff} value={formValue[FormKey.IsStaff] ? 'Да' : 'Не'}
+                       onChange={changeDataHandler} disabled={true}/>
+            </div>
+            <div>
+                <label htmlFor={FormKey.IsActive}>Активен ли ви е профила ?</label>
                 <input type="text" name={FormKey.IsActive} value={formValue[FormKey.IsActive] ? 'Да' : 'Не'}
-                       onChange={changeDataHandler}/>
+                       onChange={changeDataHandler} disabled={true}/>
             </div>
             <button>Редактирай</button>
         </form>
