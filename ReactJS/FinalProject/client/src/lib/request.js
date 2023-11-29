@@ -1,24 +1,36 @@
-function getOptions(data) {
+function getOptions(data, token) {
     const options = {};
+
+    options.headers = {
+        'Content-type': 'application/json',
+    };
 
     if (data) {
         options.body = JSON.stringify(data);
+    }
+
+    if (token) {
         options.headers = {
-            'content-type': 'application/json',
-        };
+            ...options.headers,
+            Authorization: `Bearer ${token}`,
+        }
     }
 
     return options
 }
 
-const request = async (method, url, data) => {
+const request = async (method, url, data, token) => {
     const response = await fetch(url, {
-        ...getOptions(data),
+        ...getOptions(data, token),
         method,
     });
 
     if (response.status === 204) {
         return {};
+    }
+
+    if (!response.ok) {
+        throw new Error('Грешна заявка. Моля свържете се с администратор');
     }
 
     const result = await response.json();
