@@ -5,6 +5,7 @@ const Urls = {
     token: `${BASE_URL}/token/`,
     refreshToken: `${BASE_URL}/token/refresh/`,
     userDetail: `${BASE_URL}/user/:id/`,
+    userRegister: `${BASE_URL}/user/create/`,
     products: `${BASE_URL}/products/`,
     productCreate: `${BASE_URL}/product/create/`,
     productDetail: `${BASE_URL}/product/:id/`,

@@ -26,12 +26,17 @@ const FormInformation = {
 }
 
 export default function Login() {
-    const {updateAuthToken, updateUser, user, tokenName, dayToExpire} = useContext(AuthenticationContext);
+    const {
+        updateAuthToken,
+        updateUser,
+        user,
+        tokenName,
+        dayToExpire,
+        loginUserInApp
+    } = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const focusedInput = useRef('username');
     const navigate = useNavigate();
-
-
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
 
     useLayoutEffect(() => {
@@ -49,15 +54,9 @@ export default function Login() {
     async function loginSubmitFormHandler(data) {
         try {
             const response = await loginUser(data);
-            updateAuthToken(response);
-            updateUser(jwtDecode(response.access));
-
-            setCookie(tokenName.current, response.access, dayToExpire.current);
-            setCookie('refresh', response.refresh, 90);
-            updateMessage('Вписахте се успешно');
-            updateStatus('success');
-            navigate(Paths.afterLogin);
+            loginUserInApp(response);
         } catch (e) {
+
             updateMessage('sadasdsa');
             updateStatus('error');
             console.log('This come from error')
