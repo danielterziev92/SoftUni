@@ -29,10 +29,6 @@ const request = async (method, url, data, token) => {
         return {};
     }
 
-    if (!response.ok) {
-        throw new Error('Грешна заявка. Моля свържете се с администратор');
-    }
-
     const result = await response.json();
 
     if (!response.ok) {

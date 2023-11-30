@@ -1,27 +1,32 @@
-import {useEffect, useRef} from "react";
+import {useContext, useEffect, useRef,} from "react";
 import {Link} from "react-router-dom";
 
 import authStyle from "../Authentication.module.css";
 
 import useForm from "../../hooks/useForm.js";
 import Paths from "../../utils/Paths.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
+import validationPasswordRules from "./validationPasswordRules.js";
 
 
 const initialUserData = {
     username: '',
     email: '',
     password: '',
+    repeat_password: '',
 }
 
 const FormInformation = {
     username: {type: 'text', label: 'Потребителско име'},
     email: {type: 'email', label: 'Емайл'},
     password: {type: 'password', label: 'Парола'},
+    repeat_password: {type: 'password', label: 'Повтори парола'},
 }
 
 export default function Register() {
     const focusedInput = useRef('username');
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, registerSubmitFormHandler);
+    const {updateMessage, updateStatus} = useContext(MessageContext);
 
     useEffect(() => {
         if (focusedInput.current) {
@@ -30,8 +35,17 @@ export default function Register() {
     }, [focusedInput]);
 
     async function registerSubmitFormHandler(value) {
-        console.log('Login Function');
-        console.log(value)
+        if (value.password && value.repeat_password) {
+            const result = validationPasswordRules(value.password, value.repeat_password)
+            if (typeof result === 'object') {
+                const {message, status} = result;
+                updateMessage([message]);
+                updateStatus(status);
+                return;
+            }
+        }
+
+
     }
 
     return (

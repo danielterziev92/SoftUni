@@ -24,19 +24,20 @@ export const getRefreshToken = async (oldToken) => {
 
 export const getUserById = async (id, token) => {
     const url = pathToUrl(Urls.userDetail, {id});
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        }
-    })
-
-    if (!response.ok) {
-        throw new Error('Грешна заявка. Моля свържете се с администратор');
-    }
-
-    return await response.json();
+    return await request.get(url, null, token);
+    // const response = await fetch(url, {
+    //     method: 'GET',
+    //     headers: {
+    //         'Content-type': 'application/json',
+    //         'Authorization': `Bearer ${token}`,
+    //     }
+    // })
+    //
+    // if (!response.ok) {
+    //     throw new Error('Грешна заявка. Моля свържете се с администратор');
+    // }
+    //
+    // return await response.json();
 }
 
 export const updateUserById = async (id, token, data) => {
