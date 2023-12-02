@@ -26,7 +26,7 @@ export default function Products() {
     const [isShowAddProduct, setIsShowAddProduct] = useState(false);
 
     const {updateMessage, isMessageBoxShow} = useContext(MessageContext);
-    const {allProducts, updateAllProducts, setSearchedProduct, isSearchingProducts} = useContext(ProductsContext);
+    const {allProducts, updateAllProducts, setMatchesProducts, isSearchingProducts} = useContext(ProductsContext);
 
     useEffect(() => {
         getAllProducts()
@@ -39,7 +39,7 @@ export default function Products() {
         searchProduct ? isSearchingProducts.current = true : isSearchingProducts.current = false;
 
         const matchingProducts = allProducts.filter(product => product.name.toLowerCase().includes(searchProduct.toLowerCase()));
-        setSearchedProduct(matchingProducts);
+        setMatchesProducts(matchingProducts);
     }, [searchProduct]);
 
     const showAddProductClickHandler = () => setIsShowAddProduct(true);

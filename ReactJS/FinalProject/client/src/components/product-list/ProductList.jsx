@@ -22,7 +22,7 @@ const tableKeys = [
 
 export default function ProductList() {
     const [productToShow, setProductToShow] = useState([]);
-    const {allProducts, searchedProduct, isSearchingProduct} = useContext(ProductsContext);
+    const {allProducts, matchesProducts, isSearchingProducts} = useContext(ProductsContext);
     const [paginationState, setPaginationState] = useState({
         startIndex: 0,
         endIndex: 15,
@@ -33,22 +33,23 @@ export default function ProductList() {
     const detailModuleShowed = useRef(false);
 
     useEffect(() => {
-        if (isSearchingProduct) {
-            setProductToShow(searchedProduct);
+        if (isSearchingProducts.current) {
+            setProductToShow(matchesProducts);
             return;
         }
 
         setProductToShow(allProducts);
-    }, [allProducts, searchedProduct, isSearchingProduct]);
+    }, [allProducts, matchesProducts, isSearchingProducts]);
 
     useEffect(() => {
         if (!selectedItem) {
             return;
         }
 
+        const arrayToOrder = isSearchingProducts.current ? matchesProducts : allProducts;
         const selectedObj = tableKeys.find(obj => obj.name === selectedItem);
-        const result = orderArrayByKey(allProducts, selectedObj.serverName, isAscending ? 'asc' : 'desc');
-        console.log(result)
+        const sortedArray = orderArrayByKey(arrayToOrder, selectedObj.serverName, isAscending ? 'asc' : 'desc');
+        setProductToShow(sortedArray);
     }, [selectedItem, isAscending]);
 
     const changeOrderClickHandler = (e) => {

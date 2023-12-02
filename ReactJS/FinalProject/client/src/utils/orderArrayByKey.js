@@ -3,6 +3,8 @@ function orderArrayByKey(arr, key, order) {
         return sortByNumber(arr, key, order);
     } else if (typeof arr[0][key] === 'string') {
         return sortByString(arr, key, order);
+    } else if (typeof arr[0][key] === 'boolean') {
+        return sortByBoolean(arr, key, order);
     } else {
         return 'Unsupported key type for sorting';
     }
@@ -22,6 +24,14 @@ function orderArrayByKey(arr, key, order) {
         }
 
         return arr.slice().sort((a, b) => b[key].localeCompare(a[key]))
+    }
+
+    function sortByBoolean(arr, key, order) {
+        if (order === 'asc') {
+            return arr.slice().sort((a, b) => a[key] - b[key]);
+        }
+
+        return arr.slice().sort((a, b) => b[key] - a[key]);
     }
 }
 
