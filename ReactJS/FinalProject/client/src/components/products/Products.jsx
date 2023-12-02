@@ -26,7 +26,7 @@ export default function Products() {
     const [isShowAddProduct, setIsShowAddProduct] = useState(false);
 
     const {updateMessage, isMessageBoxShow} = useContext(MessageContext);
-    const {allProducts, updateAllProducts, setSearchedProduct, isSearchingProduct} = useContext(ProductsContext);
+    const {allProducts, updateAllProducts, setSearchedProduct, isSearchingProducts} = useContext(ProductsContext);
 
     useEffect(() => {
         getAllProducts()
@@ -36,7 +36,7 @@ export default function Products() {
     }, []);
 
     useEffect(() => {
-        searchProduct ? isSearchingProduct.current = true : isSearchingProduct.current = false;
+        searchProduct ? isSearchingProducts.current = true : isSearchingProducts.current = false;
 
         const matchingProducts = allProducts.filter(product => product.name.toLowerCase().includes(searchProduct.toLowerCase()));
         setSearchedProduct(matchingProducts);

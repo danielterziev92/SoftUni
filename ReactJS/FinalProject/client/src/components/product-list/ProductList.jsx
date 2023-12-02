@@ -7,14 +7,15 @@ import ProductPagination from "../product-pagination/ProductPagination.jsx";
 
 import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
+import orderArrayByKey from "../../utils/orderArrayByKey.js";
 
 const tableKeys = [
     {name: '№', sorting: false},
-    {name: 'Код', sorting: true},
-    {name: 'Име', sorting: true},
-    {name: 'Цена', sorting: true},
-    {name: 'Брой', sorting: true},
-    {name: 'Активен', sorting: true},
+    {name: 'Код', sorting: true, serverName: 'code'},
+    {name: 'Име', sorting: true, serverName: 'name'},
+    {name: 'Цена', sorting: true, serverName: 'price'},
+    {name: 'Брой', sorting: true, serverName: 'quantity'},
+    {name: 'Активен', sorting: true, serverName: 'is_active'},
     {name: 'Детайли', sorting: false},
 ]
 
@@ -40,6 +41,16 @@ export default function ProductList() {
         setProductToShow(allProducts);
     }, [allProducts, searchedProduct, isSearchingProduct]);
 
+    useEffect(() => {
+        if (!selectedItem) {
+            return;
+        }
+
+        const selectedObj = tableKeys.find(obj => obj.name === selectedItem);
+        const result = orderArrayByKey(allProducts, selectedObj.serverName, isAscending ? 'asc' : 'desc');
+        console.log(result)
+    }, [selectedItem, isAscending]);
+
     const changeOrderClickHandler = (e) => {
         if (selectedItem !== e.currentTarget.textContent) {
             setSelectedItem(e.currentTarget.textContent);
@@ -47,11 +58,11 @@ export default function ProductList() {
         } else {
             setIsAscending(state => !state);
         }
-    }
+    };
 
     const contextValue = {
         detailModuleShowed,
-    }
+    };
 
     return (
         <>

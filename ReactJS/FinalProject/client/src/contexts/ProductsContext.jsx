@@ -6,7 +6,7 @@ ProductsContext.displayName = 'ProductsContext';
 export default function ProductsProvider({children}) {
     const [allProducts, setAllProducts] = useState([]);
     const [searchedProduct, setSearchedProduct] = useState([]);
-    const isSearchingProduct = useRef(false);
+    const isSearchingProducts = useRef(false);
 
     const updateAllProducts = (newProducts) => setAllProducts(newProducts);
 
@@ -26,7 +26,7 @@ export default function ProductsProvider({children}) {
         addToAllProducts,
         searchedProduct,
         setSearchedProduct,
-        isSearchingProduct,
+        isSearchingProducts,
     }
 
     return (
