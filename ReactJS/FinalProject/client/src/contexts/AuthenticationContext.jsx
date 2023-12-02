@@ -66,6 +66,7 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
                 getRefreshToken(authToken).then(newToken => {
                     updateAuthToken(newToken);
                     setCookie(tokenName.current, newToken.access, dayToExpire.current);
+                    setCookie(tokenName.current, newToken.refresh, 20);
                 });
             }, intervalTime)
         }
@@ -80,11 +81,13 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
     const updateUser = (newUser) => setUser(newUser);
 
     const loginUserInApp = (data) => {
+        console.log(data)
         updateAuthToken(data);
         updateUser(jwtDecode(data.access));
 
         setCookie(tokenName.current, data.access, dayToExpire.current);
         setCookie('refresh', data.refresh, 90);
+
         updateMessage('Вписахте се успешно');
         updateStatus('success');
         navigate(Paths.afterLogin);
