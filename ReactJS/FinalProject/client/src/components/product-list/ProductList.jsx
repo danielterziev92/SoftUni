@@ -90,7 +90,7 @@ export default function ProductList() {
                                 <ProductListItem rowNumb={index + paginationState.startIndex + 1}/>
                             </SingleProductContext.Provider>
                         ))
-                        : <div>Няма съвпадения</div>
+                        : <div className={style.noMatches}>Няма съвпадения</div>
                     }
                 </div>
                 <ProductPagination
