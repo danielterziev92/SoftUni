@@ -13,10 +13,15 @@ const initialPagination = {
     selectedItemPerPage: 15,
 }
 
-export default function ProductPagination({setPaginationState, productLength,}) {
+export default function ProductPagination({setPaginationState, productToShow,}) {
     const prevPaginationValues = useRef(15);
+    const [productLength, setProductLength] = useState(0);
     const [paginationValues, setPaginationValue] = useState(initialPagination);
     const [currItemPerPage, setCurrItemPerPage] = useState(initialPagination.selectedItemPerPage);
+
+    useEffect(() => {
+        setProductLength(productToShow.length);
+    }, [productToShow]);
 
     useEffect(() => {
         productPerPageChangeHandler(currItemPerPage);

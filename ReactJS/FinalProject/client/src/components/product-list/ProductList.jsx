@@ -26,7 +26,6 @@ export default function ProductList() {
     const [paginationState, setPaginationState] = useState({
         startIndex: 0,
         endIndex: 15,
-        productLength: allProducts.length,
     });
     const [isAscending, setIsAscending] = useState(true);
     const [selectedItem, setSelectedItem] = useState('');
@@ -96,7 +95,7 @@ export default function ProductList() {
                 </div>
                 <ProductPagination
                     setPaginationState={setPaginationState}
-                    productLength={paginationState.productLength}
+                    productToShow={productToShow}
                 />
             </div>
         </>
