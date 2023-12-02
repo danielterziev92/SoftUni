@@ -1,7 +1,10 @@
-import {useEffect, useRef, useState} from "react";
-
+import {useContext, useEffect, useRef, useState} from "react";
 
 import paginationStyle from './ProductPagination.module.css';
+
+import {ProductsContext} from "../../contexts/ProductsContext.jsx";
+import {getAllProducts} from "../../services/productService.js";
+import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 const initialPagination = {
     startIndex: 0,
@@ -13,11 +16,13 @@ const initialPagination = {
     selectedItemPerPage: 15,
 }
 
-export default function ProductPagination({setPaginationState, productToShow,}) {
+export default function ProductPagination({setPaginationState, productToShow, setProductToShow,}) {
     const prevPaginationValues = useRef(15);
     const [productLength, setProductLength] = useState(0);
     const [paginationValues, setPaginationValue] = useState(initialPagination);
     const [currItemPerPage, setCurrItemPerPage] = useState(initialPagination.selectedItemPerPage);
+    const {updateAllProducts} = useContext(ProductsContext);
+    const {updateMessage, updateStatus} = useContext(MessageContext);
 
     useEffect(() => {
         setProductLength(productToShow.length);
@@ -34,6 +39,25 @@ export default function ProductPagination({setPaginationState, productToShow,}) 
     useEffect(() => {
         setPaginationState(state => ({...state, endIndex: paginationValues.endIndex}));
     }, [paginationValues.endIndex]);
+
+
+    useEffect(() => {
+        if (prevPaginationValues.current !== paginationValues.selectedItemPerPage) {
+            const newPaginationValues = calculatePaginationValues();
+            setPaginationValue(newPaginationValues);
+            return;
+        }
+
+        prevPaginationValues.current = paginationValues.selectedItemPerPage;
+
+        setPaginationValue(state => ({
+            ...state,
+            endIndex: paginationValues.selectedItemPerPage,
+            totalPages: Math.ceil(productLength / state.selectedItemPerPage),
+            totalProducts: productLength,
+        }));
+
+    }, [paginationValues.selectedItemPerPage, productLength]);
 
     const calculateTotalPages = () => Math.ceil(paginationValues.totalProducts / paginationValues.selectedItemPerPage);
 
@@ -84,23 +108,18 @@ export default function ProductPagination({setPaginationState, productToShow,}) 
 
     const goLastPageClickHandler = () => goToPageClickHandler(calculateTotalPages());
 
-    useEffect(() => {
-        if (prevPaginationValues.current !== paginationValues.selectedItemPerPage) {
-            const newPaginationValues = calculatePaginationValues();
-            setPaginationValue(newPaginationValues);
-            return;
+    async function refreshAllProductClickHandler() {
+        try {
+            const allProducts = await getAllProducts();
+            updateAllProducts(allProducts);
+            setProductToShow(allProducts);
+            updateMessage('Всички продукти са обновени');
+            updateStatus('success');
+        } catch (e) {
+            console.log(e);
         }
+    }
 
-        prevPaginationValues.current = paginationValues.selectedItemPerPage;
-
-        setPaginationValue(state => ({
-            ...state,
-            endIndex: paginationValues.selectedItemPerPage,
-            totalPages: Math.ceil(productLength / state.selectedItemPerPage),
-            totalProducts: productLength,
-        }));
-
-    }, [paginationValues.selectedItemPerPage, productLength]);
 
     return (
         <div className={paginationStyle.tfoot}>
@@ -138,7 +157,9 @@ export default function ProductPagination({setPaginationState, productToShow,}) 
             <div>
                 <div>
                     <span>Обнови всики продукти</span>
-                    <button><i className="fa-solid fa-arrow-rotate-right"></i></button>
+                    <button onClick={refreshAllProductClickHandler}>
+                        <i className="fa-solid fa-arrow-rotate-right"></i>
+                    </button>
                 </div>
             </div>
         </div>

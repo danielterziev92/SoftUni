@@ -96,6 +96,7 @@ export default function ProductList() {
                 <ProductPagination
                     setPaginationState={setPaginationState}
                     productToShow={productToShow}
+                    setProductToShow={setProductToShow}
                 />
             </div>
         </>
