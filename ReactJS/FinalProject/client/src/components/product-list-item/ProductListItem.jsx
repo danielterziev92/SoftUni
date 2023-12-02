@@ -7,15 +7,15 @@ export default function ProductListItem({rowNumb}) {
     const [showDetail, setShowDetail] = useState(false);
     const {product, detailModuleShowed} = useContext(SingleProductContext);
 
-    const closeDetailHandler = () => {
-        setShowDetail(false);
-    }
-
     useEffect(() => {
         if (showDetail) {
             detailModuleShowed.current = !detailModuleShowed.current;
         }
     }, [showDetail, detailModuleShowed]);
+
+    const closeDetailHandler = () => {
+        setShowDetail(false);
+    }
 
     return (
         <>

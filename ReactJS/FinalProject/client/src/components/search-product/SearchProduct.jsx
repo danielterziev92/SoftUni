@@ -15,48 +15,15 @@ export default function SearchProduct({setSearchProduct}) {
     const [resetInterval, setResetInterval] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const updatePlaceholder = () => {
-        const currentWord = placeholderWords[currentWordIndex];
-        const charCountToShow = Math.min(currentWord.length, charIndex + 1);
-        setPlaceholderText(currentWord.slice(0, charCountToShow));
-    };
-
-    const moveNextWord = () => {
-        setCurrentWordIndex((prevIndex) => (prevIndex + 1) % placeholderWords.length);
-        setCharIndex(0);
-    };
-
-    const increaseIndex = () => {
-        setCharIndex((prevIndex) => prevIndex + 1);
-    }
-
-    const reduceIndex = () => {
-        setCharIndex((prevIndex) => prevIndex - 1);
-    }
-
-    const checkForPipe = () => {
-        if (charIndex > 0 || charIndex < placeholderText.length) {
-            return '|';
-        }
-        return '';
-    }
-
     useEffect(() => {
-        if (value === '') {
-            return;
-        }
+        setSearchProduct(value);
 
-        setSearchProduct(value)
-    }, [value]);
-
-    useEffect(() => {
         if (value === '') {
             setIsIntervalActive(true);
             setResetInterval(true);
             return;
         }
 
-        setSearchProduct(value)
         setIsIntervalActive(false);
     }, [value]);
 
@@ -84,6 +51,32 @@ export default function SearchProduct({setSearchProduct}) {
         return () => clearInterval(intervalId);
     }, [currentWordIndex, charIndex, placeholderWords, isIntervalActive, resetInterval]);
 
+
+    const updatePlaceholder = () => {
+        const currentWord = placeholderWords[currentWordIndex];
+        const charCountToShow = Math.min(currentWord.length, charIndex + 1);
+        setPlaceholderText(currentWord.slice(0, charCountToShow));
+    };
+
+    const moveNextWord = () => {
+        setCurrentWordIndex((prevIndex) => (prevIndex + 1) % placeholderWords.length);
+        setCharIndex(0);
+    };
+
+    const increaseIndex = () => {
+        setCharIndex((prevIndex) => prevIndex + 1);
+    }
+
+    const reduceIndex = () => {
+        setCharIndex((prevIndex) => prevIndex - 1);
+    }
+
+    const checkForPipe = () => {
+        if (charIndex > 0 || charIndex < placeholderText.length) {
+            return '|';
+        }
+        return '';
+    }
 
     return (
         <div className={isFocused ? searchProductStyle.focused : ''}>

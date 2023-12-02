@@ -1,4 +1,4 @@
-import {useContext, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 
 import style from './ProductList.module.css';
 
@@ -20,7 +20,8 @@ const tableKeys = [
 
 
 export default function ProductList() {
-    const {allProducts} = useContext(ProductsContext);
+    const [productToShow, setProductToShow] = useState([]);
+    const {allProducts, searchedProduct, isSearchingProduct} = useContext(ProductsContext);
     const [paginationState, setPaginationState] = useState({
         startIndex: 0,
         endIndex: 15,
@@ -29,6 +30,15 @@ export default function ProductList() {
     const [isAscending, setIsAscending] = useState(true);
     const [selectedItem, setSelectedItem] = useState('');
     const detailModuleShowed = useRef(false);
+
+    useEffect(() => {
+        if (isSearchingProduct) {
+            setProductToShow(searchedProduct);
+            return;
+        }
+
+        setProductToShow(allProducts);
+    }, [allProducts, searchedProduct, isSearchingProduct]);
 
     const changeOrderClickHandler = (e) => {
         if (selectedItem !== e.currentTarget.textContent) {
@@ -63,11 +73,14 @@ export default function ProductList() {
                     </div>
                 </div>
                 <div className={style.body}>
-                    {allProducts.slice(paginationState.startIndex, paginationState.endIndex).map((product, index) => (
-                        <SingleProductContext.Provider key={product.id} value={{product, ...contextValue}}>
-                            <ProductListItem rowNumb={index + paginationState.startIndex + 1}/>
-                        </SingleProductContext.Provider>
-                    ))}
+                    {productToShow.length > 0
+                        ? productToShow.slice(paginationState.startIndex, paginationState.endIndex).map((product, index) => (
+                            <SingleProductContext.Provider key={product.id} value={{product, ...contextValue}}>
+                                <ProductListItem rowNumb={index + paginationState.startIndex + 1}/>
+                            </SingleProductContext.Provider>
+                        ))
+                        : <div>Няма съвпадения</div>
+                    }
                 </div>
                 <ProductPagination
                     setPaginationState={setPaginationState}
