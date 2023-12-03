@@ -1,41 +1,111 @@
-import {useContext, useEffect, useRef,} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useContext, useEffect, useReducer, useRef,} from "react";
+import {Link} from "react-router-dom";
+
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck, faInfoCircle, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 import authStyle from "../Authentication.module.css";
 
-import useForm from "../../hooks/useForm.js";
-import Paths from "../../utils/Paths.js";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
-import validationPasswordRules from "./validationPasswordRules.js";
-import {loginUser, registerUser} from "../../services/userServices.js";
 import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 
+import useForm from "../../hooks/useForm.js";
 
-const initialUserData = {
-    username: '',
-    email: '',
-    password: '',
-    repeat_password: '',
+import {loginUser, registerUser} from "../../services/userServices.js";
+
+import Paths from "../../utils/Paths.js";
+
+const FormKey = {
+    Username: 'username',
+    Email: 'email',
+    Password: 'password',
+    RepeatPassword: 'repeat_password',
 }
 
-const FormInformation = {
-    username: {type: 'text', label: 'Потребителско име'},
-    email: {type: 'email', label: 'Емайл'},
-    password: {type: 'password', label: 'Парола'},
-    repeat_password: {type: 'password', label: 'Повтори парола'},
+const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
+const initialState = {
+    validUsername: false,
+    focusUsername: false,
+    validEmail: false,
+    focusEmail: false,
+    validPassword: false,
+    focusPassword: false,
+    validPasswordMatch: false,
+    focusPasswordMatch: false,
+};
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'SET_VALID_NAME':
+            return {...state, validUsername: action.payload};
+        case 'SET_FOCUS_USER':
+            return {...state, focusUsername: action.payload};
+        case 'SET_VALID_EMAIL':
+            return {...state, validEmail: action.payload};
+        case 'SET_FOCUS_EMAIL':
+            return {...state, focusEmail: action.payload};
+        case 'SET_VALID_PASSWORD':
+            return {...state, validPassword: action.payload};
+        case 'SET_FOCUS_PASSWORD':
+            return {...state, focusPassword: action.payload};
+        case 'SET_VALID_PASSWORD_MATCH':
+            return {...state, validPasswordMatch: action.payload};
+        case 'SET_FOCUS_PASSWORD_MATCH':
+            return {...state, focusPasswordMatch: action.payload};
+        default:
+            return state;
+    }
+};
+
+const reducerActions = {
+    setValidUsername: 'SET_VALID_NAME',
+    setFocusUsername: 'SET_FOCUS_USER',
+    setValidEmail: 'SET_VALID_EMAIL',
+    setFocusEmail: 'SET_FOCUS_EMAIL',
+    setValidPassword: 'SET_VALID_PASSWORD',
+    setFocusPassword: 'SET_FOCUS_PASSWORD',
+    setValidPasswordMatch: 'SET_VALID_PASSWORD_MATCH',
+    setFocusPasswordMatch: 'SET_FOCUS_PASSWORD_MATCH',
 }
 
 export default function Register() {
-    const focusedInput = useRef('username');
-    const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, registerSubmitFormHandler);
     const {updateMessage, updateStatus} = useContext(MessageContext);
     const {loginUserInApp} = useContext(AuthenticationContext);
 
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    const userRef = useRef();
+
+    const {formValue, changeDataHandler, onSubmitForm} = useForm(
+        Object.fromEntries(Object.keys(FormKey).map(key => [FormKey[key], '']))
+        , registerSubmitFormHandler
+    );
+
     useEffect(() => {
-        if (focusedInput.current) {
-            focusedInput.current.focus();
-        }
-    }, [focusedInput]);
+        userRef.current.focus();
+    }, []);
+
+    useEffect(() => {
+        dispatch({type: reducerActions.setValidUsername, payload: USER_REGEX.test(formValue[FormKey.Username])});
+    }, [formValue[FormKey.Username]]);
+
+    useEffect(() => {
+        dispatch({type: reducerActions.setValidEmail, payload: EMAIL_REGEX.test(formValue[FormKey.Email])});
+    }, [formValue[FormKey.Email]]);
+
+    useEffect(() => {
+        dispatch({
+            type: reducerActions.setValidPassword,
+            payload: PASSWORD_REGEX.test(formValue[FormKey.Password]),
+        });
+        dispatch({
+            type: reducerActions.setValidPasswordMatch,
+            payload: formValue[FormKey.Password] === formValue[FormKey.RepeatPassword],
+        });
+    }, [formValue[FormKey.Password], formValue[FormKey.RepeatPassword]]);
 
     async function registerSubmitFormHandler(value) {
         const message = checkAllValue(value);
@@ -55,18 +125,12 @@ export default function Register() {
         }
 
         function checkAllValue(obj) {
-            if (Object.values(obj).every(value => !Boolean(value)) || Object.values(obj).some(value => !Boolean(value))) {
+            if (Object.values(obj).every(value => !value) || Object.values(obj).some(value => !value)) {
                 return 'Всички полета са задължителни';
             }
 
             if (/\s/.test(obj.username)) {
-                return 'Потребителско име не може да има празно място'
-            }
-
-            const result = validationPasswordRules(obj.password, obj.repeat_password)
-            if (typeof result === 'object') {
-                const message = result;
-                return message;
+                return 'Потребителско име не може да има празно място';
             }
         }
     }
@@ -75,17 +139,120 @@ export default function Register() {
         <section className={authStyle.Section}>
             <article>
                 <form onSubmit={onSubmitForm} className={authStyle.Form}>
-                    {Object.entries(formValue).map(([key, value]) => (
-                        <div key={key}>
-                            <label htmlFor={key}>{FormInformation[key].label}</label>
-                            <input id={key} value={formValue[key]} name={key} type={FormInformation[key].type}
-                                   onChange={changeDataHandler}
-                                   ref={focusedInput.current === key ? focusedInput : null}
-                            />
-                        </div>
-                    ))}
                     <div>
-                        <button>Регистрация</button>
+                        <label htmlFor={FormKey.Username}>Потребителско име:
+                            <span className={state.validUsername ? authStyle.success : authStyle.hide}>
+                            <FontAwesomeIcon icon={faCheck}/>
+                            </span>
+                            <span
+                                className={state.validUsername || !formValue[FormKey.Username] ? authStyle.hide : authStyle.error}>
+                            <FontAwesomeIcon icon={faTimes}/>
+                            </span>
+                        </label>
+                        <input type="text" id={FormKey.Username} ref={userRef}
+                               name={FormKey.Username} value={formValue[FormKey.Username]}
+                               autoComplete="off" required={true}
+                               aria-invalid={state.validUsername ? "false" : "true"} aria-describedby="usernote"
+                               onChange={changeDataHandler}
+                               onFocus={() => dispatch({type: reducerActions.setFocusUsername, payload: true})}
+                               onBlur={() => dispatch({type: reducerActions.setFocusUsername, payload: true})}
+                        />
+                        <p id="usernote"
+                           className={state.focusUsername && formValue[FormKey.Username] && !state.validUsername ? authStyle.instructions : authStyle.hide}>
+                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            <ul>Потребителското име трябва да има:
+                                <li>Между 4 и 23 символа</li>
+                                <li>Трябва да започва с буква</li>
+                                <li>Позволени са само букви, цифри, долна черта и терета</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div>
+                        <label htmlFor={FormKey.Email}>Имейл:
+                            <span className={state.validEmail ? authStyle.success : authStyle.hide}>
+                            <FontAwesomeIcon icon={faCheck}/>
+                            </span>
+                            <span
+                                className={state.validEmail || !formValue[FormKey.Email] ? authStyle.hide : authStyle.error}>
+                            <FontAwesomeIcon icon={faTimes}/>
+                            </span>
+                        </label>
+                        <input type="email" id={FormKey.Email}
+                               name={FormKey.Email} value={formValue[FormKey.Email]}
+                               autoComplete="off" required={true}
+                               aria-invalid={state.validEmail ? "false" : "true"} aria-describedby="emailnote"
+                               onChange={changeDataHandler}
+                               onFocus={() => dispatch({type: reducerActions.setFocusEmail, payload: true})}
+                               onBlur={() => dispatch({type: reducerActions.setFocusName, payload: false})}
+                        />
+                        <p id="emailnote"
+                           className={state.focusEmail && formValue[FormKey.Email] && !state.validEmail ? authStyle.instructions : authStyle.hide}>
+                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            <ul>Имейла трябва да съдържа:
+                                <li>Всички букви трябва да са на латиница</li>
+                                <li>Трябва да започва с букви или цифри</li>
+                                <li>Трябва да съдържа @</li>
+                                <li>Трябва да завършва с разширението на домейна</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div>
+                        <label htmlFor={FormKey.Password}>Парола:
+                            <span className={state.validPassword ? authStyle.success : authStyle.hide}>
+                            <FontAwesomeIcon icon={faCheck}/>
+                            </span>
+                            <span
+                                className={state.validPassword || !formValue[FormKey.Password] ? authStyle.hide : authStyle.error}>
+                            <FontAwesomeIcon icon={faTimes}/>
+                            </span>
+                        </label>
+                        <input type="password" id={FormKey.Password} required={true}
+                               name={FormKey.Password} value={formValue[FormKey.Password]}
+                               aria-invalid={state.validPassword ? "false" : "true"} aria-describedby="passwordnote"
+                               onChange={changeDataHandler}
+                               onFocus={() => dispatch({type: reducerActions.setFocusPassword, payload: true})}
+                               onBlur={() => dispatch({type: reducerActions.setFocusPassword, payload: false})}
+                        />
+                        <p id="passwordnote"
+                           className={state.focusPassword && formValue[FormKey.Password] && !state.validPassword ? authStyle.instructions : authStyle.hide}>
+                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            <ul>Паролата трябва да има:
+                                <li>Между 8 и 24 символа</li>
+                                <li>Главна и малка буква, цифра и специален символ: @, #, $ или %</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div>
+                        <label htmlFor={FormKey.RepeatPassword}>Повтори парола:
+                            <span className={state.validPasswordMatch && formValue[FormKey.RepeatPassword]
+                                ? authStyle.success
+                                : authStyle.hide}>
+                            <FontAwesomeIcon icon={faCheck}/>
+                            </span>
+                            <span className={state.validPasswordMatch || !formValue[FormKey.RepeatPassword]
+                                ? authStyle.hide
+                                : authStyle.error}>
+                            <FontAwesomeIcon icon={faTimes}/>
+                            </span>
+                        </label>
+                        <input type="password" id={FormKey.RepeatPassword} required={true}
+                               name={FormKey.RepeatPassword} value={formValue[FormKey.RepeatPassword]}
+                               aria-invalid={state.validPasswordMatch ? "false" : "true"} aria-describedby="confirmnote"
+                               onChange={changeDataHandler}
+                               onFocus={() => dispatch({type: reducerActions.setFocusPasswordMatch, payload: true})}
+                               onBlur={() => dispatch({type: reducerActions.setFocusPasswordMatch, payload: false})}
+                        />
+                        <p id="confirmnote"
+                           className={state.focusPasswordMatch && !state.validPasswordMatch ? authStyle.instructions : authStyle.hide}>
+                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            Паролите не съвпадат!
+                        </p>
+                    </div>
+                    <div>
+                        <button
+                            disabled={!state.validUsername || !state.validEmail || !state.validPassword || !state.validPasswordMatch}>
+                            Регистрация
+                        </button>
                     </div>
                     <div>
                         <span>Имате регистрация ?</span>
