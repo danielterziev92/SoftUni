@@ -17,6 +17,7 @@ import Paths from "./utils/Paths.js";
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import MessageBoxDialog from "./components/message-box-dialog/MessageBoxDialog.jsx";
 import Profile from "./components/profile/Profile.jsx";
+import Groups from "./components/groups/Groups.jsx";
 
 export default function App() {
     const [isLogin, setIsLogin] = useState(false);
@@ -35,6 +36,7 @@ export default function App() {
                             <Route path={Paths.logout} element={<Logout/>}/>
                             <Route path={Paths.profile} element={<Profile/>}/>
                             <Route path={Paths.products} element={<ProductsProvider><Products/></ProductsProvider>}/>
+                            <Route path={Paths.groups} element={<Groups/>}/>
                         </Route>
                     </Routes>
                 </main>
