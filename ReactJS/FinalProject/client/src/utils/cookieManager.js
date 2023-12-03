@@ -1,4 +1,4 @@
-export const setCookie = (key, value, daysToExpire) => {
+const setCookie = (key, value, daysToExpire) => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + daysToExpire);
 
@@ -12,7 +12,7 @@ export const setCookie = (key, value, daysToExpire) => {
     document.cookie = `${encodeURIComponent(key)}=${encodeURIComponent(value)}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`;
 }
 
-export const getCookie = (key) => {
+const getCookie = (key) => {
     const cookies = document.cookie.split(';').map(cookie => cookie.trim());
     for (const cookie of cookies) {
         const [cookieKey, cookieValue] = cookie.split('=');
@@ -23,6 +23,9 @@ export const getCookie = (key) => {
     return null;
 }
 
-export const deleteCookie = (key) => {
+const deleteCookie = (key) => {
     document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure;`;
 }
+
+const cookieManager = {getCookie, setCookie, deleteCookie}
+export default cookieManager;

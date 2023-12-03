@@ -1,13 +1,13 @@
-import {useContext, useEffect, useRef} from "react";
+import {useContext, useEffect, useLayoutEffect, useState} from "react";
 
 import style from './Profile.module.css';
 
 import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 import useForm from "../../hooks/useForm.js";
-import useRefreshToken from "../../hooks/useRefreshToken.js";
 
 import {getUserById, updateUserById} from "../../services/userServices.js";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
+import compareObjects from "../../utils/compareObjects.js";
 
 const FormKey = {
     Email: 'email',
@@ -22,29 +22,31 @@ const FormKey = {
 
 
 export default function Profile() {
-    const {user,} = useContext(AuthenticationContext);
+    const {user, authToken} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
-    const {newToken} = useRefreshToken();
-    const isFirstRender = useRef(true);
+
+    const [userDetails, setUserDetails] = useState({});
+
     const {formValue, updateFormValue, changeDataHandler, onSubmitForm,} = useForm(
         Object.fromEntries(Object.keys(FormKey).map(key => [FormKey[key], '']))
         , updateUserDataOnSubmit);
 
 
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-
-        getUserById(user.user_id, newToken.access)
-            .then(updateFormValue)
+    useLayoutEffect(() => {
+        getUserById(user.user_id, authToken.access)
+            .then(setUserDetails)
             .catch(e => console.log(e));
-    }, [newToken]);
+    }, [authToken]);
+
+    useEffect(() => {
+        if (!compareObjects(userDetails, {})) {
+            updateFormValue(userDetails)
+        }
+    }, [userDetails]);
 
     async function updateUserDataOnSubmit(data) {
         try {
-            await updateUserById(formValue.id, newToken.access, data);
+            await updateUserById(formValue.id, data);
             updateMessage('Успешно успяхте да редактирате профила си');
             updateStatus('success');
         } catch (e) {
@@ -54,6 +56,9 @@ export default function Profile() {
 
     }
 
+    const resetUserEditOnClickHandler = () => {
+        updateFormValue(userDetails);
+    }
 
     return (
         <form onSubmit={onSubmitForm} className={style.ProfileForm}>
@@ -100,7 +105,8 @@ export default function Profile() {
                 <input type="text" name={FormKey.IsActive} value={formValue[FormKey.IsActive] ? 'Да' : 'Не'}
                        onChange={changeDataHandler} disabled={true}/>
             </div>
-            <button>Редактирай</button>
+            <button disabled={compareObjects(formValue, userDetails)}>Редактирай</button>
+            <button className={style.cancel} type="button" onClick={resetUserEditOnClickHandler}>Отказ</button>
         </form>
     );
 }

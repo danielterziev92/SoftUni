@@ -4,6 +4,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
 .ProfileForm div {
@@ -42,4 +43,8 @@
     border-radius: 20px;
     font-size: 1.2rem;
     color: #ffffff;
+}
+
+.ProfileForm button.cancel {
+    background-color: #ba0613;
 }

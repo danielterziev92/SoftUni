@@ -1,6 +1,5 @@
 import {useContext, useEffect, useLayoutEffect, useRef} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
 
 import authStyle from "../Authentication.module.css";
 
@@ -12,7 +11,6 @@ import useForm from "../../hooks/useForm.js";
 import {loginUser} from "../../services/userServices.js";
 
 import Paths from "../../utils/Paths.js";
-import {setCookie} from "../../utils/cookieManager.js";
 import compareObjects from "../../utils/compareObjects.js";
 
 const initialUserData = {
@@ -26,17 +24,13 @@ const FormInformation = {
 }
 
 export default function Login() {
-    const {
-        updateAuthToken,
-        updateUser,
-        user,
-        tokenName,
-        dayToExpire,
-        loginUserInApp
-    } = useContext(AuthenticationContext);
+    const {user, loginUserInApp} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
+
     const focusedInput = useRef('username');
+
     const navigate = useNavigate();
+
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
 
     useLayoutEffect(() => {
@@ -56,11 +50,8 @@ export default function Login() {
             const response = await loginUser(data);
             loginUserInApp(response);
         } catch (e) {
-
-            updateMessage('sadasdsa');
+            updateMessage(e.message);
             updateStatus('error');
-            console.log('This come from error')
-            console.log(e);
         }
     }
 

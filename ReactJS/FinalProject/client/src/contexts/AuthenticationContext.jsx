@@ -1,49 +1,62 @@
 import {createContext, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
-import compareObjects from "../utils/compareObjects.js";
-import {deleteCookie, getCookie, setCookie} from "../utils/cookieManager.js";
+import {useLocation, useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
-import {useNavigate} from "react-router-dom";
-import Paths from "../utils/Paths.js";
-import {getRefreshToken} from "../services/userServices.js";
-import checkToken from "../utils/tokenManager.js";
+
 import {MessageContext} from "./MessageContext.jsx";
+
+import cookieManager from "../utils/cookieManager.js";
+import tokenManager from "../utils/tokenManager.js";
+
+import compareObjects from "../utils/compareObjects.js";
+
+import Paths from "../utils/Paths.js";
 
 export const AuthenticationContext = createContext();
 AuthenticationContext.displayName = 'AuthenticationContext';
 
-// const authTokenReducer = (state, action) => {
-//     switch (action.type) {
-//         case 'updateState':
-//             return {...state, ...action.payload}
-//         case 'updateByKey':
-//             return {...state, [action.key]: action.value}
-//         default:
-//             return state
-//     }
-// }
+export const tokenName = 'token';
+export const tokenExpDays = 10;
 
 export default function AuthenticationProvider({children, isLogin, setIsLogin,}) {
+    const {updateMessage, updateStatus} = useContext(MessageContext);
+
     const [authToken, setAuthToken] = useState({});
     const [user, setUser] = useState({});
-    const navigate = useNavigate();
-    const tokenName = useRef('authToken');
-    const dayToExpire = useRef(20);
+
     const isFirstRender = useRef(true);
-    const {updateMessage, updateStatus} = useContext(MessageContext);
+    const intervalId = useRef(0);
+
+    const navigate = useNavigate();
+    const location = useLocation();
 
 
     useLayoutEffect(() => {
-        const accessToken = getCookie(tokenName.current);
+        const pathName = location.pathname
+        const accessToken = authToken.access;
 
-        if (!checkToken(accessToken)) {
+        if (accessToken) {
+            navigate(pathName);
             return;
         }
 
-        if (accessToken) {
-            setUser(jwtDecode(accessToken));
-            setIsLogin(true);
-            navigate(Paths.afterLogin);
+        const refreshToken = cookieManager.getCookie(tokenName);
+
+        if (!refreshToken) {
+            navigate(Paths.login);
+            return;
         }
+
+        tokenManager.getNewTokens(refreshToken)
+            .then(setNewTokens)
+            .catch(e => {
+                if (e.code === 'token_not_valid') {
+                    cookieManager.deleteCookie(tokenName);
+                    navigate(Paths.login);
+                    return;
+                }
+            });
+
+        navigate(pathName === Paths.login ? Paths.afterLogin : pathName);
     }, []);
 
     useEffect(() => {
@@ -52,7 +65,6 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
             return;
         }
 
-        let intervalId = 0;
         if (!compareObjects(authToken, {}) && !isLogin) {
             setIsLogin(true);
         } else {
@@ -62,16 +74,13 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
 
         if (!compareObjects(authToken, {}) && authToken.refresh) {
             const intervalTime = 4 * 60 * 1000;
-            intervalId = setInterval(() => {
-                getRefreshToken(authToken).then(newToken => {
-                    updateAuthToken(newToken);
-                    setCookie(tokenName.current, newToken.access, dayToExpire.current);
-                    setCookie(tokenName.current, newToken.refresh, 20);
-                });
+            intervalId.current = setInterval(() => {
+                const newToken = tokenManager.getNewTokens(authToken.refresh);
+                setNewTokens(newToken);
             }, intervalTime)
         }
 
-        return () => clearInterval(intervalId);
+        return () => clearInterval(intervalId.current);
     }, [authToken]);
 
     const updateAuthToken = (newToken) => setAuthToken(newToken);
@@ -81,12 +90,7 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
     const updateUser = (newUser) => setUser(newUser);
 
     const loginUserInApp = (data) => {
-        console.log(data)
-        updateAuthToken(data);
-        updateUser(jwtDecode(data.access));
-
-        setCookie(tokenName.current, data.access, dayToExpire.current);
-        setCookie('refresh', data.refresh, 90);
+        setNewTokens(data);
 
         updateMessage('Вписахте се успешно');
         updateStatus('success');
@@ -96,8 +100,13 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
     const logoutUser = () => {
         updateUser({});
         updateAuthToken({});
-        deleteCookie(tokenName.current);
-        deleteCookie('refresh');
+        cookieManager.deleteCookie(tokenName);
+    }
+
+    function setNewTokens(tokens) {
+        updateAuthToken(tokens);
+        updateUser(jwtDecode(tokens.access));
+        cookieManager.setCookie(tokenName, tokens.refresh, tokenExpDays);
     }
 
     const authenticationContextValues = {
@@ -108,8 +117,6 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
         updateUser,
         loginUserInApp,
         logoutUser,
-        tokenName,
-        dayToExpire,
         setIsLogin,
     }
 
