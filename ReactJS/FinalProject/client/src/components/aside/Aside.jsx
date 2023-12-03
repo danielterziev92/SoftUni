@@ -1,7 +1,5 @@
 import clipboard from 'clipboard-copy';
 
-import {Link} from "react-router-dom";
-
 import NavigationGroups from "../navigation-groups/NavigationGroups.jsx";
 
 import {sections} from "./asideSections.js";

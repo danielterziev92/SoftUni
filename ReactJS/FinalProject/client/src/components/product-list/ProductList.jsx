@@ -37,7 +37,7 @@ export default function ProductList() {
             return;
         }
 
-        setProductToShow(allProducts);
+        setProductToShow(allProducts.slice());
     }, [allProducts, matchesProducts, isSearchingProducts]);
 
     useEffect(() => {

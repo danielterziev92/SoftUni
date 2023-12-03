@@ -7,7 +7,6 @@ import {createProduct} from '../../services/productService.js'
 
 import {MessageContext} from "../../contexts/MessageContext.jsx";
 import {SingleProductContext} from "../../contexts/SingleProductContext.js";
-import {FormContext} from "../../contexts/FormContext.js";
 import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 import {validationFormRules} from "../product-form-base-info/validationFormRules.js";
 

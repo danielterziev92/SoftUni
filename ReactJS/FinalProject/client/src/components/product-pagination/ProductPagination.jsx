@@ -37,7 +37,10 @@ export default function ProductPagination({setPaginationState, productToShow, se
     }, [paginationValues.startIndex]);
 
     useEffect(() => {
-        setPaginationState(state => ({...state, endIndex: paginationValues.endIndex}));
+        setPaginationState(state => ({
+            ...state,
+            endIndex: paginationValues.startIndex + paginationValues.selectedItemPerPage
+        }));
     }, [paginationValues.endIndex]);
 
 
