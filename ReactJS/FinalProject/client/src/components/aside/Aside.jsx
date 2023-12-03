@@ -7,16 +7,23 @@ import NavigationGroups from "../navigation-groups/NavigationGroups.jsx";
 import {sections} from "./asideSections.js";
 
 import asideStyle from './Aside.module.css';
-import {useContext} from "react";
+import {useContext, useLayoutEffect, useState} from "react";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
 import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
+import {getUserById} from "../../services/userServices.js";
 
 
 export default function Aside() {
-    const {user} = useContext(AuthenticationContext);
+    const {user, authToken} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
-    const userEmail = 'brian.hughes@company.com'
+    const [userDetails, setUserDetails] = useState({});
+
+    useLayoutEffect(() => {
+        getUserById(user.user_id, authToken.access)
+            .then(setUserDetails)
+            .catch(e => console.log(e));
+    }, []);
 
     const copyEmailOnClickHandler = async () => {
         try {
@@ -42,7 +49,7 @@ export default function Aside() {
                         src="/public/close-up-confident-male-employee-white-collar-shirt-smiling-camera-standing-self-assured-against-studio-background.jpg"
                         alt="User Prifile Picture"/>
                 </figure>
-                <p>Brian Hughes</p>
+                <p>{userDetails.first_name} {userDetails.last_name}</p>
                 <div className={asideStyle.profileEmail}>
                     {user.email}
                     <span onClick={copyEmailOnClickHandler}>

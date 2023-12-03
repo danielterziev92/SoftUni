@@ -12,6 +12,7 @@ const setCookie = (key, value, daysToExpire) => {
     document.cookie = `${encodeURIComponent(key)}=${encodeURIComponent(value)}; ${Object.entries(cookieOptions).map(([k, v]) => `${k}=${v}`).join('; ')}`;
 }
 
+
 const getCookie = (key) => {
     const cookies = document.cookie.split(';').map(cookie => cookie.trim());
     for (const cookie of cookies) {
