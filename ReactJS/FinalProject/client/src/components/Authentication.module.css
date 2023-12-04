@@ -40,6 +40,38 @@
     color: #2C3344;
 }
 
+
+.Form div label .success {
+    color: #0caf64;
+}
+
+.Form div label .error {
+    color: #ba0613;
+}
+
+.Form div .instructions {
+    background-color: #2C3344;
+    padding: 5px;
+    border-radius: 7px;
+    color: #ffffff;
+}
+
+.Form div .instructions,
+.Form div .instructions svg,
+.Form div .instructions ul {
+    display: inline;
+}
+
+.Form div .instructions svg {
+    margin-right: 10px;
+}
+
+.Form div .instructions ul li {
+    font-size: 0.8rem;
+    margin-left: 20px;
+    list-style: none;
+}
+
 .Form div input {
     background-color: transparent;
     padding: 10px;
@@ -65,7 +97,16 @@
     cursor: pointer;
 }
 
+.Form div button:disabled {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
 .Form div a {
     text-decoration: none;
     color: #4f46e5;
+}
+
+.hide {
+    display: none;
 }

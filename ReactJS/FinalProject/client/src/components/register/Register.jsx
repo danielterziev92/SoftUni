@@ -218,7 +218,7 @@ export default function Register() {
                             <FontAwesomeIcon icon={faInfoCircle}/>
                             <ul>Паролата трябва да има:
                                 <li>Между 8 и 24 символа</li>
-                                <li>Главна и малка буква, цифра и специален символ: @, #, $ или %</li>
+                                <li>Главна и малка буква, цифра и специален символ: @, #, $, %</li>
                             </ul>
                         </p>
                     </div>
