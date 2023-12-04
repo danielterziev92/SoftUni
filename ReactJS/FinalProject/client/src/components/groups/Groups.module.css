@@ -1,0 +1,57 @@
+.groupList {
+    padding: 40px;
+}
+
+.groupList .title,
+.groupList .body {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.groupList .title {
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+}
+
+.groupList .title li {
+    background-color: #2C3344;
+    color: #ffffff;
+    padding: 20px;
+    list-style: none;
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+.groupList .title li:nth-child(3),
+.groupList .title li:last-child {
+    text-align: center;
+}
+
+.groupList .body {
+    padding: 10px 20px;
+    border: 1px solid #4f5d68;
+    border-top: none;
+    list-style: none;
+}
+
+
+.groupList .body li:nth-child(3),
+.groupList .body li:nth-child(4) {
+    text-align: center;
+}
+
+.groupList .body li:nth-child(4) {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    font-size: 1.7rem;
+}
+
+.groupList .body li:nth-child(4) .editButton {
+    color: #4f46e5;
+}
+
+.groupList .body li:nth-child(4) .deleteButton {
+    color: #ba0613;
+}

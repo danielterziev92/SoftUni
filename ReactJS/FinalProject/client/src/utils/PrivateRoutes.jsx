@@ -1,14 +1,12 @@
-import {useContext} from "react";
 import {Navigate, Outlet,} from "react-router-dom";
 
+import cookieManager from "./cookieManager.js";
+
 import Paths from "./Paths.js";
-import {AuthenticationContext} from "../contexts/AuthenticationContext.jsx";
-import compareObjects from "./compareObjects.js";
+import {tokenName} from "../contexts/AuthenticationContext.jsx";
 
 const PrivateRoutes = () => {
-    const {user} = useContext(AuthenticationContext);
-
-    return compareObjects(user, {}) ? <Navigate to={Paths.login} replace/> : <Outlet/>;
+    return cookieManager.getCookie(tokenName) ? <Outlet/> : <Navigate to={Paths.login} replace/>;
 };
 
 export default PrivateRoutes;

@@ -32,7 +32,7 @@ export default function App() {
                     <Routes>
                         <Route path={Paths.login} element={<Login/>}/>
                         <Route path={Paths.register} element={<Register/>}/>
-                        <Route element={<PrivateRoutes/>}>
+                        <Route element={<PrivateRoutes isLogin={isLogin}/>}>
                             <Route path={Paths.logout} element={<Logout/>}/>
                             <Route path={Paths.profile} element={<Profile/>}/>
                             <Route path={Paths.products} element={<ProductsProvider><Products/></ProductsProvider>}/>
