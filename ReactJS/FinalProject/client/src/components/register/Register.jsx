@@ -1,9 +1,6 @@
 import {useContext, useEffect, useReducer, useRef,} from "react";
 import {Link} from "react-router-dom";
 
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faInfoCircle, faTimes} from "@fortawesome/free-solid-svg-icons";
-
 import authStyle from "../Authentication.module.css";
 
 import {MessageContext} from "../../contexts/MessageContext.jsx";

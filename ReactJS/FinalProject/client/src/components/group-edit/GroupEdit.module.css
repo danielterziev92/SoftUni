@@ -1,0 +1,44 @@
+.groupEdit {
+    padding: 0 10px;
+}
+
+.groupEdit div {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.groupEdit div label {
+    font-size: 1.2rem;
+}
+
+.groupEdit div input {
+    width: 100%;
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #4f46e5;
+}
+
+.groupEdit select {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4f46e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+.groupEdit select option {
+    background-color: #4f46e5;
+    color: #ffffff;
+}
+
+.groupEdit select option:checked {
+    background-color: #2C3344;
+    color: #ffffff;
+}

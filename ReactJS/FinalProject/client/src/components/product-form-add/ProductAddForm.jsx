@@ -88,10 +88,10 @@ export default function ProductAddForm({closeModalHandler}) {
                     </ProductFormContext.Provider>
                 </SingleProductContext.Provider>
             }
-            successButtonMessage={'Добави'}
             errorButtonMessage={'Отказ'}
-            successButtonHandler={() => onSubmitFormHandler(null)}
             errorButtonHandler={closeModalHandler}
+            successButtonMessage={'Добави'}
+            successButtonHandler={() => onSubmitFormHandler(null)}
             closeModalHanlder={closeModalHandler}
         />
     );
