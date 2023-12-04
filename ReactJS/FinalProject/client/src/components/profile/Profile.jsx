@@ -5,7 +5,7 @@ import style from './Profile.module.css';
 import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 import useForm from "../../hooks/useForm.js";
 
-import {getUserById, updateUserById} from "../../services/userServices.js";
+import {getUserById, updateUserById} from "../../services/userService.js";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
 import compareObjects from "../../utils/compareObjects.js";
 

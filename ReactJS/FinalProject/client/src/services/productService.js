@@ -51,7 +51,3 @@ export const deleteProductById = async (productId) => {
     const url = pathToUrl(Urls.productDetail, {id: productId}, newTokens.access);
     return request.remove(url);
 }
-
-export const getAllGroups = async () => {
-    return request.get(Urls.groups)
-}

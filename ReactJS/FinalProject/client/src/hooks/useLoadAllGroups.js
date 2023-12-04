@@ -1,6 +1,6 @@
-import {getAllGroups} from "../services/productService.js";
 import {useContext, useEffect, useState} from "react";
 import {MessageContext} from "../contexts/MessageContext.jsx";
+import {getAllGroups} from "../services/groupService.js";
 
 const useLoadAllGroups = () => {
     const [groups, setGroups] = useState([]);

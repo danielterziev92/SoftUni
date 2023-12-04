@@ -1,4 +1,4 @@
-import {getRefreshToken} from "../services/userServices.js";
+import {getRefreshToken} from "../services/userService.js";
 
 const isTokenExpired = (token) => {
     if (!token) return true;

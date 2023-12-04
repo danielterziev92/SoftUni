@@ -8,7 +8,7 @@ import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 import useForm from "../../hooks/useForm.js";
 
-import {loginUser} from "../../services/userServices.js";
+import {loginUser} from "../../services/userService.js";
 
 import Paths from "../../utils/Paths.js";
 import compareObjects from "../../utils/compareObjects.js";

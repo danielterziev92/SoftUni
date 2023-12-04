@@ -8,7 +8,7 @@ import asideStyle from './Aside.module.css';
 import {useContext, useLayoutEffect, useState} from "react";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
 import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
-import {getUserById} from "../../services/userServices.js";
+import {getUserById} from "../../services/userService.js";
 
 
 export default function Aside() {

@@ -11,7 +11,7 @@ import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 
 import useForm from "../../hooks/useForm.js";
 
-import {loginUser, registerUser} from "../../services/userServices.js";
+import {loginUser, registerUser} from "../../services/userService.js";
 
 import Paths from "../../utils/Paths.js";
 
