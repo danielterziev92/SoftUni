@@ -72,15 +72,16 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
             navigate(Paths.afterLogout);
         }
 
-        if (!compareObjects(authToken, {}) && authToken.refresh) {
-            const intervalTime = 4 * 60 * 1000;
-            intervalId.current = setInterval(() => {
-                const newToken = tokenManager.getNewTokens(authToken.refresh);
-                setNewTokens(newToken);
-            }, intervalTime)
-        }
-
-        return () => clearInterval(intervalId.current);
+        // if (!compareObjects(authToken, {}) && authToken.refresh) {
+        //     const intervalTime = 4 * 60 * 1000;
+        //     intervalId.current = setInterval(() => {
+        //         const refreshToken = cookieManager.getCookie(tokenName);
+        //         const newToken = tokenManager.getNewTokens(refreshToken);
+        //         setNewTokens(newToken);
+        //     }, intervalTime)
+        // }
+        //
+        // return () => clearInterval(intervalId.current);
     }, [authToken]);
 
     const updateAuthToken = (newToken) => setAuthToken(newToken);
