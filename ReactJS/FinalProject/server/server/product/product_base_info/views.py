@@ -1,4 +1,5 @@
 from rest_framework import generics as rest_views, serializers
+from rest_framework.permissions import IsAuthenticated
 
 from server.product.models import ProductBaseInformation
 from server.product.product_base_info.serializers import ProductListSerializer, ProductSerializer
@@ -57,11 +58,21 @@ class ProductValidationMixin:
 class ProductListView(rest_views.ListAPIView):
     queryset = ProductBaseInformation.objects.all()
     serializer_class = ProductListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Filter the queryset based on the user making the request
+        return ProductBaseInformation.objects.filter(user=self.request.user)
 
 
 class ProductDetailView(ProductValidationMixin, rest_views.RetrieveUpdateDestroyAPIView):
     queryset = ProductBaseInformation.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Filter the queryset based on the user making the request
+        return ProductBaseInformation.objects.filter(user=self.request.user)
 
     def put(self, request, *args, **kwargs):
         self.check_all_fields()
@@ -75,6 +86,11 @@ class ProductDetailView(ProductValidationMixin, rest_views.RetrieveUpdateDestroy
 class ProductCreateView(ProductValidationMixin, rest_views.CreateAPIView):
     queryset = ProductBaseInformation.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Set the user field to the authenticated user
+        serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         self.check_all_fields()
