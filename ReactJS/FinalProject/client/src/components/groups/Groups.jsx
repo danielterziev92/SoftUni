@@ -8,6 +8,8 @@ import GroupEdit from "../group-edit/GroupEdit.jsx";
 import useMessageContext from "../../hooks/useMessageContext.js";
 
 import {deleteGroupById, getAllGroups, updateGroupById} from "../../services/groupService.js";
+import GroupAdd from "../group-add/GroupAdd.jsx";
+import compareObjects from "../../utils/compareObjects.js";
 
 export default function Groups() {
     const {updateMessage, updateStatus} = useMessageContext();
@@ -17,10 +19,22 @@ export default function Groups() {
     const [isAddGroupModalShow, setIsAddGroupModalShow] = useState(false);
     const [selectedGroupData, setSelectedGroupData] = useState({});
     const [filteredCategory, setFilteredCategory] = useState([]);
+    const [allGroups, setAllGroups] = useState([]);
 
     useLayoutEffect(() => {
         getAllGroups().then(setGroups).catch(console.log);
     }, []);
+
+    useEffect(() => {
+        if (compareObjects(groups, {})) return;
+
+        const uniqueGroups = Array.from(new Set(groups.map(group => group.name))).map(name => {
+            const group = groups.find(obj => obj.name === name);
+            return {id: group.id, name: group.name};
+        });
+
+        setAllGroups(uniqueGroups);
+    }, [groups]);
 
     const showEditModal = (id) => {
         setIsGroupModalShow(true);
@@ -28,7 +42,7 @@ export default function Groups() {
         const groupDetail = groups.find(obj => obj.id === id);
         setSelectedGroupData(groupDetail);
 
-        const filteredCategories = filteredCategory.filter(group => group.id !== id);
+        const filteredCategories = allGroups.filter(group => group.id !== id);
         setFilteredCategory(filteredCategories);
     }
 
@@ -83,6 +97,7 @@ export default function Groups() {
 
     return (
         <>
+            {isAddGroupModalShow && <GroupAdd allGroups={allGroups} hideModal={hideAddModal}/>}
             <div className={style.addGroup}>
                 <button onClick={() => showAddModal()}><i className="fa-solid fa-circle-plus"></i> Добави група</button>
             </div>
