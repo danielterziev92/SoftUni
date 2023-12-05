@@ -139,11 +139,11 @@ export default function Register() {
                     <div>
                         <label htmlFor={FormKey.Username}>Потребителско име:
                             <span className={state.validUsername ? authStyle.success : authStyle.hide}>
-                            <FontAwesomeIcon icon={faCheck}/>
+                            <i className="fa-solid fa-check"></i>
                             </span>
                             <span
                                 className={state.validUsername || !formValue[FormKey.Username] ? authStyle.hide : authStyle.error}>
-                            <FontAwesomeIcon icon={faTimes}/>
+                            <i className="fa-solid fa-xmark"></i>
                             </span>
                         </label>
                         <input type="text" id={FormKey.Username} ref={userRef}
@@ -156,7 +156,7 @@ export default function Register() {
                         />
                         <p id="usernote"
                            className={state.focusUsername && formValue[FormKey.Username] && !state.validUsername ? authStyle.instructions : authStyle.hide}>
-                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            <i className="fa-solid fa-circle-info"></i>
                             <ul>Потребителското име трябва да има:
                                 <li>Между 4 и 23 символа</li>
                                 <li>Трябва да започва с буква</li>
@@ -167,11 +167,11 @@ export default function Register() {
                     <div>
                         <label htmlFor={FormKey.Email}>Имейл:
                             <span className={state.validEmail ? authStyle.success : authStyle.hide}>
-                            <FontAwesomeIcon icon={faCheck}/>
+                            <i className="fa-solid fa-check"></i>
                             </span>
                             <span
                                 className={state.validEmail || !formValue[FormKey.Email] ? authStyle.hide : authStyle.error}>
-                            <FontAwesomeIcon icon={faTimes}/>
+                            <i className="fa-solid fa-xmark"></i>
                             </span>
                         </label>
                         <input type="email" id={FormKey.Email}
@@ -184,7 +184,7 @@ export default function Register() {
                         />
                         <p id="emailnote"
                            className={state.focusEmail && formValue[FormKey.Email] && !state.validEmail ? authStyle.instructions : authStyle.hide}>
-                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            <i className="fa-solid fa-circle-info"></i>
                             <ul>Имейла трябва да съдържа:
                                 <li>Всички букви трябва да са на латиница</li>
                                 <li>Трябва да започва с букви или цифри</li>
@@ -196,11 +196,11 @@ export default function Register() {
                     <div>
                         <label htmlFor={FormKey.Password}>Парола:
                             <span className={state.validPassword ? authStyle.success : authStyle.hide}>
-                            <FontAwesomeIcon icon={faCheck}/>
+                            <i className="fa-solid fa-check"></i>
                             </span>
                             <span
                                 className={state.validPassword || !formValue[FormKey.Password] ? authStyle.hide : authStyle.error}>
-                            <FontAwesomeIcon icon={faTimes}/>
+                            <i className="fa-solid fa-xmark"></i>
                             </span>
                         </label>
                         <input type="password" id={FormKey.Password} required={true}
@@ -212,7 +212,7 @@ export default function Register() {
                         />
                         <p id="passwordnote"
                            className={state.focusPassword && formValue[FormKey.Password] && !state.validPassword ? authStyle.instructions : authStyle.hide}>
-                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            <i className="fa-solid fa-circle-info"></i>
                             <ul>Паролата трябва да има:
                                 <li>Между 8 и 24 символа</li>
                                 <li>Главна и малка буква, цифра и специален символ: @, #, $, %</li>
@@ -224,12 +224,12 @@ export default function Register() {
                             <span className={state.validPasswordMatch && formValue[FormKey.RepeatPassword]
                                 ? authStyle.success
                                 : authStyle.hide}>
-                            <FontAwesomeIcon icon={faCheck}/>
+                            <i className="fa-solid fa-check"></i>
                             </span>
                             <span className={state.validPasswordMatch || !formValue[FormKey.RepeatPassword]
                                 ? authStyle.hide
                                 : authStyle.error}>
-                            <FontAwesomeIcon icon={faTimes}/>
+                            <i className="fa-solid fa-xmark"></i>
                             </span>
                         </label>
                         <input type="password" id={FormKey.RepeatPassword} required={true}
@@ -241,7 +241,7 @@ export default function Register() {
                         />
                         <p id="confirmnote"
                            className={state.focusPasswordMatch && !state.validPasswordMatch ? authStyle.instructions : authStyle.hide}>
-                            <FontAwesomeIcon icon={faInfoCircle}/>
+                            <i className="fa-solid fa-circle-info"></i>
                             Паролите не съвпадат!
                         </p>
                     </div>
