@@ -1,5 +1,7 @@
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 
+import style from './GroupAdd.module.css';
+
 import useForm from "../../hooks/useForm.js";
 
 const FormKey = {
@@ -19,7 +21,7 @@ export default function GroupAdd({allGroups, hideModal, setNewGroup}) {
         <MessageBoxModal
             title={'Добавяне на група'}
             body={
-                <form onSubmit={onSubmitForm}>
+                <form onSubmit={onSubmitForm} className={style.groupAddForm}>
                     <div>
                         <label htmlFor={FormKey.Code}>Код:</label>
                         <input type="text" id={FormKey.Code} name={FormKey.Code} value={formValue[FormKey.Code]}
@@ -31,7 +33,7 @@ export default function GroupAdd({allGroups, hideModal, setNewGroup}) {
                                onChange={changeDataHandler}/>
                     </div>
                     <select
-                        name="parent_category_name"
+                        name="parent_category"
                         value={formValue.parent_category_name || ''}
                         onChange={changeDataHandler}>
                         <option value="">Главна категория</option>

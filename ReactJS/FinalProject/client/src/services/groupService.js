@@ -3,7 +3,11 @@ import Urls from "../utils/Urls.js";
 import pathToUrl from "../utils/pathToUrl.js";
 
 export const getAllGroups = async () => {
-    return request.get(Urls.groups)
+    return request.get(Urls.groups);
+}
+
+export const addGroup = async (data) => {
+    return request.post(Urls.groupCreate, data);
 }
 
 export const updateGroupById = async (id, data) => {
