@@ -17,6 +17,7 @@ const Urls = {
     groups: `${BASE_URL}/groups/`,
     groupDetail: `${BASE_URL}/group/:id/`,
     groupCreate: `${BASE_URL}/group/create/`,
+    groupDelete: `${BASE_URL}/group/:id/`,
 }
 
 export default Urls;

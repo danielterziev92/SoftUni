@@ -1,22 +1,26 @@
-import {useLayoutEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useState} from "react";
 
 import style from './Groups.module.css';
 
 import Spinner from "../spinner/Spinner.jsx";
 import GroupEdit from "../group-edit/GroupEdit.jsx";
 
-import {getAllGroups} from "../../services/groupService.js";
+import useMessageContext from "../../hooks/useMessageContext.js";
+
+import {deleteGroupById, getAllGroups, updateGroupById} from "../../services/groupService.js";
 
 export default function Groups() {
+    const {updateMessage, updateStatus} = useMessageContext();
+
     const [groups, setGroups] = useState([]);
     const [isGroupModalShow, setIsGroupModalShow] = useState(false);
+    const [isAddGroupModalShow, setIsAddGroupModalShow] = useState(false);
     const [selectedGroupData, setSelectedGroupData] = useState({});
     const [filteredCategory, setFilteredCategory] = useState([]);
 
     useLayoutEffect(() => {
-        getAllGroups().then(setGroups).catch(console.log)
+        getAllGroups().then(setGroups).catch(console.log);
     }, []);
-
 
     const showEditModal = (id) => {
         setIsGroupModalShow(true);
@@ -24,22 +28,64 @@ export default function Groups() {
         const groupDetail = groups.find(obj => obj.id === id);
         setSelectedGroupData(groupDetail);
 
-        const filteredCategories = groups.filter(group => group.id !== id);
+        const filteredCategories = filteredCategory.filter(group => group.id !== id);
         setFilteredCategory(filteredCategories);
     }
 
     const hideEditModal = () => setIsGroupModalShow(false);
 
-    function updateGroupInfo(data) {
-        console.log("updateGroupInfo", data);
+    const showAddModal = () => setIsAddGroupModalShow(true);
+
+    const hideAddModal = () => setIsAddGroupModalShow(false);
+
+    function updateGroupName(newGroup) {
+        return groups.map(group => {
+            if (group.parent_category_name === selectedGroupData.name && group.id !== newGroup.id) {
+                return {...group, parent_category_name: newGroup.name};
+            }
+
+            if (group.id === newGroup.id) {
+                return newGroup;
+            }
+
+            return group;
+        });
     }
 
-    function deleteGroupClickHandler(id) {
+    async function updateGroupInfo(data) {
+        const selectedGroup = filteredCategory.find(group => group.name === data.parent_category_name);
+        const {parent_category_name, id, ...correctData} = {
+            ...data,
+            parent_category: Number(selectedGroup?.id) || null
+        };
+        try {
+            const response = await updateGroupById(selectedGroupData.id, correctData);
+            updateMessage('Успешно променихте групата');
+            updateStatus('success');
+            console.log('the response is ', response)
+            setGroups(updateGroupName(data));
+        } catch (e) {
+            updateMessage(e);
+            updateStatus('error');
+        }
+    }
 
+    async function deleteGroupClickHandler(id) {
+        try {
+            await deleteGroupById(id);
+            const newGroups = await getAllGroups();
+            setGroups(newGroups);
+        } catch (e) {
+            updateMessage(e);
+            updateStatus('error');
+        }
     }
 
     return (
         <>
+            <div className={style.addGroup}>
+                <button onClick={() => showAddModal()}><i className="fa-solid fa-circle-plus"></i> Добави група</button>
+            </div>
             {isGroupModalShow &&
                 <GroupEdit
                     groupData={selectedGroupData}
@@ -63,10 +109,12 @@ export default function Groups() {
                                 <li>{group.name}</li>
                                 <li>{group.parent_category_name || 'Това е главна категория'}</li>
                                 <li>
-                                    <i className={`fa-solid fa-square-pen ${style.editButton}`}
+                                    <i className={`fa-solid fa-pen ${style.editButton}`}
                                        onClick={() => showEditModal(group.id)}
                                     ></i>
-                                    <i className={`fa-solid fa-trash-can ${style.deleteButton}`}></i>
+                                    <i className={`fa-solid fa-trash-can ${style.deleteButton}`}
+                                       onClick={() => deleteGroupClickHandler(group.id)}
+                                    ></i>
                                 </li>
                             </ul>
                         ))}
@@ -74,6 +122,12 @@ export default function Groups() {
                 </div>)
                 : <Spinner/>
             }
+            <p className={style.warning}>
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                Внимавайте! Ако изтриете категория която е главна категория на други под категории, ще изтриете и
+                тях!
+                <i className="fa-solid fa-triangle-exclamation"></i>
+            </p>
         </>
     );
 }

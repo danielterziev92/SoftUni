@@ -1,5 +1,5 @@
 .groupList {
-    padding: 40px;
+    padding: 10px 40px 40px 40px;
 }
 
 .groupList .title,
@@ -44,8 +44,9 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 30px;
     font-size: 1.7rem;
+    cursor: pointer;
 }
 
 .groupList .body li:nth-child(4) .editButton {
@@ -54,4 +55,33 @@
 
 .groupList .body li:nth-child(4) .deleteButton {
     color: #ba0613;
+}
+
+.addGroup {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 30px 30px 10px 30px;
+}
+
+.addGroup button {
+    border:none;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #0caf64;
+    color: #ffffff;
+    font-size: 1.3rem;
+}
+
+.warning {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #ba0613;
+}
+
+.warning i {
+    font-size: 2rem;
+    margin: 0 10px;
 }
