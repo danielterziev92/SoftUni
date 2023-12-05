@@ -2,7 +2,11 @@ import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 
 import style from './GroupAdd.module.css';
 
+import useMessageContext from "../../hooks/useMessageContext.js";
+
 import useForm from "../../hooks/useForm.js";
+
+import {addGroup} from "../../services/groupService.js";
 
 const FormKey = {
     Code: 'code',
@@ -11,10 +15,32 @@ const FormKey = {
 }
 
 export default function GroupAdd({allGroups, hideModal, setNewGroup}) {
-    const {formValue, changeDataHandler, onSubmitForm} = useForm({}, onSubmitHandler);
+    const {updateMessage, updateStatus} = useMessageContext();
+    const {formValue, changeDataHandler, onSubmitForm} = useForm(
+        Object.fromEntries(Object.keys(FormKey).map(key => [FormKey[key], ''])),
+        onSubmitHandler
+    );
 
-    function onSubmitHandler(data) {
-        console.log(data)
+    async function onSubmitHandler(data) {
+        if (data.code === '' || data.name === '') {
+            updateMessage('Всички полета са задълцителни');
+            updateStatus('error');
+            return;
+        }
+
+        const parentCategoryId = allGroups.find(group => group.name === data?.parent_category)?.id;
+        try {
+            const response = await addGroup({
+                            code: data.code,
+                            name: data.name,
+                            parent_category: Number(parentCategoryId) || null
+                        });
+            setNewGroup(response);
+            hideModal();
+        } catch (e) {
+            updateMessage(e);
+            updateStatus('error');
+        }
     }
 
     return (

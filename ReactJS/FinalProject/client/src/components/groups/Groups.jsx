@@ -37,6 +37,12 @@ export default function Groups() {
         setAllGroups(uniqueGroups);
     }, [groups]);
 
+    useEffect(() => {
+        if (compareObjects(newGroup, {})) return;
+
+        setGroups([...groups, newGroup]);
+    }, [newGroup]);
+
     const showEditModal = (id) => {
         setIsGroupModalShow(true);
 
@@ -88,6 +94,8 @@ export default function Groups() {
     async function deleteGroupClickHandler(id) {
         try {
             await deleteGroupById(id);
+            updateMessage('Успешно изтрихте групата');
+            updateStatus('success');
             const newGroups = await getAllGroups();
             setGroups(newGroups);
         } catch (e) {

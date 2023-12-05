@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useLayoutEffect, useState} from "react";
 import {MessageContext} from "../contexts/MessageContext.jsx";
 import {getAllGroups} from "../services/groupService.js";
 
@@ -6,35 +6,50 @@ const useLoadAllGroups = () => {
     const [groups, setGroups] = useState([]);
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         getAllGroups()
-            .then(data => sortGroup(data))
+            .then(data => uniqueGroups(data))
             .catch(e => {
                 updateMessage(e);
                 updateStatus('error');
             })
     }, []);
 
+    const uniqueGroups = (data) => {
+        const result = Array.from(new Set(data.map(group => group.name))).map(name => {
+            return data.find(obj => obj.name === name);
+        });
+
+        sortGroup(result);
+    };
+
     const sortGroup = (data) => {
-        const grouped = {};
+        const groupedGroups = {};
         const result = [];
 
         data.forEach(item => {
-            const {parent_category, ...rest} = item;
+            const {parent_category_name, ...rest} = item;
 
-            if (!parent_category) {
+            if (!parent_category_name) {
                 result.push({...rest, children: []});
             } else {
-                grouped[parent_category] = grouped[parent_category] || [];
-                grouped[parent_category].push({...rest, children: []});
+                groupedGroups[parent_category_name] = groupedGroups[parent_category_name] || [];
+                groupedGroups[parent_category_name].push({...rest, children: []});
             }
         });
 
-        result.forEach(parent => {
-            parent.children = grouped[parent.id] || [];
+        const newResult = result.map(item => {
+            Object.keys(groupedGroups).map(groupName => {
+                if (item.name === groupName) {
+                    item.children = groupedGroups[groupName];
+                    delete groupedGroups[groupName];
+                }
+            });
+
+            return item;
         });
 
-        setGroups(result);
+        setGroups(newResult);
     };
 
     return groups;
