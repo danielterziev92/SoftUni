@@ -1,14 +1,14 @@
-import {useEffect, useLayoutEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useRef, useState} from "react";
 
 import style from './Groups.module.css';
 
 import Spinner from "../spinner/Spinner.jsx";
 import GroupEdit from "../group-edit/GroupEdit.jsx";
+import GroupAdd from "../group-add/GroupAdd.jsx";
 
 import useMessageContext from "../../hooks/useMessageContext.js";
 
 import {deleteGroupById, getAllGroups, updateGroupById} from "../../services/groupService.js";
-import GroupAdd from "../group-add/GroupAdd.jsx";
 import compareObjects from "../../utils/compareObjects.js";
 
 export default function Groups() {
@@ -20,6 +20,7 @@ export default function Groups() {
     const [selectedGroupData, setSelectedGroupData] = useState({});
     const [filteredCategory, setFilteredCategory] = useState([]);
     const [allGroups, setAllGroups] = useState([]);
+    const [newGroup, setNewGroup] = useState({});
 
     useLayoutEffect(() => {
         getAllGroups().then(setGroups).catch(console.log);
@@ -97,7 +98,8 @@ export default function Groups() {
 
     return (
         <>
-            {isAddGroupModalShow && <GroupAdd allGroups={allGroups} hideModal={hideAddModal}/>}
+            {isAddGroupModalShow &&
+                <GroupAdd allGroups={allGroups} hideModal={hideAddModal} setNewGroup={setNewGroup}/>}
             <div className={style.addGroup}>
                 <button onClick={() => showAddModal()}><i className="fa-solid fa-circle-plus"></i> Добави група</button>
             </div>
