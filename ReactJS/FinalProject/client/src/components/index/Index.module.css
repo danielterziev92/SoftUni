@@ -38,5 +38,45 @@
 }
 
 .customers {
+    padding: 50px;
+}
 
+.customers ul ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+}
+
+.customers ul ul li {
+    list-style: none;
+    padding: 10px;
+}
+
+.customers ul ul:hover:not(:first-child) {
+    background-color: #4f46e5;
+    color: #ffffff;
+}
+
+.customers ul li:last-child {
+    text-align: center;
+}
+
+.customers ul.title {
+    background-color: #4f46e5;
+    border-radius: 10px 10px 0 0;
+}
+
+.customers ul.title li {
+    padding: 20px;
+    color: #ffffff;
+    font-size: 1.3rem;
+}
+
+.customers ul.table li {
+    border-bottom: 1px solid #4f46e5;
+    border-right: 1px solid #4f46e5;
+}
+
+.customers ul.table li:first-child {
+    border-left: 1px solid #4f46e5;
 }

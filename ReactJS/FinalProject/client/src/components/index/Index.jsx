@@ -31,14 +31,20 @@ export default function Index() {
             </section>
             <section className={style.customers}>
                 <ul>
+                    <ul className={style.title}>
+                        <li>Потребителско име</li>
+                        <li>Имейл</li>
+                        <li>Брой продукти</li>
+                    </ul>
                     {users.map(user => (
-                        <ul key={user.id}>
-                            <li>Потребителско име: {user.username}</li>
-                            <li>Email: {user.email}</li>
-                            <li>Брой продукти: {user.product_count}</li>
+                        <ul key={user.id} className={style.table}>
+                            <li>{user.username}</li>
+                            <li>{user.email}</li>
+                            <li>{user.product_count} бр.</li>
                         </ul>
                     ))}
                 </ul>
+
             </section>
         </>
     );
