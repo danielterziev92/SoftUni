@@ -1,0 +1,42 @@
+.navMenu {
+    background-color: #4f46e5;
+    padding: 10px;
+}
+
+.navMenu ul {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.navMenu ul li {
+    list-style: none;
+    padding: 0 10px;
+}
+
+.navMenu ul li a {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.logo {
+    margin-right: auto;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.welcome {
+    padding: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #4f46e5;
+}
+
+.customers {
+
+}

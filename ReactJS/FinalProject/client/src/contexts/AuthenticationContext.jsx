@@ -17,6 +17,9 @@ AuthenticationContext.displayName = 'AuthenticationContext';
 export const tokenName = 'token';
 export const tokenExpDays = 10;
 
+const nonLoginPaths = [Paths.login, Paths.register, Paths.index]
+
+
 export default function AuthenticationProvider({children, isLogin, setIsLogin,}) {
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
@@ -31,8 +34,10 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
 
 
     useLayoutEffect(() => {
-        const pathName = location.pathname
+        const pathName = location.pathname;
         const accessToken = authToken.access;
+
+        if (nonLoginPaths.indexOf(pathName)) return;
 
         if (accessToken) {
             navigate(pathName);

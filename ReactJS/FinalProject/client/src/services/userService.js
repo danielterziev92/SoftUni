@@ -16,6 +16,10 @@ export const getRefreshToken = async (oldToken) => {
     return await request.post(Urls.refreshToken, data);
 }
 
+export const getAllUsers = async () => {
+    return await request.get(Urls.index);
+}
+
 export const getUserById = async (id, token) => {
     const url = pathToUrl(Urls.userDetail, {id});
     return await request.get(url, null, token);

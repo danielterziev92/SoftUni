@@ -2,6 +2,7 @@ const BASE_URL = 'http://localhost:8000/api'
 
 const Urls = {
     baseUrl: BASE_URL,
+    index: `${BASE_URL}/`,
     token: `${BASE_URL}/token/`,
     refreshToken: `${BASE_URL}/token/refresh/`,
     userDetail: `${BASE_URL}/user/:id/`,
