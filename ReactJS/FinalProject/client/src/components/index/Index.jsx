@@ -58,8 +58,7 @@ export default function Index() {
                             <li><Link to={Paths.profile}>Профил</Link></li>
                             <li><Link to={Paths.logout}>Изход</Link></li>
                         </>
-                    )
-                    }
+                    )}
                 </ul>
             </nav>
             <section className={style.welcome}>
