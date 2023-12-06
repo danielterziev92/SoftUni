@@ -18,6 +18,7 @@ import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import MessageBoxDialog from "./components/message-box-dialog/MessageBoxDialog.jsx";
 import Profile from "./components/profile/Profile.jsx";
 import Groups from "./components/groups/Groups.jsx";
+import Index from "./components/index/Index.jsx";
 
 export default function App() {
     const [isLogin, setIsLogin] = useState(false);
@@ -30,6 +31,7 @@ export default function App() {
                 <main className={mainStyle.Main}>
                     {isMessageBoxShow && <MessageBoxDialog/>}
                     <Routes>
+                        <Route path={Paths.index} element={<Index/>}/>
                         <Route path={Paths.login} element={<Login/>}/>
                         <Route path={Paths.register} element={<Register/>}/>
                         <Route element={<PrivateRoutes isLogin={isLogin}/>}>
