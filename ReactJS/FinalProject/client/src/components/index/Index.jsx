@@ -41,26 +41,17 @@ export default function Index() {
 
     return (
         <>
-            <nav className={style.navMenu}>
-                <ul>
-                    <li className={style.logo}>
-                        <img src="../../../public/logo.svg" alt="Logo"/>
-                    </li>
-                    {compareObjects(userInfo, {}) ? (
-                        <>
-                            <li><Link to={Paths.login}>Вход</Link></li>
-                            <li><Link to={Paths.register}>Регистрация</Link></li>
-                        </>
-                    ) : (
-                        <>
-                            <li><Link to={Paths.logout}>Всички продукти</Link></li>
-                            <li><Link to={Paths.groups}>Всички групи</Link></li>
-                            <li><Link to={Paths.profile}>Профил</Link></li>
-                            <li><Link to={Paths.logout}>Изход</Link></li>
-                        </>
-                    )}
-                </ul>
-            </nav>
+            {compareObjects(userInfo, {}) &&
+                <nav className={style.navMenu}>
+                    <ul>
+                        <li className={style.logo}>
+                            <img src="../../../public/logo.svg" alt="Logo"/>
+                        </li>
+                        <li><Link to={Paths.login}>Вход</Link></li>
+                        <li><Link to={Paths.register}>Регистрация</Link></li>
+                    </ul>
+                </nav>
+            }
             <section className={style.welcome}>
                 <h1>Добре дошли в нашата платформа</h1>
             </section>

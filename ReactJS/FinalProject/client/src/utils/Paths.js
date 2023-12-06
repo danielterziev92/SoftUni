@@ -1,7 +1,7 @@
 const Paths = {
     index: '/',
     login: '/login',
-    afterLogin: '/products',
+    afterLogin: '/',
     logout: '/logout',
     afterLogout: '/login',
     register: '/register',
