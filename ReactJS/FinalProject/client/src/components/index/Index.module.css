@@ -80,3 +80,68 @@
 .customers ul.table li:first-child {
     border-left: 1px solid #4f46e5;
 }
+
+.userInfo {
+    padding: 50px;
+}
+
+.userInfo h2 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.userInfo span {
+    display: flex;
+    justify-content: center;
+}
+
+.userInfo h3 {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.userInfo div {
+    padding: 50px;
+}
+
+.userInfo div ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+
+.userInfo div ul:first-child {
+    background-color: #4f46e5;
+    border-radius: 20px 20px 0 0;
+}
+
+.userInfo div ul li {
+    list-style: none;
+    text-align: center;
+}
+
+.userInfo div ul:first-child li {
+    padding: 20px;
+    font-size: 1.3rem;
+    color: #ffffff;
+}
+
+.userInfo div ul li:first-child {
+    text-align: start;
+}
+
+.userInfo div ul:not(:first-child) li {
+    border-right: 1px solid #4f46e5;
+    border-bottom: 1px solid #4f46e5;
+    padding: 10px;
+}
+
+.userInfo div ul:not(:first-child) li:first-child {
+    border-left: 1px solid #4f46e5;
+}
+
+.userInfo div ul:not(:first-child):hover {
+    background-color: #4f46e5;
+    color: #ffffff;
+}

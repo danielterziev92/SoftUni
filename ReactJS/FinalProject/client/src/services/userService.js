@@ -20,6 +20,10 @@ export const getAllUsers = async () => {
     return await request.get(Urls.index);
 }
 
+export const getProductsForUserByJWTToken = async (token) => {
+    return await request.get(Urls.index, null, token);
+}
+
 export const getUserById = async (id, token) => {
     const url = pathToUrl(Urls.userDetail, {id});
     return await request.get(url, null, token);

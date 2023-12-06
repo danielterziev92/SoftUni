@@ -123,6 +123,7 @@ export default function AuthenticationProvider({children, isLogin, setIsLogin,})
         updateUser,
         loginUserInApp,
         logoutUser,
+        setNewTokens,
         setIsLogin,
     }
 
