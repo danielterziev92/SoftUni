@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from server.product.models import ProductBaseInformation
+
 
 class AppTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -25,3 +27,34 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+
+class UserProductsSerializer(serializers.ModelSerializer):
+    product_count = serializers.SerializerMethodField()
+    products = serializers.SerializerMethodField()
+
+    def get_product_count(self, user):
+        if user.is_authenticated:
+            # Count the number of products associated with the user
+            return ProductBaseInformation.objects.filter(user=user).count()
+        else:
+            return None
+
+    def get_products(self, user):
+        if user.is_authenticated:
+            # Retrieve the list of products associated with the user
+            products = ProductBaseInformation.objects.filter(user=user)
+            return ProductSerializer(products, many=True).data
+        else:
+            # Return all products as a list when there is no authenticated user
+            return ProductSerializer(ProductBaseInformation.objects.all(), many=True).data
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'product_count', 'products']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductBaseInformation
+        fields = ['id', 'name', 'price', 'quantity']

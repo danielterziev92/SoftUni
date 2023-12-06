@@ -2,9 +2,11 @@ from django.urls import path, include
 
 from rest_framework_simplejwt.views import TokenRefreshView, TokenBlacklistView
 
-from server.user_app.views import AppTokenObtainPairView, UserCreateView, UserRetrieveUpdateView, UserListView
+from server.user_app.views import AppTokenObtainPairView, UserCreateView, UserRetrieveUpdateView, UserListView, \
+    UserProductsViewSet
 
 urlpatterns = (
+    path('', UserProductsViewSet.as_view({'get': 'list'}), name='index'),
     path('token/', include([
         path('', AppTokenObtainPairView.as_view(), name='token_obtain_pair'),
         path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),

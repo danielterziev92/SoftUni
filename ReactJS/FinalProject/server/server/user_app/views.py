@@ -1,9 +1,10 @@
-from rest_framework import generics as api_views, serializers, status
+from rest_framework import generics as api_views, serializers, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from server.user_app.serializers import AppTokenObtainPairSerializer, UserSerializer, UserCreateSerializer
+from server.user_app.serializers import AppTokenObtainPairSerializer, UserSerializer, UserCreateSerializer, \
+    UserProductsSerializer
 
 from django.contrib.auth.models import User
 
@@ -67,3 +68,8 @@ class UserRetrieveUpdateView(api_views.RetrieveUpdateAPIView):
 class UserListView(api_views.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class UserProductsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserProductsSerializer
