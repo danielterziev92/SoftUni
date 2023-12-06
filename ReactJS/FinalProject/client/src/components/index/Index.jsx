@@ -1,17 +1,17 @@
+import {useLayoutEffect, useState} from "react";
 import {Link} from "react-router-dom";
 
 import style from './Index.module.css';
 
-import Paths from "../../utils/Paths.js";
-import {useContext, useEffect, useLayoutEffect, useState} from "react";
 import {getAllUsers, getProductsForUserByJWTToken} from "../../services/userService.js";
+
 import cookieManager from "../../utils/cookieManager.js";
-import {AuthenticationContext, tokenExpDays, tokenName} from "../../contexts/AuthenticationContext.jsx";
 import tokenManager from "../../utils/tokenManager.js";
+import {tokenExpDays, tokenName} from "../../contexts/AuthenticationContext.jsx";
+import Paths from "../../utils/Paths.js";
 import compareObjects from "../../utils/compareObjects.js";
 
 export default function Index() {
-    const {setNewTokens} = useContext(AuthenticationContext);
     const [users, setUsers] = useState([]);
     const [userInfo, setUserInfo] = useState({});
 
@@ -46,8 +46,20 @@ export default function Index() {
                     <li className={style.logo}>
                         <img src="../../../public/logo.svg" alt="Logo"/>
                     </li>
-                    <li><Link to={Paths.login}>Вход</Link></li>
-                    <li><Link to={Paths.register}>Регистрация</Link></li>
+                    {compareObjects(userInfo, {}) ? (
+                        <>
+                            <li><Link to={Paths.login}>Вход</Link></li>
+                            <li><Link to={Paths.register}>Регистрация</Link></li>
+                        </>
+                    ) : (
+                        <>
+                            <li><Link to={Paths.logout}>Всички продукти</Link></li>
+                            <li><Link to={Paths.groups}>Всички групи</Link></li>
+                            <li><Link to={Paths.profile}>Профил</Link></li>
+                            <li><Link to={Paths.logout}>Изход</Link></li>
+                        </>
+                    )
+                    }
                 </ul>
             </nav>
             <section className={style.welcome}>
@@ -87,7 +99,7 @@ export default function Index() {
                         {userInfo.products.map(product => (
                             <ul key={product.id}>
                                 <li>{product.name}</li>
-                                <li>{product.price}</li>
+                                <li>{Number(product.price).toFixed(2)} лв.</li>
                                 <li>{product.quantity}</li>
                             </ul>
                         ))}
