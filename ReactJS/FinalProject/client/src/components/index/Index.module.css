@@ -145,3 +145,10 @@
     background-color: #4f46e5;
     color: #ffffff;
 }
+
+.error {
+    color: #ba0613;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 2.2rem;
+}

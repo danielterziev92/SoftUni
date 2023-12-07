@@ -27,6 +27,6 @@ export default class ErrorBoundary extends Component {
             return <Error errorMessage={this.state.errorMessage}/>;
         }
 
-        return this.state.children;
+        return this.props.children;
     }
 }

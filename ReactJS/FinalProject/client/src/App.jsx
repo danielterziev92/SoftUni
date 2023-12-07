@@ -20,7 +20,7 @@ import Index from "./components/index/Index.jsx";
 
 import Paths from "./utils/Paths.js";
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
-import Page404 from "./components/page-404/Page404.js";
+import Page404 from "./components/page-404/Page404.jsx";
 
 export default function App() {
     const [isLogin, setIsLogin] = useState(false);

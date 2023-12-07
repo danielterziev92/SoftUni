@@ -33,7 +33,6 @@ export default function Index() {
         try {
             const response = await getProductsForUserByJWTToken(newTokens.access);
             setUserInfo(response);
-            console.log(response)
         } catch (e) {
             console.log(e)
         }
