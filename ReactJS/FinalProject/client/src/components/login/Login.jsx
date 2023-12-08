@@ -18,7 +18,7 @@ const initialUserData = {
     password: '',
 }
 
-const FormInformation = {
+export const FormInformation = {
     username: {type: 'text', label: 'Потребителско име'},
     password: {type: 'password', label: 'Парола'},
 }
@@ -59,7 +59,7 @@ export default function Login() {
     return (
         <section className={authStyle.Section}>
             <article>
-                <form onSubmit={onSubmitForm} className={authStyle.Form}>
+                <form onSubmit={onSubmitForm} className={authStyle.Form} data-testid="login-form">
                     {Object.entries(formValue).map(([key, value]) => (
                         <div key={key}>
                             <label htmlFor={key}>{FormInformation[key].label}</label>
