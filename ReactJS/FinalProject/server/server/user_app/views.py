@@ -1,10 +1,12 @@
 from rest_framework import generics as api_views, serializers, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from server.product.models import ProductBaseInformation
 from server.user_app.serializers import AppTokenObtainPairSerializer, UserSerializer, UserCreateSerializer, \
-    UserProductsSerializer
+    AuthenticatedUserSerializer, UnauthenticatedUserSerializer
 
 from django.contrib.auth.models import User
 
@@ -70,6 +72,18 @@ class UserListView(api_views.ListAPIView):
     serializer_class = UserSerializer
 
 
-class UserProductsViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserProductsSerializer
+class UserProductsView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            serializer = AuthenticatedUserSerializer(request.user)
+        else:
+            # For unauthenticated users, retrieve all users and count of their products
+            users = User.objects.all()
+            data = UnauthenticatedUserSerializer(users, many=True).data
+            for user_data in data:
+                user_data['product_count'] = ProductBaseInformation.objects.filter(user_id=user_data['id']).count()
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
