@@ -14,13 +14,15 @@ const MockingRegisterComponent = () => {
     );
 };
 
-describe('Test Register Component have', () => {
-    test('form element to be in the document', () => {
+describe('Test Register Component', () => {
+    test('have form element to be in the document', () => {
         render(<MockingRegisterComponent/>);
 
-        screen.debug();
-        expect(screen.getByRole('form')).toBeInTheDocument();
+        expect(screen.getByRole('form', {name: 'register-form'})).toBeInTheDocument();
     });
 
-
+    // test('have onSubmit function in form element', () => {
+    //     const onSubmitHandler = jest.fn();
+    //
+    // });
 });

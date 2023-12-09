@@ -1,6 +1,5 @@
 import {render, screen, fireEvent, waitFor} from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
-import fetchMock from 'jest-fetch-mock';
 
 import {BrowserRouter} from "react-router-dom";
 
@@ -11,15 +10,35 @@ import MessageProvider from "../../contexts/MessageContext.jsx";
 
 import Paths from "../../utils/Paths.js";
 
-describe('Test Login Component when', () => {
-    test('when user is not authenticated', () => {
-        render(
-            <BrowserRouter>
-                <AuthenticationProvider setIsLogin={null} isLogin={false}>
+const MockingLoginComponent = ({setIsMessageBoxShow, isMessageBoxShow, setIsLogin, isLogin}) => {
+    return (
+        <BrowserRouter>
+            <MessageProvider setIsMessageBoxShow={setIsMessageBoxShow} isMessageBoxShow={isMessageBoxShow}>
+                <AuthenticationProvider setIsLogin={setIsLogin} isLogin={isLogin}>
                     <Login/>
                 </AuthenticationProvider>
-            </BrowserRouter>
-        );
+            </MessageProvider>
+        </BrowserRouter>
+    );
+}
+
+describe('Test Login Component when', () => {
+    const setIsMessageBoxShow = jest.fn();
+    const isMessageBoxShow = null;
+    const setIsLogin = jest.fn();
+    const isLogin = false;
+
+    const renderComponent = () => {
+        return render(<MockingLoginComponent
+            setIsMessageBoxShow={setIsMessageBoxShow}
+            isMessageBoxShow={isMessageBoxShow}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
+        />);
+    }
+
+    test('when user is not authenticated', () => {
+        renderComponent();
 
         const formElement = screen.getByTestId('login-form');
         const usernameLabel = screen.getByLabelText(FormInformation.username.label);
@@ -32,20 +51,7 @@ describe('Test Login Component when', () => {
 
 
     test('successful login and redirects to a specific page', async () => {
-        function emptyFunction() {
-        }
-
-        fetchMock.mockResolvedValueOnce({});
-
-        render(
-            <BrowserRouter>
-                <MessageProvider setIsMessageBoxShow={emptyFunction} isMessageBoxShow={null}>
-                    <AuthenticationProvider setIsLogin={jest.fn()} isLogin={false}>
-                        <Login/>
-                    </AuthenticationProvider>
-                </MessageProvider>
-            </BrowserRouter>
-        );
+        renderComponent();
 
         const usernameInput = screen.getByLabelText('Потребителско име');
         const passwordInput = screen.getByLabelText('Парола');

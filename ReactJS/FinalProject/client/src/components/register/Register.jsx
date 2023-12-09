@@ -135,7 +135,7 @@ export default function Register() {
     return (
         <section className={authStyle.Section}>
             <article>
-                <form onSubmit={onSubmitForm} className={authStyle.Form} name="form">
+                <form onSubmit={onSubmitForm} className={authStyle.Form} aria-label="register-form">
                     <div>
                         <label htmlFor={FormKey.Username}>Потребителско име:
                             <span className={state.validUsername ? authStyle.success : authStyle.hide}>
