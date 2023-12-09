@@ -29,4 +29,13 @@ describe('Test Register Component', () => {
         expect(screen.getByRole('button', {name: 'Регистрация'})).toBeInTheDocument();
     });
 
+    test('does not submit an empty form', () => {
+        render(<MockingRegisterComponent/>);
+
+        screen.getByRole('form', {name: 'register-form'}).onsubmit = onSubmitHandler;
+
+        fireEvent.click(screen.getByRole('button'), {name: 'Регистрация'});
+
+        expect(onSubmitHandler).not.toHaveBeenCalled();
+    });
 });
