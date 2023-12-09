@@ -11,14 +11,6 @@ import MessageProvider from "../../contexts/MessageContext.jsx";
 
 import Paths from "../../utils/Paths.js";
 
-fetchMock.enableMocks();
-
-jest.mock('react', () => ({
-    ...jest.requireActual('react'),
-    useEffect: jest.fn(),
-    useLayoutEffect: jest.fn(),
-}));
-
 describe('Test Login Component when', () => {
     test('when user is not authenticated', () => {
         render(
@@ -40,13 +32,14 @@ describe('Test Login Component when', () => {
 
 
     test('successful login and redirects to a specific page', async () => {
+        function emptyFunction() {
+        }
 
-        fetchMock.mockResolvedValueOnce({ /* mock response with token */});
+        fetchMock.mockResolvedValueOnce({});
 
         render(
             <BrowserRouter>
-                <MessageProvider setIsMessageBoxShow={() => {
-                }} isMessageBoxShow={null}>
+                <MessageProvider setIsMessageBoxShow={emptyFunction} isMessageBoxShow={null}>
                     <AuthenticationProvider setIsLogin={jest.fn()} isLogin={false}>
                         <Login/>
                     </AuthenticationProvider>
@@ -59,14 +52,13 @@ describe('Test Login Component when', () => {
 
         const formElement = screen.getByTestId('login-form');
 
-        await userEvent.type(usernameInput, 'React');
-        await userEvent.type(passwordInput, 'React!23');
+        await userEvent.type(usernameInput, 'username');
+        await userEvent.type(passwordInput, 'Password!23');
 
         fireEvent.submit(formElement);
 
         await waitFor(() => {
             expect(window.location.pathname).toBe(Paths.afterLogin);
         });
-
     });
 });
