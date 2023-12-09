@@ -153,8 +153,9 @@ export default function Register() {
                                onChange={changeDataHandler}
                                onFocus={() => dispatch({type: reducerActions.setFocusUsername, payload: true})}
                                onBlur={() => dispatch({type: reducerActions.setFocusUsername, payload: true})}
+                               aria-label='username'
                         />
-                        <p id="usernote"
+                        <p id="usernote" aria-label="usernote"
                            className={state.focusUsername && formValue[FormKey.Username] && !state.validUsername ? authStyle.instructions : authStyle.hide}>
                             <i className="fa-solid fa-circle-info"></i>
                             <ul>Потребителското име трябва да има:

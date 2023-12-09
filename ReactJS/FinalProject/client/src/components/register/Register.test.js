@@ -38,4 +38,16 @@ describe('Test Register Component', () => {
 
         expect(onSubmitHandler).not.toHaveBeenCalled();
     });
+
+    test('if username is not valid to show the user note paragraph element', () => {
+        render(<MockingRegisterComponent/>);
+
+        screen.getByRole('form', {name: 'register-form'});
+
+        fireEvent.change(screen.getByRole('textbox', {name: 'username'}), {
+            target: {value: 'tes'}
+        })
+
+        expect(screen.getByText(/Потребителското име трябва да има:/i)).toBeVisible();
+    })
 });
