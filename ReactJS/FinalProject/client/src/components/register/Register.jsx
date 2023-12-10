@@ -182,8 +182,9 @@ export default function Register() {
                                onChange={changeDataHandler}
                                onFocus={() => dispatch({type: reducerActions.setFocusEmail, payload: true})}
                                onBlur={() => dispatch({type: reducerActions.setFocusName, payload: false})}
+                               aria-label='pa'
                         />
-                        <p id="emailnote"
+                        <p id="emailnote" aria-label="emailnote"
                            className={state.focusEmail && formValue[FormKey.Email] && !state.validEmail ? authStyle.instructions : authStyle.hide}>
                             <i className="fa-solid fa-circle-info"></i>
                             <ul>Имейла трябва да съдържа:

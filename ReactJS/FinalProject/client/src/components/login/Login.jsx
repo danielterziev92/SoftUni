@@ -12,6 +12,7 @@ import {loginUser} from "../../services/userService.js";
 
 import Paths from "../../utils/Paths.js";
 import compareObjects from "../../utils/compareObjects.js";
+import cookieManager from "../../utils/cookieManager.js";
 
 const initialUserData = {
     username: '',

@@ -1,4 +1,4 @@
-import {fireEvent, render, screen,} from '@testing-library/react';
+import {cleanup, fireEvent, render, screen,} from '@testing-library/react';
 import {BrowserRouter} from "react-router-dom";
 import Register from "./Register.jsx";
 import AuthenticationProvider from "../../contexts/AuthenticationContext.jsx";
@@ -16,6 +16,10 @@ const MockingRegisterComponent = () => {
 
 describe('Test Register Component', () => {
     const onSubmitHandler = jest.fn();
+
+    beforeEach(() => {
+        cleanup();
+    });
 
     test('have form element to be in the document', () => {
         render(<MockingRegisterComponent/>);
@@ -48,6 +52,40 @@ describe('Test Register Component', () => {
             target: {value: 'tes'}
         })
 
-        expect(screen.getByText(/Потребителското име трябва да има:/i)).toBeVisible();
+        const usernoteByAriaLabel = screen.getByLabelText('usernote');
+
+        expect(usernoteByAriaLabel).toBeInTheDocument();
+        expect(usernoteByAriaLabel).toHaveClass('instructions');
     })
+
+    test('if username is valid user note paragraph element to be not visible', () => {
+        render(<MockingRegisterComponent/>);
+
+        screen.getByRole('form', {name: 'register-form'});
+
+        fireEvent.change(screen.getByRole('textbox', {name: 'username'}), {
+            target: {value: 'test'}
+        })
+
+        const usernoteByAriaLabel = screen.getByLabelText('usernote');
+
+        expect(usernoteByAriaLabel).toBeInTheDocument();
+        expect(usernoteByAriaLabel).toHaveClass('hide');
+    })
+
+    test('if password is not valid to show the password note paragraph element', () => {
+        render(<MockingRegisterComponent/>);
+
+        screen.getByRole('form', {name: 'register-form'});
+
+        fireEvent.change(screen.getByRole('textbox', {name: 'password'}), {
+            target: {value: 'tes'}
+        })
+
+        const usernoteByAriaLabel = screen.getByLabelText('emailnote');
+
+        expect(usernoteByAriaLabel).toBeInTheDocument();
+        expect(usernoteByAriaLabel).toHaveClass('instructions');
+    })
+
 });

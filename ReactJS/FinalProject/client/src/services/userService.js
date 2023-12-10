@@ -1,11 +1,8 @@
 import * as request from '../lib/request.js'
 
-import tokenManager from "../utils/tokenManager.js";
-import cookieManager from "../utils/cookieManager.js";
-
-import {tokenExpDays, tokenName} from "../contexts/AuthenticationContext.jsx";
 import pathToUrl from "../utils/pathToUrl.js";
 import Urls from "../utils/Urls.js";
+import returnNewAuthToken from "../lib/authToken.js";
 
 export const loginUser = async (data) => {
     return request.post(Urls.token, data);
@@ -30,12 +27,10 @@ export const getUserById = async (id, token) => {
 }
 
 export const updateUserById = async (id, data) => {
-    const refreshToken = cookieManager.getCookie(tokenName);
-    const token = await tokenManager.getNewTokens(refreshToken);
-    cookieManager.setCookie(tokenName, token.refresh, tokenExpDays);
+    const newTokens = await returnNewAuthToken();
     const {is_staff, is_superuser, is_active, ...dataToSend} = data
     const url = pathToUrl(Urls.userDetail, {id});
-    return await request.patch(url, dataToSend, token.access);
+    return await request.patch(url, dataToSend, newTokens.access);
 }
 
 export const registerUser = async (data) => {
