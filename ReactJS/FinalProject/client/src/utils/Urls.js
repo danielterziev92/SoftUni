@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8000/api'
+const BASE_URL = '//productsmanager.danielterziev.eu/api'
 
 const Urls = {
     baseUrl: BASE_URL,

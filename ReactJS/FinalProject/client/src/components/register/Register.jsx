@@ -182,7 +182,7 @@ export default function Register() {
                                onChange={changeDataHandler}
                                onFocus={() => dispatch({type: reducerActions.setFocusEmail, payload: true})}
                                onBlur={() => dispatch({type: reducerActions.setFocusName, payload: false})}
-                               aria-label='pa'
+                               aria-label='email'
                         />
                         <p id="emailnote" aria-label="emailnote"
                            className={state.focusEmail && formValue[FormKey.Email] && !state.validEmail ? authStyle.instructions : authStyle.hide}>
@@ -211,8 +211,9 @@ export default function Register() {
                                onChange={changeDataHandler}
                                onFocus={() => dispatch({type: reducerActions.setFocusPassword, payload: true})}
                                onBlur={() => dispatch({type: reducerActions.setFocusPassword, payload: false})}
+                               aria-label='password'
                         />
-                        <p id="passwordnote"
+                        <p id="passwordnote" aria-label="passwordnote"
                            className={state.focusPassword && formValue[FormKey.Password] && !state.validPassword ? authStyle.instructions : authStyle.hide}>
                             <i className="fa-solid fa-circle-info"></i>
                             <ul>Паролата трябва да има:

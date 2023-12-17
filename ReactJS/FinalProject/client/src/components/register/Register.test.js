@@ -82,7 +82,7 @@ describe('Test Register Component', () => {
             target: {value: 'tes'}
         })
 
-        const usernoteByAriaLabel = screen.getByLabelText('emailnote');
+        const usernoteByAriaLabel = screen.getByLabelText('passwordnote');
 
         expect(usernoteByAriaLabel).toBeInTheDocument();
         expect(usernoteByAriaLabel).toHaveClass('instructions');
