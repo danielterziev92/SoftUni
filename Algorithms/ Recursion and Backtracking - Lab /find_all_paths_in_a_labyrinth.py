@@ -15,11 +15,13 @@ test2 = '''3
 *****
 '''
 
-sys.stdin = StringIO(test2)
+sys.stdin = StringIO(test1)
 
 
-def print_path(movies):
+def print_path(movies, direction):
+    movies.append(direction)
     print(''.join(movies))
+    movies.pop()
 
 
 def add_move(labyrinth, row, col, direction, movies):
@@ -37,9 +39,7 @@ def find_path_in_a_labyrinth(labyrinth, row=0, col=0, direction='', movies=[]):
         return
 
     if labyrinth[row][col] == 'e':
-        movies.append(direction)
-        print_path(movies)
-        movies.pop()
+        print_path(movies, direction)
         return
 
     if labyrinth[row][col] == '*':
