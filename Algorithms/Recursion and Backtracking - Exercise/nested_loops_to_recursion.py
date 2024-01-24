@@ -16,8 +16,6 @@ def nested_loops_to_recursion(arr, idx, iter):
         arr[idx] = i + 1
         nested_loops_to_recursion(arr, idx + 1, iter)
 
-    return arr
-
 
 n = int(input())
 input_arr = [0] * n
