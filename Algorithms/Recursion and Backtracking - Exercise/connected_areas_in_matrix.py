@@ -1,8 +1,6 @@
 import sys
 from io import StringIO
 
-from reportlab.graphics.charts import areas
-
 test1 = '''4
 9
 ---*---*-
