@@ -186,6 +186,7 @@ class Exercise(models.Model):
     )
 
     calories_burned = models.PositiveIntegerField(
+        default=0,
         null=False,
         blank=False,
     )
