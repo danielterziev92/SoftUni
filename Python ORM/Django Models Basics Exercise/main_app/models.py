@@ -104,3 +104,94 @@ class Product(models.Model):
         null=False,
         blank=False,
     )
+
+
+class UserProfile(models.Model):
+    username = models.CharField(
+        max_length=65,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    first_name = models.CharField(
+        max_length=40,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    last_name = models.CharField(
+        max_length=40,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    email = models.EmailField(
+        unique=True,
+        default='students@softuni.bg'
+    )
+
+    bio = models.TextField(
+        max_length=120,
+        null=False,
+        blank=False,
+    )
+
+    profile_image_url = models.URLField(
+        null=False,
+        blank=False,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now=True,
+        null=False,
+        blank=False,
+    )
+
+
+class Exercise(models.Model):
+    name = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+    )
+
+    description = models.TextField(
+        null=False,
+        blank=False,
+    )
+
+    difficulty_level = models.CharField(
+        max_length=20,
+        null=False,
+        blank=False,
+    )
+
+    duration_minutes = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+    )
+
+    equipment = models.CharField(
+        max_length=90,
+        null=False,
+        blank=False,
+    )
+
+    video_url = models.URLField(
+        null=True,
+        blank=True,
+    )
+
+    calories_burned = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+    )
+
+    is_favorite = models.BooleanField(
+        default=False,
+        null=False,
+        blank=False,
+    )
