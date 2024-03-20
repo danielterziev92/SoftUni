@@ -79,6 +79,6 @@ def add_products_with_count_value():
 
 # print(add_initial_products())
 
-# print(add_new_product_with_time_of_creation_and_edition())
+print(add_new_product_with_time_of_creation_and_edition())
 
 # print(add_products_with_count_value())
