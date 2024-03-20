@@ -13,3 +13,16 @@ class Person(models.Model):
         null=False,
         blank=False,
     )
+
+
+class Blog(models.Model):
+    post = models.TextField(
+        null=False,
+        blank=False,
+    )
+
+    author = models.CharField(
+        max_length=35,
+        null=False,
+        blank=False,
+    )
