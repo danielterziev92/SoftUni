@@ -196,3 +196,63 @@ class Exercise(models.Model):
         null=False,
         blank=False,
     )
+
+
+class Book(models.Model):
+    class GenreChoices(models.TextChoices):
+        FICTION = 'Fiction', _('Fiction')
+        NON_FICTION = 'Non-Fiction', _('Non-Fiction')
+        SCIENCE_FICTION = 'Science Fiction', _('Science Fiction')
+        HORROR = 'Horror', _('Horror')
+
+    title = models.CharField(
+        max_length=30,
+        null=False,
+        blank=False,
+    )
+
+    author = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+    )
+
+    genre = models.CharField(
+        max_length=20,
+        choices=GenreChoices.choices,
+        null=False,
+        blank=False,
+    )
+
+    publication_date = models.DateField(
+        auto_now=True,
+        editable=False,
+        null=False,
+        blank=False,
+    )
+
+    price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=False,
+        blank=False,
+    )
+
+    is_available = models.BooleanField(
+        default=True,
+        null=False,
+        blank=False,
+    )
+
+    rating = models.FloatField(
+        null=False,
+        blank=False,
+    )
+
+    description = models.TextField(
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return self.title
