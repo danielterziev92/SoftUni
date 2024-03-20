@@ -41,6 +41,7 @@ def add_initial_products():
     product3.save()
     return "3 products were added successfully to the database"
 
+
 def add_new_product_with_time_of_creation_and_edition():
     # Adding the first product
     product4 = Product(
@@ -52,6 +53,7 @@ def add_new_product_with_time_of_creation_and_edition():
     )
     product4.save()
     return "1 product with time of creation and edition was added to the database"
+
 
 def add_products_with_count_value():
     product5 = Product(
@@ -74,11 +76,10 @@ def add_products_with_count_value():
     product6.save()
     return "2 products with count were added to the database"
 
-
 # Run and print your queries
 
 # print(add_initial_products())
 
-print(add_new_product_with_time_of_creation_and_edition())
+# print(add_new_product_with_time_of_creation_and_edition())
 
-# print(add_products_with_count_value())
+print(add_products_with_count_value())
