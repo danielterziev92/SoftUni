@@ -76,10 +76,20 @@ def add_products_with_count_value():
     product6.save()
     return "2 products with count were added to the database"
 
+
 # Run and print your queries
 
 # print(add_initial_products())
 
 # print(add_new_product_with_time_of_creation_and_edition())
 
-print(add_products_with_count_value())
+# print(add_products_with_count_value())
+
+Product.objects.create(
+    name='Laptop Bag 4',
+    description='A stylish and durable laptop',
+    price=15.30,
+    count=50,
+    category='Laptops',
+    supplier='IBM'
+)
