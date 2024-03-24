@@ -139,3 +139,43 @@ class Supplier(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.phone}'
+
+
+class Course(models.Model):
+    title = models.CharField(
+        max_length=90,
+        null=False,
+        blank=False,
+    )
+
+    lecturer = models.CharField(
+        max_length=90,
+        null=False,
+        blank=False,
+    )
+
+    description = models.TextField(
+        max_length=200,
+        null=False,
+        blank=False,
+    )
+
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+
+    start_date = models.DateField(
+        auto_now_add=True,
+        null=False,
+        blank=False,
+    )
+
+    is_published = models.BooleanField(
+        default=True,
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return f'{self.title} - {self.lecturer}'
