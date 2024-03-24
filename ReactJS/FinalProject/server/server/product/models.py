@@ -1,6 +1,20 @@
 from django.contrib.auth.models import User
 from django.db import models
-from cloudinary import models as cloudinary_models
+
+
+class Object(models.Model):
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+        null=False,
+        blank=False,
+    )
 
 
 class Group(models.Model):
@@ -29,7 +43,7 @@ class Group(models.Model):
         return self.name
 
 
-class ProductBaseInformation(models.Model):
+class Product(models.Model):
     code = models.CharField(
         max_length=10,
         unique=True,
@@ -57,20 +71,8 @@ class ProductBaseInformation(models.Model):
         blank=False,
     )
 
-    quantity = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-    )
-
     is_active = models.BooleanField(
         default=True,
-    )
-
-    user = models.ForeignKey(
-        User,
-        on_delete=models.RESTRICT,
-        null=False,
-        blank=False,
     )
 
     group = models.ForeignKey(
@@ -81,36 +83,21 @@ class ProductBaseInformation(models.Model):
     )
 
 
-class ProductAdditionalInfo(models.Model):
-    product = models.AutoField(
-        primary_key=True
-    )
-
-    picture = cloudinary_models.CloudinaryField(
-        null=True,
-        blank=True,
-    )
-
-    description = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True,
-    )
-
-
-class MoreBarcodes(models.Model):
-    code = models.CharField(
-        max_length=128,
-        null=True,
-        blank=True,
-    )
-
-    product = models.ForeignKey(
-        ProductBaseInformation,
-        on_delete=models.CASCADE,
+class ProductInventory(models.Model):
+    quantity = models.PositiveIntegerField(
+        default=0,
         null=False,
         blank=False,
     )
 
-    def __str__(self):
-        return self.code
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name='product'
+    )
+
+    object = models.ForeignKey(
+        Object,
+        on_delete=models.CASCADE,
+        verbose_name='object'
+    )
