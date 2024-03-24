@@ -71,3 +71,71 @@ class Movie(models.Model):
 
     def __str__(self):
         return f'Movie "{self.title}" by {self.director}'
+
+
+class Student(models.Model):
+    first_name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+
+    last_name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+
+    age = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+    )
+
+    grade = models.CharField(
+        max_length=10,
+        null=False,
+        blank=False,
+    )
+
+    date_of_birth = models.DateField(
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+
+class Supplier(models.Model):
+    name = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+    )
+
+    contact_person = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+
+    email = models.EmailField(
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    phone = models.CharField(
+        max_length=20,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    address = models.TextField(
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return f'{self.name} - {self.phone}'
