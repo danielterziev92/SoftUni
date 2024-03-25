@@ -32,5 +32,8 @@ class UserApp(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
 
     objects = UserAppManager()
 
+    class Meta:
+        verbose_name = 'User'
+
     def __str__(self):
         return self.email
