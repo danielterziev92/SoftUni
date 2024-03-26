@@ -138,3 +138,6 @@ class CompanyMembers(models.Model):
     members = models.ManyToManyField(
         UserBaseInfo
     )
+
+    class Meta:
+        verbose_name_plural = 'Company Members'
