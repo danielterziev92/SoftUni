@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from server.product.models import Object, Group
+from server.product.models import Object, Group, Unit
 
 
 @admin.register(Object)
@@ -25,6 +25,13 @@ class GroupAdmin(admin.ModelAdmin):
         return obj.name
 
     get_full_path.short_description = 'Parent category'
+
+
+@admin.register(Unit)
+class UnitAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name',)
+    list_display_links = ('name',)
+    ordering = ('id',)
 
 # @admin.register(Product)
 # class ProductAdmin(admin.ModelAdmin):
