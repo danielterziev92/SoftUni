@@ -59,8 +59,11 @@ class Unit(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return self.name
 
-class Product(models.Model):
+
+class Product(DateInfoMixin):
     class ProductType(models.IntegerChoices):
         STANDARD = 1, _('Standard')
         SERVICE = 2, _('Service')
@@ -78,6 +81,8 @@ class Product(models.Model):
     PRICE_DECIMAL_PLACES = 3
     TYPE_MAX_LENGTH = 2
     VAT_GROUP_MAX_LENGTH = 1
+    DEFAULT_MEASURE_VALUE = 1
+    DEFAULT_GROUP_VALUE = 1
 
     code = models.CharField(
         max_length=CODE_MAX_LENGTH,
@@ -96,16 +101,14 @@ class Product(models.Model):
         default=True,
     )
 
-    type = models.CharField(
-        max_length=max(key for key, _ in ProductType.choices),
+    type = models.IntegerField(
         choices=ProductType.choices,
         default=ProductType.STANDARD,
         null=False,
         blank=False,
     )
 
-    vat_group = models.CharField(
-        max_length=max(key for key, _ in VatGroup.choices),
+    vat_group = models.IntegerField(
         choices=VatGroup.choices,
         default=VatGroup.B,
         null=False,
@@ -115,7 +118,7 @@ class Product(models.Model):
     measure = models.ForeignKey(
         Unit,
         on_delete=models.CASCADE,
-        default=1,
+        default=DEFAULT_MEASURE_VALUE,
         null=False,
         blank=False,
     )
@@ -123,48 +126,57 @@ class Product(models.Model):
     group = models.ForeignKey(
         Group,
         on_delete=models.RESTRICT,
-        default=1,
+        default=DEFAULT_GROUP_VALUE,
         null=False,
         blank=False,
     )
 
-# class ProductBarcode(models.Model):
-#     BARCODE_MAX_LENGTH = 128
-#
-#     barcode = models.CharField(
-#         max_length=BARCODE_MAX_LENGTH,
-#         unique=True,
-#         null=False,
-#         blank=False,
-#     )
-#
-#     product = models.ForeignKey(
-#         Product,
-#         on_delete=models.RESTRICT,
-#         related_name='barcodes'
-#     )
-#
-#     def __str__(self):
-#         return self.barcode
+
+class Barcode(models.Model):
+    BARCODE_MAX_LENGTH = 128
+
+    barcode = models.CharField(
+        max_length=BARCODE_MAX_LENGTH,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return self.barcode
 
 
-# class ProductInventory(models.Model):
-#     QUANTITY_DEFAULT_VALUE = 0
-#
-#     quantity = models.PositiveIntegerField(
-#         default=QUANTITY_DEFAULT_VALUE,
-#         null=False,
-#         blank=False,
-#     )
-#
-#     product = models.ForeignKey(
-#         Product,
-#         on_delete=models.CASCADE,
-#         verbose_name='product'
-#     )
-#
-#     object = models.ForeignKey(
-#         Object,
-#         on_delete=models.CASCADE,
-#         verbose_name='object'
-#     )
+class ProductBarcode(models.Model):
+    barcodes = models.ForeignKey(
+        Barcode,
+        on_delete=models.CASCADE,
+        related_name='barcodes'
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.RESTRICT,
+        related_name='barcodes'
+    )
+
+
+class ProductInventory(models.Model):
+    QUANTITY_DEFAULT_VALUE = 0
+
+    quantity = models.PositiveIntegerField(
+        default=QUANTITY_DEFAULT_VALUE,
+        null=False,
+        blank=False,
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name='product'
+    )
+
+    object = models.ForeignKey(
+        Object,
+        on_delete=models.CASCADE,
+        verbose_name='object'
+    )
