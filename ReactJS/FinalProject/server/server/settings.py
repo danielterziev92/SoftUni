@@ -34,8 +34,6 @@ PROJECT_APPS = (
 THIRD_PARTY_APPS = (
     'rest_framework',
     'corsheaders',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -53,7 +51,10 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
     )
 }
 
