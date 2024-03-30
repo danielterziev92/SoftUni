@@ -17,6 +17,11 @@ class UserCreateSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, write_only=True)
     re_password = serializers.CharField(required=True, write_only=True)
 
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
 # class AuthenticatedUserSerializer(serializers.ModelSerializer):
 #     product_count = serializers.SerializerMethodField()
 #     products = serializers.SerializerMethodField()
