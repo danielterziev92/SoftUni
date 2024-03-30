@@ -1,12 +1,13 @@
-const BASE_URL = '//productsmanager.danielterziev.eu/api'
+const BASE_URL = 'http://localhost:8000/api'
 
 const Urls = {
     baseUrl: BASE_URL,
     index: `${BASE_URL}/`,
-    token: `${BASE_URL}/token/`,
-    refreshToken: `${BASE_URL}/token/refresh/`,
     userDetail: `${BASE_URL}/user/:id/`,
     userRegister: `${BASE_URL}/user/create/`,
+    userLogin: `${BASE_URL}/user/login/`,
+    userAuthentication: `${BASE_URL}/user/authentication`,
+    userLogout: `${BASE_URL}/user/logout/`,
     products: `${BASE_URL}/products/`,
     productCreate: `${BASE_URL}/product/create/`,
     productDetail: `${BASE_URL}/product/:id/`,

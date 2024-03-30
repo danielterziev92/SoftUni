@@ -3,9 +3,12 @@ import * as request from '../lib/request.js'
 import pathToUrl from "../utils/pathToUrl.js";
 import Urls from "../utils/Urls.js";
 import returnNewAuthToken from "../lib/authToken.js";
+import axios from "axios";
 
 export const loginUser = async (data) => {
-    return request.post(Urls.token, data);
+    const response = await axios.post(Urls.token, data);
+    const token = response.data.access;
+    return token;
 }
 
 export const getRefreshToken = async (oldToken) => {

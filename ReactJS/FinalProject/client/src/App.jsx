@@ -28,27 +28,27 @@ export default function App() {
 
     return (
         <ErrorBoundary>
-            <MessageProvider setIsMessageBoxShow={setIsMessageBoxShow} isMessageBoxShow={isMessageBoxShow}>
-                <AuthenticationProvider setIsLogin={setIsLogin} isLogin={isLogin}>
-                    {isLogin && <Aside/>}
-                    <main className={mainStyle.Main}>
-                        {isMessageBoxShow && <MessageBoxDialog/>}
-                        <Routes>
-                            <Route path={Paths.index} element={<Index/>}/>
-                            <Route path={Paths.login} element={<Login/>}/>
-                            <Route path={Paths.register} element={<Register/>}/>
-                            <Route element={<PrivateRoutes isLogin={isLogin}/>}>
-                                <Route path={Paths.logout} element={<Logout/>}/>
-                                <Route path={Paths.profile} element={<Profile/>}/>
-                                <Route path={Paths.products}
-                                       element={<ProductsProvider><Products/></ProductsProvider>}/>
-                                <Route path={Paths.groups} element={<Groups/>}/>
-                            </Route>
-                            <Route path='*' element={<Page404/>}/>
-                        </Routes>
-                    </main>
-                </AuthenticationProvider>
-            </MessageProvider>
+            {/*<MessageProvider setIsMessageBoxShow={setIsMessageBoxShow} isMessageBoxShow={isMessageBoxShow}>*/}
+            {/*<AuthenticationProvider setIsLogin={setIsLogin} isLogin={isLogin}>*/}
+            {/*{isLogin && <Aside/>}*/}
+            <main className={mainStyle.Main}>
+                {isMessageBoxShow && <MessageBoxDialog/>}
+                <Routes>
+                    <Route path={Paths.index} element={<Index/>}/>
+                    <Route path={Paths.login} element={<Login/>}/>
+                    <Route path={Paths.register} element={<Register/>}/>
+                    <Route element={<PrivateRoutes isLogin={isLogin}/>}>
+                        <Route path={Paths.logout} element={<Logout/>}/>
+                        <Route path={Paths.profile} element={<Profile/>}/>
+                        <Route path={Paths.products}
+                               element={<ProductsProvider><Products/></ProductsProvider>}/>
+                        <Route path={Paths.groups} element={<Groups/>}/>
+                    </Route>
+                    <Route path='*' element={<Page404/>}/>
+                </Routes>
+            </main>
+            {/*</AuthenticationProvider>*/}
+            {/*</MessageProvider>*/}
         </ErrorBoundary>
     );
 }
