@@ -6,11 +6,11 @@ const initialState = {
     user: null,
     isAuthenticated: false,
     loading: false,
-    error: null,
+    message: null,
 }
 
 export const userSlice = createSlice({
-    name: 'user',
+    name: 'userInfo',
     initialState,
     reducers: {
         loginUserPending: (state) => {
@@ -20,17 +20,16 @@ export const userSlice = createSlice({
             state.loading = false;
             state.isAuthenticated = true;
             state.user = action.payload.user;
-            state.error = null;
+            state.message = action.payload.message;
         },
         loginUserFailure: (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.message = action.payload.message;
         },
         logoutUser: (state) => {
             state.user = null;
             state.isAuthenticated = false;
             state.loading = false;
-            state.error = null;
         },
         setSessionId: (state, action) => {
             state.session.id = action.payload;
@@ -41,13 +40,13 @@ export const userSlice = createSlice({
         checkAuthSuccess: (state, action) => {
             state.loading = false;
             state.isAuthenticated = true;
+            state.message = action.payload.message;
             state.user = action.payload.user;
-            state.error = null;
         },
         checkAuthFailure: (state, action) => {
             state.loading = false;
+            state.message = action.payload.message;
             state.isAuthenticated = false;
-            state.error = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -58,11 +57,12 @@ export const userSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.isAuthenticated = true;
-                state.user = action.payload;
+                state.user = action.payload.user;
+                state.message = action.payload.message;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.message = action.payload.message;
             });
     },
 });
@@ -77,7 +77,7 @@ export const {
     checkAuthFailure,
 } = userSlice.actions;
 
-export const selectUser = (state) => state.user;
-export const selectIsAuthenticated = (state) => state.user.isAuthenticated;
+export const selectUser = (state) => state.userInfo.user;
+export const selectIsAuthenticated = (state) => state.userInfo.isAuthenticated;
 
 export default userSlice.reducer;

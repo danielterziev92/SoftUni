@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import authStyle from "../Authentication.module.css";
 
 import {MessageContext} from "../../contexts/MessageContext.jsx";
-import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 
 import useForm from "../../hooks/useForm.js";
 

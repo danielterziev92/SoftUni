@@ -3,11 +3,10 @@ import {Link, useLocation} from "react-router-dom";
 
 import asideStyle from './NavigationGroups.module.css';
 
-import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 import PathToUrl from "../../utils/pathToUrl.js";
 
 export default function NavigationGroups({name, listItems}) {
-    const {user} = useContext(AuthenticationContext);
+    const {user} = {};
     const [activeTab, setActiveTab] = useState('');
     const location = useLocation();
 

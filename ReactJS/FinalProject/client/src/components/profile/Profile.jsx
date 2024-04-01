@@ -2,7 +2,6 @@ import {useContext, useEffect, useLayoutEffect, useState} from "react";
 
 import style from './Profile.module.css';
 
-import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 import useForm from "../../hooks/useForm.js";
 
 import {getUserById, updateUserById} from "../../services/userService.js";
@@ -22,7 +21,6 @@ const FormKey = {
 
 
 export default function Profile() {
-    const {user, authToken} = useContext(AuthenticationContext);
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
     const [userDetails, setUserDetails] = useState({});

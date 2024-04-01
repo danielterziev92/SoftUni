@@ -2,7 +2,14 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 
 import axios from "axios";
 
-import {checkAuthFailure, checkAuthPending, checkAuthSuccess} from "./userSlice.js"
+import {
+    loginUserFailure,
+    loginUserPending,
+    loginUserSuccess,
+    checkAuthFailure,
+    checkAuthPending,
+    checkAuthSuccess,
+} from "./userSlice.js"
 
 import CookieManager from "../../utils/cookieManager.js";
 
@@ -10,9 +17,11 @@ import Urls from "../../utils/Urls.js";
 
 
 export const loginUser = createAsyncThunk(
-    'user/loginUser',
-    async (userData, {rejectWithValue}) => {
+    'userInfo/loginUser',
+    async (userData, {rejectWithValue, dispatch}) => {
         try {
+            dispatch(loginUserPending);
+
             const csrfToken = CookieManager.getCookie('csrftoken');
             const config = {
                 headers: {
@@ -23,8 +32,12 @@ export const loginUser = createAsyncThunk(
             };
 
             const response = await axios.post(Urls.userLogin, userData, config);
+            dispatch(loginUserSuccess(response.data));
+
             return response.data;
         } catch (error) {
+            dispatch(loginUserFailure(error.response.data));
+
             return rejectWithValue(error.response.data);
         }
     }

@@ -7,12 +7,11 @@ import {sections} from "./asideSections.js";
 import asideStyle from './Aside.module.css';
 import {useContext, useLayoutEffect, useState} from "react";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
-import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 import {getUserById} from "../../services/userService.js";
 
 
 export default function Aside() {
-    const {user, authToken} = useContext(AuthenticationContext);
+    const {user, authToken} = {};
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
     const [userDetails, setUserDetails] = useState({});

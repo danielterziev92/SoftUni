@@ -11,7 +11,6 @@ import useFormValidation from "../../hooks/useFormValidation.js";
 
 import compareObjects from "../../utils/compareObjects.js";
 import ProductDataContext from "../../contexts/ProductDataContext.js";
-import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
 
 function AllGroupsElement({groups, changeHandler, selectedId}) {
     if (!groups || groups.length === 0) {
@@ -51,7 +50,7 @@ const FormKey = {
 }
 
 export default function ProductFormBaseInfo({showModalClickHandler}) {
-    const {user} = useContext(AuthenticationContext);
+    const {user} = {};
     const {formRef, onSubmitFormHandler, haveButtons, closeModalHandler} = useContext(ProductFormContext);
     const {productData} = useContext(ProductDataContext);
     const {
