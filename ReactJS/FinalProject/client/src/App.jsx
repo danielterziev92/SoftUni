@@ -8,7 +8,6 @@ import Products from "./components/products/Products.jsx";
 
 import MessageProvider from "./contexts/MessageContext.jsx";
 import ProductsProvider from "./contexts/ProductsContext.jsx";
-import AuthenticationProvider from "./contexts/AuthenticationContext.jsx";
 import Login from "./components/login/Login.jsx";
 import Logout from "./components/logout/Logout.jsx";
 import Register from "./components/register/Register.jsx";
@@ -29,7 +28,6 @@ export default function App() {
     return (
         <ErrorBoundary>
             {/*<MessageProvider setIsMessageBoxShow={setIsMessageBoxShow} isMessageBoxShow={isMessageBoxShow}>*/}
-            {/*<AuthenticationProvider setIsLogin={setIsLogin} isLogin={isLogin}>*/}
             {/*{isLogin && <Aside/>}*/}
             <main className={mainStyle.Main}>
                 {isMessageBoxShow && <MessageBoxDialog/>}
@@ -47,7 +45,6 @@ export default function App() {
                     <Route path='*' element={<Page404/>}/>
                 </Routes>
             </main>
-            {/*</AuthenticationProvider>*/}
             {/*</MessageProvider>*/}
         </ErrorBoundary>
     );

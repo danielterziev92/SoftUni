@@ -19,7 +19,7 @@ export const userSlice = createSlice({
         loginUserSuccess: (state, action) => {
             state.loading = false;
             state.isAuthenticated = true;
-            state.user = action.payload;
+            state.user = action.payload.user;
             state.error = null;
         },
         loginUserFailure: (state, action) => {
@@ -32,21 +32,24 @@ export const userSlice = createSlice({
             state.loading = false;
             state.error = null;
         },
+        setSessionId: (state, action) => {
+            state.session.id = action.payload;
+        },
+        checkAuthPending: (state) => {
+            state.loading = true;
+        },
+        checkAuthSuccess: (state, action) => {
+            state.loading = false;
+            state.isAuthenticated = true;
+            state.user = action.payload.user;
+            state.error = null;
+        },
+        checkAuthFailure: (state, action) => {
+            state.loading = false;
+            state.isAuthenticated = false;
+            state.error = action.payload;
+        },
     },
-    // extraReducers: {
-    //     [loginUser.pending]: (state) => {
-    //         state.loading = true;
-    //     },
-    //     [loginUser.fulfilled]: (state, action) => {
-    //         state.loading = false;
-    //         state.isAuthenticated = true;
-    //         state.user = action.payload;
-    //     },
-    //     [loginUser.rejected]: (state, action) => {
-    //         state.loading = false;
-    //         state.error = action.payload;
-    //     },
-    // },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.pending, (state) => {
@@ -64,6 +67,17 @@ export const userSlice = createSlice({
     },
 });
 
-export const {loginUserPending, loginUserSuccess, loginUserFailure, logoutUser} = userSlice.actions;
+export const {
+    loginUserPending,
+    loginUserSuccess,
+    loginUserFailure,
+    logoutUser,
+    checkAuthPending,
+    checkAuthSuccess,
+    checkAuthFailure,
+} = userSlice.actions;
+
 export const selectUser = (state) => state.user;
+export const selectIsAuthenticated = (state) => state.user.isAuthenticated;
+
 export default userSlice.reducer;

@@ -6,7 +6,7 @@ const Urls = {
     userDetail: `${BASE_URL}/user/:id/`,
     userRegister: `${BASE_URL}/user/create/`,
     userLogin: `${BASE_URL}/user/login/`,
-    userAuthentication: `${BASE_URL}/user/authentication`,
+    userAuthentication: `${BASE_URL}/user/check-auth/:id`,
     userLogout: `${BASE_URL}/user/logout/`,
     products: `${BASE_URL}/products/`,
     productCreate: `${BASE_URL}/product/create/`,
