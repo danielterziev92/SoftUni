@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from server.user_app.models import UserApp, UserBaseInfo, Company, CompanyMembers
+from server.user_app.models import UserApp, UserProfile, Company, CompanyMembers
 
 
 @admin.register(UserApp)
@@ -25,8 +25,8 @@ class UserAppAdmin(admin.ModelAdmin):
     get_groups.short_description = 'Groups'
 
 
-@admin.register(UserBaseInfo)
-class UserBaseInfoAdmin(admin.ModelAdmin):
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('get_email', 'first_name', 'last_name', 'get_phone_number')
     readonly_fields = ('get_email', 'user')
 

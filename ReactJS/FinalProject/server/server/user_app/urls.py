@@ -8,8 +8,8 @@ urlpatterns = (
     path('create/', UserCreateView.as_view(), name='user_create'),
     path('login/', LoginView.as_view(), name='user_login'),
     path('logout/', LogoutView.as_view(), name='user_logout'),
-    path('crsf_cookie/', GetCSRFTokenView.as_view(), name='csrf_token'),
-    path('authentication/', CheckAuthenticationView.as_view(), name='user_authentication'),
+    path('crsf-cookie/', GetCSRFTokenView.as_view(), name='csrf_token'),
+    path('check-auth/', CheckAuthenticationView.as_view(), name='user_authentication'),
     # path('', UserProductsView.as_view(), name='index'),
     # path('token/', include([
     #     path('', AppTokenObtainPairView.as_view(), name='token_obtain_pair'),

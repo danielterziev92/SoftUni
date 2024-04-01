@@ -73,8 +73,20 @@ class LoginView(api_views.GenericAPIView):
         if user is None:
             return Response({'message': _('User does not exist.')}, status=status.HTTP_400_BAD_REQUEST)
 
+        if not user.is_active:
+            return Response(
+                {'message': _('Your account is not active. Please contact with administrator.')},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         login(request, user)
-        return Response({'message': _('Login successful.')}, status=status.HTTP_200_OK)
+        return Response({
+            'message': _('Login successful.'),
+            'user': {
+                'id': user.pk,
+                'email': user.email,
+            },
+        }, status=status.HTTP_200_OK)
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -100,17 +112,23 @@ class GetCSRFTokenView(api_views.GenericAPIView):
 
 
 class CheckAuthenticationView(api_views.GenericAPIView):
-
     def get(self, request, *args, **kwargs):
         is_authenticated = request.user.is_authenticated
 
         if not is_authenticated:
             return Response(
-                {'message': _('Authentication credentials were not provided')},
+                {
+                    'message': _('Authentication credentials were not provided'),
+                    'is_authenticated': True
+                },
                 status=status.HTTP_403_FORBIDDEN
             )
 
-        return Response({'is_authenticated': True}, status=status.HTTP_200_OK)
+        return Response(
+            {
+                'message': _('User is authenticated.'),
+                'is_authenticated': True
+            }, status=status.HTTP_200_OK)
 
 # class UserRetrieveUpdateView(api_views.RetrieveUpdateAPIView):
 #     queryset = User.objects.all()

@@ -9,6 +9,8 @@ from server.utils.models_mixin import DateInfoMixin
 
 
 class UserApp(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
+    SESSION_KEY_MAX_LENGTH = 40
+
     email = models.EmailField(
         unique=True,
         null=False,
@@ -31,6 +33,12 @@ class UserApp(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         auto_now_add=True,
     )
 
+    session_key = models.CharField(
+        max_length=SESSION_KEY_MAX_LENGTH,
+        blank=True,
+        null=True
+    )
+
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
 
@@ -43,7 +51,7 @@ class UserApp(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         return self.email
 
 
-class UserBaseInfo(models.Model):
+class UserProfile(models.Model):
     FIRST_NAME_MAX_LENGTH = 30
     LAST_NAME_MAX_LENGTH = 30
     PHONE_MIN_LENGTH = 9
@@ -75,16 +83,16 @@ class UserBaseInfo(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = 'Users Base Information'
+        verbose_name_plural = 'Users Profile'
 
     def __str__(self):
         return self.user.email
 
     def clean(self):
-        is_user_exist = UserBaseInfo.objects.filter(user=self.user).first()
+        is_user_exist = UserProfile.objects.filter(user=self.user).first()
 
         if is_user_exist and is_user_exist != self:
-            raise ValidationError(_('A UserBaseInfo object already exists for this user.'))
+            raise ValidationError(_('A UserProfile object already exists for this user.'))
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -116,7 +124,7 @@ class Company(DateInfoMixin):
     )
 
     owner = models.ForeignKey(
-        UserBaseInfo,
+        UserProfile,
         on_delete=models.CASCADE,
         related_name='owner'
     )
@@ -136,7 +144,7 @@ class CompanyMembers(models.Model):
     )
 
     members = models.ManyToManyField(
-        UserBaseInfo
+        UserProfile
     )
 
     class Meta:
