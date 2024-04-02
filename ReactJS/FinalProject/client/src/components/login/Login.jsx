@@ -126,7 +126,6 @@ export default function Login() {
                     <button type="submit" disabled={user.loading}>
                         {user.loading ? 'Loading...' : 'Login'}
                     </button>
-                    {user.error && <div>Error: {user.error}</div>}
                 </form>
             </article>
         </section>

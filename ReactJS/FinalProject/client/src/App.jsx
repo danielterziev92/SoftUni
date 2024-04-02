@@ -1,7 +1,10 @@
-import {Route, Routes} from "react-router-dom";
+import {useEffect, useLayoutEffect} from "react";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 
-import {selectIsAuthenticated} from "./features/user/userSlice.js";
+import axios from "axios";
+
+import {selectIsAuthenticated, selectUser} from "./features/user/userSlice.js";
 
 import mainStyle from "./components/Main.module.css";
 
@@ -19,10 +22,42 @@ import Index from "./components/index/Index.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Page404 from "./components/page-404/Page404.jsx";
 
+import CookieManager from "./utils/cookieManager.js";
+
+import Urls from "./utils/Urls.js";
 import Paths from "./utils/Paths.js";
 
 export default function App() {
     const isAuthenticated = useSelector(selectIsAuthenticated);
+    const userInfo = useSelector(selectUser);
+
+    const navigate = useNavigate();
+
+    useLayoutEffect(() => {
+        if (CookieManager.getCookie('csrftoken') !== '') return
+        const fetchCSRFToken = async () => {
+            try {
+                const response = await axios.get(Urls.CRSFToken);
+                const token = response.data.csrfToken;
+
+                CookieManager.setCookie('csrftoken', token, 1);
+            } catch (error) {
+                console.error('Error fetching CSRF token:', error);
+            }
+        };
+
+        fetchCSRFToken();
+    }, []);
+
+    useEffect(() => {
+        // console.log(!isAuthenticated)
+        // if (!isAuthenticated) return navigate(Paths.login)
+
+        console.log(CookieManager.getCookie('csrftoken'))
+        console.log(CookieManager.getCookie('sessionid'))
+
+        console.log('We Have This Info')
+    }, [isAuthenticated]);
 
     return (
         <ErrorBoundary>

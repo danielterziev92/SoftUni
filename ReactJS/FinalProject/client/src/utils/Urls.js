@@ -2,12 +2,18 @@ const BASE_URL = 'http://localhost:8000/api'
 
 const Urls = {
     baseUrl: BASE_URL,
+    CRSFToken: `${BASE_URL}/crsf-token/`,
     index: `${BASE_URL}/`,
-    userDetail: `${BASE_URL}/user/:id/`,
-    userRegister: `${BASE_URL}/user/create/`,
-    userLogin: `${BASE_URL}/user/login/`,
-    userAuthentication: `${BASE_URL}/user/check-auth/:id`,
-    userLogout: `${BASE_URL}/user/logout/`,
+    user: {
+        details: `${BASE_URL}/user/:id/`,
+        register: `${BASE_URL}/user/create/`,
+        login: `${BASE_URL}/user/login/`,
+        logout: `${BASE_URL}/user/logout/`,
+        authentication: `${BASE_URL}/user/check-auth/`,
+        profile: `${BASE_URL}/user/user-info/`,
+    },
+
+
     products: `${BASE_URL}/products/`,
     productCreate: `${BASE_URL}/product/create/`,
     productDetail: `${BASE_URL}/product/:id/`,

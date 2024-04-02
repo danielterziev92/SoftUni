@@ -1,26 +1,23 @@
+import {useContext} from "react";
+import {useSelector} from "react-redux";
+
 import clipboard from 'clipboard-copy';
+
+import asideStyle from './Aside.module.css';
+
+
+import {selectUser} from "../../features/user/userSlice.js";
 
 import NavigationGroups from "../navigation-groups/NavigationGroups.jsx";
 
 import {sections} from "./asideSections.js";
-
-import asideStyle from './Aside.module.css';
-import {useContext, useLayoutEffect, useState} from "react";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
-import {getUserById} from "../../services/userService.js";
 
 
 export default function Aside() {
-    const {user, authToken} = {};
+    const user = useSelector(selectUser);
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
-    const [userDetails, setUserDetails] = useState({});
-
-    useLayoutEffect(() => {
-        getUserById(user.user_id, authToken.access)
-            .then(setUserDetails)
-            .catch(e => console.log(e));
-    }, []);
 
     const copyEmailOnClickHandler = async () => {
         try {
@@ -46,7 +43,7 @@ export default function Aside() {
                         src="/public/close-up-confident-male-employee-white-collar-shirt-smiling-camera-standing-self-assured-against-studio-background.jpg"
                         alt="User Prifile Picture"/>
                 </figure>
-                <p>{userDetails.first_name} {userDetails.last_name}</p>
+                {/*<p>{userDetails.first_name} {userDetails.last_name}</p>*/}
                 <div className={asideStyle.profileEmail}>
                     {user.email}
                     <span onClick={copyEmailOnClickHandler}>

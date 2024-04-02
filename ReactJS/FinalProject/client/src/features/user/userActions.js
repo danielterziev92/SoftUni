@@ -31,7 +31,7 @@ export const loginUser = createAsyncThunk(
                 withCredentials: true,
             };
 
-            const response = await axios.post(Urls.userLogin, userData, config);
+            const response = await axios.post(Urls.user.login, userData, config);
             dispatch(loginUserSuccess(response.data));
 
             return response.data;
@@ -47,7 +47,7 @@ export const loginUser = createAsyncThunk(
 export const checkAuthentication = () => async (dispatch) => {
     try {
         dispatch(checkAuthPending());
-        const response = await axios.get(Urls.userAuthentication);
+        const response = await axios.get(Urls.user.authentication);
 
         if (response.data.isAuthenticated) {
             dispatch(checkAuthSuccess(response.data));

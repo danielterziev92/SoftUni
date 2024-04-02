@@ -5,7 +5,8 @@ import userReducer from '../features/user/userSlice';
 
 export const store = configureStore({
     reducer: {
-        userInfo: userReducer,
+        user: userReducer,
+        // userProfile: userProfileReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
