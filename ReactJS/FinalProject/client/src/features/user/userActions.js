@@ -3,13 +3,12 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 
 import {
-    loginUserFailure,
-    loginUserPending,
-    loginUserSuccess,
-    checkAuthFailure,
-    checkAuthPending,
-    checkAuthSuccess,
+    loginUserPending, loginUserSuccess, loginUserFailure,
+    checkAuthPending, checkAuthSuccess, checkAuthFailure,
+    fetchUserDataPending, fetchUserDataSuccess, fetchUserDataFailure,
 } from "./userSlice.js"
+
+import {fetchCSRFToken} from "../../services/authServices.js";
 
 import CookieManager from "../../utils/cookieManager.js";
 
@@ -44,17 +43,62 @@ export const loginUser = createAsyncThunk(
 );
 
 
-export const checkAuthentication = () => async (dispatch) => {
-    try {
-        dispatch(checkAuthPending());
-        const response = await axios.get(Urls.user.authentication);
+export const checkAuthentication = createAsyncThunk(
+    'userInfo/checkAuthentication',
+    async (_, {dispatch}) => {
+        const csrfToken = CookieManager.getCookie('csrftoken');
 
-        if (response.data.isAuthenticated) {
-            dispatch(checkAuthSuccess(response.data));
-        } else {
-            dispatch(checkAuthFailure('User is not authenticated'));
+        if (!csrfToken) {
+            fetchCSRFToken();
         }
-    } catch (error) {
-        dispatch(checkAuthFailure(error.message));
+
+        const axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            withCredentials: true,
+        };
+
+        try {
+            dispatch(checkAuthPending());
+            const response = await axios.get(Urls.user.authentication, axiosConfig);
+
+            if (response.data.isAuthenticated) {
+                dispatch(checkAuthSuccess(response.data));
+            } else {
+                dispatch(checkAuthFailure('User is not authenticated'));
+            }
+        } catch (error) {
+            dispatch(checkAuthFailure(error.message));
+        }
     }
-};
+);
+
+export const fetchUserData = createAsyncThunk(
+    'userInfo/fetchUserData',
+    async (_, {dispatch}) => {
+        const csrfToken = CookieManager.getCookie('csrftoken');
+
+        const axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            withCredentials: true,
+        };
+
+        try {
+            dispatch(fetchUserDataPending());
+            const response = await axios.get(Urls.user.profile, axiosConfig);
+
+            if (response.data) {
+                dispatch(fetchUserDataSuccess(response.data));
+            } else {
+                dispatch(fetchUserDataFailure('Can not get data from server'));
+            }
+        } catch (error) {
+            dispatch(checkAuthFailure(error.message));
+        }
+    }
+)

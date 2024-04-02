@@ -1,8 +1,8 @@
 import {useEffect, useLayoutEffect} from "react";
 import {Route, Routes, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-import axios from "axios";
+import {checkAuthentication, fetchUserData} from "./features/user/userActions.js";
 
 import {selectIsAuthenticated, selectUser} from "./features/user/userSlice.js";
 
@@ -22,31 +22,23 @@ import Index from "./components/index/Index.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Page404 from "./components/page-404/Page404.jsx";
 
+import {fetchCSRFToken} from "./services/authServices.js";
+
 import CookieManager from "./utils/cookieManager.js";
 
-import Urls from "./utils/Urls.js";
 import Paths from "./utils/Paths.js";
 
 export default function App() {
+    const dispatch = useDispatch();
+
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const userInfo = useSelector(selectUser);
 
     const navigate = useNavigate();
 
     useLayoutEffect(() => {
-        if (CookieManager.getCookie('csrftoken') !== '') return
-        const fetchCSRFToken = async () => {
-            try {
-                const response = await axios.get(Urls.CRSFToken);
-                const token = response.data.csrfToken;
-
-                CookieManager.setCookie('csrftoken', token, 1);
-            } catch (error) {
-                console.error('Error fetching CSRF token:', error);
-            }
-        };
-
-        fetchCSRFToken();
+        dispatch(checkAuthentication());
+        dispatch(fetchUserData());
     }, []);
 
     useEffect(() => {

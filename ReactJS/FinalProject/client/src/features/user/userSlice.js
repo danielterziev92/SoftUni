@@ -6,6 +6,10 @@ const initialState = {
     data: {
         id: '',
         email: '',
+        first_name: '',
+        last_name: '',
+        phone: '',
+        company_name: '',
     },
     isAuthenticated: false,
     loading: false,
@@ -41,13 +45,23 @@ export const userSlice = createSlice({
             state.loading = false;
             state.isAuthenticated = true;
             state.message = action.payload.message;
-            state.data = action.payload.user;
         },
         checkAuthFailure: (state, action) => {
             state.loading = false;
             state.message = action.payload.message;
             state.isAuthenticated = false;
         },
+        fetchUserDataPending: (state, action) => {
+            state.loading = true;
+        },
+        fetchUserDataSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        fetchUserDataFailure: (state, action) => {
+            state.loading = false;
+            state.message = action.payload.message;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -75,6 +89,9 @@ export const {
     checkAuthPending,
     checkAuthSuccess,
     checkAuthFailure,
+    fetchUserDataPending,
+    fetchUserDataSuccess,
+    fetchUserDataFailure,
 } = userSlice.actions;
 
 export const selectUser = (state) => state.user.data;
