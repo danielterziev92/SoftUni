@@ -1,7 +1,10 @@
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+from django.contrib.sessions.models import Session
+from django.http import JsonResponse, Http404
+from django.middleware.csrf import get_token
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
+from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import generics as api_views, status
@@ -9,7 +12,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 
-from server.user_app.serializers import UserCreateSerializer, UserSerializer, UserLoginSerializer
+from server.user_app.models import UserProfile, Company
+from server.user_app.serializers import UserCreateSerializer, UserSerializer, UserLoginSerializer, UserProfileSerializer
 
 UserModel = get_user_model()
 
@@ -108,7 +112,11 @@ class GetCSRFTokenView(api_views.GenericAPIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
-        return Response({'message': _('CSRF token is set at cookie.')}, status=status.HTTP_200_OK)
+        return Response(
+            {
+                'message': _('CSRF token is set at cookie.'),
+                'csrfToken': get_token(request)
+            }, status=status.HTTP_200_OK)
 
 
 class CheckAuthenticationView(api_views.GenericAPIView):
@@ -129,6 +137,45 @@ class CheckAuthenticationView(api_views.GenericAPIView):
                 'message': _('User is authenticated.'),
                 'is_authenticated': True
             }, status=status.HTTP_200_OK)
+
+
+@method_decorator(csrf_protect, name='dispatch')
+class UserInfoAPIView(api_views.RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    serializer_class = UserProfileSerializer
+
+    def get(self, request, *args, **kwargs):
+        try:
+            session_id = request.COOKIES.get('sessionid')
+            session = get_object_or_404(Session, session_key=session_id)
+
+            user_pk = session.get_decoded().get('_auth_user_id')
+
+            user = get_object_or_404(UserModel, pk=user_pk)
+            user_profile = UserProfile.objects.filter(user_id=user_pk).first()
+            company = Company.objects.filter(owner_id=user_pk).first()
+
+            user_info = {
+                'id': user_pk,
+                'email': user.email,
+            }
+
+            if not user_profile:
+                return Response(user_info, status=status.HTTP_200_OK)
+
+            user_info['first_name'] = user_profile.first_name
+            user_info['last_name'] = user_profile.last_name
+            user_info['phone'] = user_profile.phone
+
+            if not company:
+                return Response(user_info, status=status.HTTP_200_OK)
+
+            user_info['company_name'] = company.name
+
+            return Response(user_info, status=status.HTTP_200_OK)
+        except Http404:
+            return Response({'message': 'Session not found'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 # class UserRetrieveUpdateView(api_views.RetrieveUpdateAPIView):
 #     queryset = User.objects.all()

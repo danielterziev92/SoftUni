@@ -9,8 +9,6 @@ from server.utils.models_mixin import DateInfoMixin
 
 
 class UserApp(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
-    SESSION_KEY_MAX_LENGTH = 40
-
     email = models.EmailField(
         unique=True,
         null=False,
@@ -31,12 +29,6 @@ class UserApp(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
 
     date_created = models.DateTimeField(
         auto_now_add=True,
-    )
-
-    session_key = models.CharField(
-        max_length=SESSION_KEY_MAX_LENGTH,
-        blank=True,
-        null=True
     )
 
     USERNAME_FIELD = 'email'

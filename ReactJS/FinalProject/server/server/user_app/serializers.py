@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 
+from server.user_app.models import UserProfile
+
 UserModel = get_user_model()
 
 
@@ -10,6 +12,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         # fields = '__all__'
         exclude = ('password', 'date_joined', 'groups', 'user_permissions')
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
 
 
 class UserCreateSerializer(serializers.Serializer):

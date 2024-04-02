@@ -1,15 +1,15 @@
 from django.urls import path
 
-from server.user_app.views import UserListView, UserCreateView, GetCSRFTokenView, LoginView, CheckAuthenticationView, \
-    LogoutView
+from server.user_app.views import UserListView, UserCreateView, LoginView, CheckAuthenticationView, \
+    LogoutView, UserInfoAPIView
 
 urlpatterns = (
-    path('/', UserListView.as_view(), name='users_all'),
+    path('all/', UserListView.as_view(), name='users-all'),
     path('create/', UserCreateView.as_view(), name='user_create'),
     path('login/', LoginView.as_view(), name='user_login'),
     path('logout/', LogoutView.as_view(), name='user_logout'),
-    path('crsf-cookie/', GetCSRFTokenView.as_view(), name='csrf_token'),
     path('check-auth/', CheckAuthenticationView.as_view(), name='user_authentication'),
+    path('user-info/', UserInfoAPIView.as_view(), name='user-info')
     # path('', UserProductsView.as_view(), name='index'),
     # path('token/', include([
     #     path('', AppTokenObtainPairView.as_view(), name='token_obtain_pair'),

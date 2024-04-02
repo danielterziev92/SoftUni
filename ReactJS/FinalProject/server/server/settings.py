@@ -41,18 +41,17 @@ THIRD_PARTY_APPS = (
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
-MIDDLEWARE = [
+MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'server.user_app.middleware.SessionUpdateMiddleware',
-]
+)
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -124,6 +123,10 @@ PASSWORD_RESET_TIMEOUT = 3 * 60 * 60
 
 SESSION_EXPIRE_SECONDS = 30 * 24 * 60 * 60
 SESSION_COOKIE_AGE = SESSION_EXPIRE_SECONDS
+
+CSRF_COOKIE_SECURE = True
+
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # CLOUDINARY_STORAGE = {
 #     'CLOUD_NAME': de_config('CLOUDINARY_CLOUD_NAME'),
