@@ -94,6 +94,7 @@ export const fetchUserData = createAsyncThunk(
 
             if (response.data) {
                 dispatch(fetchUserDataSuccess(response.data));
+                CookieManager.setCookie('userData', response.data, 1)
             } else {
                 dispatch(fetchUserDataFailure('Can not get data from server'));
             }
@@ -102,3 +103,8 @@ export const fetchUserData = createAsyncThunk(
         }
     }
 )
+
+export const updateUserData = (userData) => ({
+    type: 'userInfo/updateUserData',
+    payload: userData,
+});

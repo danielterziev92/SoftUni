@@ -12,17 +12,3 @@ export const fetchCSRFToken = async () => {
         console.error('Error fetching CSRF token:', error);
     }
 };
-
-
-// export const fetchUserData = async () => {
-//     const axiosConfig = {
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRFToken': CookieManager.getCookie('csrftoken'),
-//         },
-//         withCredentials: true,
-//     };
-//
-//     const response = await axios.get(Urls.user.authentication, axiosConfig);
-//     console.log(response.data)
-// }

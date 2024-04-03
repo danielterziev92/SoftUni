@@ -1,12 +1,14 @@
-import {useContext, useLayoutEffect, useState} from "react";
+import {useLayoutEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
 
 import asideStyle from './NavigationGroups.module.css';
 
 import PathToUrl from "../../utils/pathToUrl.js";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../features/user/userSlice.js";
 
 export default function NavigationGroups({name, listItems}) {
-    const {user} = {};
+    const {id, first_name, last_name} = useSelector(selectUser);
     const [activeTab, setActiveTab] = useState('');
     const location = useLocation();
 
@@ -21,7 +23,7 @@ export default function NavigationGroups({name, listItems}) {
             </h3>
             {listItems.map((item, index) => (
                 <div key={index}>
-                    <Link to={PathToUrl(item.itemHREF, {id: user.user_id})}
+                    <Link to={PathToUrl(item.itemHREF, {id: id})}
                           className={activeTab === item.itemHREF ? asideStyle.active : ''}>
                         <i className={item.itemIClassName}></i>
                         <span>{item.itemTitle}</span>

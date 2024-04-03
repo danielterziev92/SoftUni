@@ -1,4 +1,4 @@
-export default function compareObjects(firstObj, secondObj) {
+function compareObjects(firstObj, secondObj) {
     const sortedFirstObject = Object.fromEntries(
         Object.entries(firstObj).sort((a, b) => a[0].localeCompare(b[0]))
     );
@@ -9,3 +9,16 @@ export default function compareObjects(firstObj, secondObj) {
 
     return JSON.stringify(sortedFirstObject) === JSON.stringify(sortedSecondObject);
 }
+
+function notEmptyValues(obj) {
+    for (let key in obj) {
+        if (typeof obj[key] === 'string' && obj[key].trim() === '') {
+            return false;
+        }
+    }
+    return true;
+}
+
+const objectManager = {compareObjects, notEmptyValues}
+
+export default objectManager;

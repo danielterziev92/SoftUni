@@ -1,24 +1,19 @@
-import {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {useEffect, useLayoutEffect, useRef} from "react";
 import {Link, useNavigate} from "react-router-dom";
-
 import {useDispatch, useSelector} from "react-redux";
+
+import {addMessage} from "../../features/message/messageSlice.js";
+import {selectIsAuthenticated, selectUser} from "../../features/user/userSlice.js";
+
+import {fetchUserData, loginUser, updateUserData} from "../../features/user/userActions.js";
 
 import authStyle from "../Authentication.module.css";
 
-// import {AuthenticationContext} from "../../contexts/AuthenticationContext.jsx";
-// import {MessageContext} from "../../contexts/MessageContext.jsx";
-
 import useForm from "../../hooks/useForm.js";
-
-import {selectUser} from "../../features/user/userSlice.js";
-import {loginUser} from "../../features/user/userActions.js";
-
 
 import Paths from "../../utils/Paths.js";
 import CookieManager from "../../utils/cookieManager.js";
-import axios from "axios";
-import Urls from "../../utils/Urls.js";
-// import compareObjects from "../../utils/compareObjects.js";
+import objectManager from "../../utils/compareObjects.js";
 
 const initialUserData = {
     email: '',
@@ -32,100 +27,66 @@ export const FormInformation = {
 
 export default function Login() {
     const dispatch = useDispatch();
-    const user = useSelector(selectUser);
-    // const {user, loginUserInApp} = useContext(AuthenticationContext);
-    // const {updateMessage, updateStatus} = useContext(MessageContext);
-
-    // const focusedInput = useRef('username');
-
     const navigate = useNavigate();
 
-    // const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
+    const focusedInput = useRef('username');
+    const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
 
-    // useLayoutEffect(() => {
-    //     if (!compareObjects(user, {})) {
-    //         navigate(Paths.afterLogin);
-    //     }
-    // }, []);
+    const user = useSelector(selectUser);
+    const isAuthenticated = useSelector(selectIsAuthenticated);
 
-    // useEffect(() => {
-    //     if (focusedInput.current) {
-    //         focusedInput.current.focus();
-    //     }
-    // }, [focusedInput]);
+    useLayoutEffect(() => {
+        if (isAuthenticated) return
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+        const userCookieData = CookieManager.getCookie('userData');
+        if (objectManager.compareObjects(userCookieData, {}) && objectManager.notEmptyValues(user)) {
+            dispatch(fetchUserData());
+            return;
+        }
 
-    const handleChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
-    };
+        if (!objectManager.notEmptyValues(userCookieData)) {
+            navigate(-1)
+        }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        dispatch(loginUser(formData)).then((result) => {
+        updateUserData(userCookieData);
+    }, []);
+
+    useEffect(() => {
+        if (focusedInput.current && focusedInput.current.focus) {
+            focusedInput.current.focus();
+        }
+    }, [focusedInput.current]);
+
+    function loginSubmitFormHandler(data) {
+        dispatch(loginUser(data)).then(result => {
             if (result.payload && result.payload.message === 'Login successful.') {
+                addMessage(result.payload.message)
                 navigate('/');
             }
         });
-    };
-
-    // function loginSubmitFormHandler(data) {
-    //     dispatch(loginUser(data));
-    // }
+    }
 
 
     return (
         <section className={authStyle.Section}>
             <article>
-                {/*<form onSubmit={onSubmitForm} className={authStyle.Form} data-testid="login-form">*/}
-                {/*    {Object.entries(formValue).map(([key, value]) => (*/}
-                {/*        <div key={key}>*/}
-                {/*            <label htmlFor={key}>{FormInformation[key].label}</label>*/}
-                {/*            <input id={key} value={formValue[key]} name={key} type={FormInformation[key].type}*/}
-                {/*                   onChange={changeDataHandler}*/}
-                {/*                   ref={focusedInput.current === key ? focusedInput : null}*/}
-                {/*            />*/}
-                {/*        </div>*/}
-                {/*    ))}*/}
-                {/*    <div>*/}
-
-                {/*        <button type="submit" disabled={user.loading}>{user.loading ? 'Зарежда се...' : 'Вход'}</button>*/}
-                {/*    </div>*/}
-                {/*    <div>*/}
-                {/*        <span>Нямате регистрация ?</span>*/}
-                {/*        <Link to={Paths.register}>Регистирай се</Link>*/}
-                {/*    </div>*/}
-                {/*</form>*/}
-                {/*{user.error && <div>Error: {user.error}</div>}
-                */}
-
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={onSubmitForm} className={authStyle.Form} data-testid="login-form">
+                    {Object.entries(formValue).map(([key, value]) => (
+                        <div key={key}>
+                            <label htmlFor={key}>{FormInformation[key].label}</label>
+                            <input id={key} value={formValue[key]} name={key} type={FormInformation[key].type}
+                                   onChange={changeDataHandler}
+                                   ref={focusedInput.current === key ? focusedInput : null}
+                            />
+                        </div>
+                    ))}
                     <div>
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
+                        <button type="submit" disabled={user.loading}>{user.loading ? 'Зарежда се...' : 'Вход'}</button>
                     </div>
                     <div>
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
+                        <span>Нямате регистрация ?</span>
+                        <Link to={Paths.register}>Регистирай се</Link>
                     </div>
-                    <button type="submit" disabled={user.loading}>
-                        {user.loading ? 'Loading...' : 'Login'}
-                    </button>
                 </form>
             </article>
         </section>

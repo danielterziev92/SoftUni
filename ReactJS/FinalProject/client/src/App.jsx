@@ -1,10 +1,10 @@
-import {useEffect, useLayoutEffect, useRef} from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {useLayoutEffect} from "react";
+import {Route, Routes} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
-import {checkAuthentication, fetchUserData} from "./features/user/userActions.js";
+import {checkAuthentication, fetchUserData, updateUserData} from "./features/user/userActions.js";
 
-import {selectIsAuthenticated, selectUser} from "./features/user/userSlice.js";
+import {selectIsAuthenticated} from "./features/user/userSlice.js";
 
 import mainStyle from "./components/Main.module.css";
 
@@ -23,6 +23,8 @@ import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Page404 from "./components/page-404/Page404.jsx";
 
 import Paths from "./utils/Paths.js";
+import CookieManager from "./utils/cookieManager.js";
+import objectManager from "./utils/compareObjects.js";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -31,6 +33,16 @@ export default function App() {
 
     useLayoutEffect(() => {
         dispatch(checkAuthentication());
+
+        if (!isAuthenticated) return
+
+        const userCookieData = CookieManager.getCookie('userData');
+        if (objectManager.compareObjects(userCookieData, {})) {
+            dispatch(fetchUserData());
+            return;
+        }
+
+        updateUserData(userCookieData);
     }, [isAuthenticated]);
 
 
@@ -46,9 +58,9 @@ export default function App() {
                     <Route element={<PrivateRoutes/>}>
                         <Route path={Paths.logout} element={<Logout/>}/>
                         <Route path={Paths.profile} element={<Profile/>}/>
-                        {/*<Route path={Paths.products}*/}
-                        {/*       element={<ProductsProvider><Products/></ProductsProvider>}/>*/}
-                        {/*<Route path={Paths.groups} element={<Groups/>}/>*/}
+                        <Route path={Paths.products}
+                               element={<ProductsProvider><Products/></ProductsProvider>}/>
+                        <Route path={Paths.groups} element={<Groups/>}/>
                     </Route>
                     <Route path='*' element={<Page404/>}/>
                 </Routes>

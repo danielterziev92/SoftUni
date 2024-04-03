@@ -60,6 +60,9 @@ export const userSlice = createSlice({
         fetchUserDataFailure: (state, action) => {
             state.loading = false;
             addMessage(action.payload.message);
+        },
+        updateUserData: (state, action) => {
+            state.data = action.payload;
         }
     },
 });
@@ -75,6 +78,7 @@ export const {
     fetchUserDataPending,
     fetchUserDataSuccess,
     fetchUserDataFailure,
+    updateUserData,
 } = userSlice.actions;
 
 export const selectUser = (state) => state.user.data;
