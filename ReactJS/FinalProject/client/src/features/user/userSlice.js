@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-import {addMessage} from "./messageSlice.js";
+import {addMessage} from "../message/messageSlice.js";
 
 const initialState = {
     data: {
