@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-import {loginUser} from "./userActions.js";
+import {addMessage} from "./messageSlice.js";
 
 const initialState = {
     data: {
@@ -13,7 +13,6 @@ const initialState = {
     },
     isAuthenticated: false,
     loading: false,
-    message: '',
 }
 
 export const userSlice = createSlice({
@@ -27,11 +26,11 @@ export const userSlice = createSlice({
             state.loading = false;
             state.isAuthenticated = true;
             state.data = action.payload.user;
-            state.message = action.payload.message;
+            addMessage(action.payload.message);
         },
         loginUserFailure: (state, action) => {
             state.loading = false;
-            state.message = action.payload.message;
+            addMessage(action.payload.message);
         },
         logoutUser: (state) => {
             state.data = {};
@@ -44,11 +43,11 @@ export const userSlice = createSlice({
         checkAuthSuccess: (state, action) => {
             state.loading = false;
             state.isAuthenticated = true;
-            state.message = action.payload.message;
+            addMessage(action.payload.message);
         },
         checkAuthFailure: (state, action) => {
             state.loading = false;
-            state.message = action.payload.message;
+            addMessage(action.payload.message);
             state.isAuthenticated = false;
         },
         fetchUserDataPending: (state, action) => {
@@ -60,24 +59,8 @@ export const userSlice = createSlice({
         },
         fetchUserDataFailure: (state, action) => {
             state.loading = false;
-            state.message = action.payload.message;
+            addMessage(action.payload.message);
         }
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(loginUser.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.loading = false;
-                state.isAuthenticated = true;
-                state.data = action.payload.user;
-                state.message = action.payload.message;
-            })
-            .addCase(loginUser.rejected, (state, action) => {
-                state.loading = false;
-                state.message = action.payload.message;
-            });
     },
 });
 

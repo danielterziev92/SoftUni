@@ -3,7 +3,7 @@ import {Navigate, Outlet,} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
 
 import {selectIsAuthenticated} from "../features/user/userSlice.js";
-import {checkAuthentication} from "../features/user/userActions.js";
+import {checkAuthentication, fetchUserData} from "../features/user/userActions.js";
 
 import Paths from "./Paths.js";
 
@@ -13,6 +13,7 @@ const PrivateRoutes = () => {
 
     useLayoutEffect(() => {
         dispatch(checkAuthentication());
+        dispatch(fetchUserData());
     }, [dispatch]);
 
     return isAuthenticated ? <Outlet/> : <Navigate to={Paths.login} replace/>;
