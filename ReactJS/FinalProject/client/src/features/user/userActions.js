@@ -16,7 +16,7 @@ import Urls from "../../utils/Urls.js";
 
 
 export const loginUser = createAsyncThunk(
-    'userInfo/loginUser',
+    'user/loginUser',
     async (userData, {rejectWithValue, dispatch}) => {
         try {
             dispatch(loginUserPending);
@@ -33,6 +33,8 @@ export const loginUser = createAsyncThunk(
             const response = await axios.post(Urls.user.login, userData, config);
             dispatch(loginUserSuccess(response.data));
 
+            localStorage.setItem('userData', JSON.stringify(response.data.user));
+
             return response.data;
         } catch (error) {
             dispatch(loginUserFailure(error.response.data));
@@ -44,7 +46,7 @@ export const loginUser = createAsyncThunk(
 
 
 export const checkAuthentication = createAsyncThunk(
-    'userInfo/checkAuthentication',
+    'user/checkAuthentication',
     async (_, {dispatch}) => {
         const csrfToken = CookieManager.getCookie('csrftoken');
 
@@ -76,7 +78,7 @@ export const checkAuthentication = createAsyncThunk(
 );
 
 export const fetchUserData = createAsyncThunk(
-    'userInfo/fetchUserData',
+    'user/fetchUserData',
     async (_, {dispatch}) => {
         const csrfToken = CookieManager.getCookie('csrftoken');
 
@@ -94,7 +96,8 @@ export const fetchUserData = createAsyncThunk(
 
             if (response.data) {
                 dispatch(fetchUserDataSuccess(response.data));
-                CookieManager.setCookie('userData', response.data, 1)
+
+                localStorage.setItem('userData', JSON.stringify(response.data));
             } else {
                 dispatch(fetchUserDataFailure('Can not get data from server'));
             }
@@ -104,7 +107,7 @@ export const fetchUserData = createAsyncThunk(
     }
 )
 
-export const updateUserData = (userData) => ({
-    type: 'userInfo/updateUserData',
+export const updateUserDataAction = (userData) => ({
+    type: 'user/updateUserData',
     payload: userData,
 });

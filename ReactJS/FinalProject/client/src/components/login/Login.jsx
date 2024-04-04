@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addMessage} from "../../features/message/messageSlice.js";
 import {selectIsAuthenticated, selectUser} from "../../features/user/userSlice.js";
 
-import {fetchUserData, loginUser, updateUserData} from "../../features/user/userActions.js";
+import {fetchUserData, loginUser, updateUserDataAction} from "../../features/user/userActions.js";
 
 import authStyle from "../Authentication.module.css";
 
@@ -39,7 +39,7 @@ export default function Login() {
         if (isAuthenticated) return
 
         const userCookieData = CookieManager.getCookie('userData');
-        if (objectManager.compareObjects(userCookieData, {}) && objectManager.notEmptyValues(user)) {
+        if (userCookieData !== null && objectManager.compareObjects(userCookieData, {}) && objectManager.notEmptyValues(user)) {
             dispatch(fetchUserData());
             return;
         }
@@ -48,7 +48,7 @@ export default function Login() {
             navigate(-1)
         }
 
-        updateUserData(userCookieData);
+        updateUserDataAction(userCookieData);
     }, []);
 
     useEffect(() => {

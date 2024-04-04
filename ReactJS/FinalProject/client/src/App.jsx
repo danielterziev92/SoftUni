@@ -2,7 +2,7 @@ import {useLayoutEffect} from "react";
 import {Route, Routes} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
-import {checkAuthentication, fetchUserData, updateUserData} from "./features/user/userActions.js";
+import {checkAuthentication, fetchUserData, updateUserDataAction} from "./features/user/userActions.js";
 
 import {selectIsAuthenticated} from "./features/user/userSlice.js";
 
@@ -23,8 +23,6 @@ import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Page404 from "./components/page-404/Page404.jsx";
 
 import Paths from "./utils/Paths.js";
-import CookieManager from "./utils/cookieManager.js";
-import objectManager from "./utils/compareObjects.js";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -36,13 +34,14 @@ export default function App() {
 
         if (!isAuthenticated) return
 
-        const userCookieData = CookieManager.getCookie('userData');
-        if (objectManager.compareObjects(userCookieData, {})) {
+        const userLocalData = JSON.parse(localStorage.getItem('userData'));
+
+        if (!userLocalData.hasOwnProperty('first_name')) {
             dispatch(fetchUserData());
             return;
         }
 
-        updateUserData(userCookieData);
+        dispatch(updateUserDataAction(userLocalData));
     }, [isAuthenticated]);
 
 
