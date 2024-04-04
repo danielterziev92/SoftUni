@@ -175,28 +175,3 @@ class UserInfoAPIView(api_views.RetrieveAPIView):
             return Response(user_info, status=status.HTTP_200_OK)
         except Http404:
             return Response({'message': 'Session not found'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-# class UserRetrieveUpdateView(api_views.RetrieveUpdateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     permission_classes = [IsAuthenticated]
-#
-#
-
-#
-#
-# class UserProductsView(APIView):
-#
-#     def get(self, request, *args, **kwargs):
-#         if request.user.is_authenticated:
-#             serializer = AuthenticatedUserSerializer(request.user)
-#         else:
-#             # For unauthenticated users, retrieve all users and count of their products
-#             users = User.objects.all()
-#             data = UnauthenticatedUserSerializer(users, many=True).data
-#             for user_data in data:
-#                 user_data['product_count'] = ProductBaseInformation.objects.filter(user_id=user_data['id']).count()
-#
-#             return Response(data, status=status.HTTP_200_OK)
-#
-#         return Response(serializer.data, status=status.HTTP_200_OK)
