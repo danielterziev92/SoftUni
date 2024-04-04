@@ -127,7 +127,7 @@ class CheckAuthenticationView(api_views.GenericAPIView):
             return Response(
                 {
                     'message': _('Authentication credentials were not provided'),
-                    'is_authenticated': True
+                    'isAuthenticated': True
                 },
                 status=status.HTTP_403_FORBIDDEN
             )
@@ -135,7 +135,7 @@ class CheckAuthenticationView(api_views.GenericAPIView):
         return Response(
             {
                 'message': _('User is authenticated.'),
-                'is_authenticated': True
+                'isAuthenticated': True
             }, status=status.HTTP_200_OK)
 
 
@@ -143,7 +143,6 @@ class CheckAuthenticationView(api_views.GenericAPIView):
 class UserInfoAPIView(api_views.RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
-    serializer_class = UserProfileSerializer
 
     def get(self, request, *args, **kwargs):
         try:
