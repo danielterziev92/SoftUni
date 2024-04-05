@@ -63,7 +63,6 @@ export const userSlice = createSlice({
         },
         updateUserData: (state, action) => {
             state.data = action.payload;
-            addMessage(action.payload.message);
         },
     },
 });

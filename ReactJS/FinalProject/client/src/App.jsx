@@ -48,7 +48,7 @@ export default function App() {
     return (
         <ErrorBoundary>
             {isAuthenticated && <Aside/>}
-            <main className={mainStyle.Main}>
+            <main className={mainStyle.MainContent}>
                 <MessageBoxDialog/>
                 <Routes>
                     <Route path={Paths.index} element={<Index/>}/>

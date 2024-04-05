@@ -1,5 +1,6 @@
 const Paths = {
     index: '/',
+    dashboard: '/dashboard',
     login: '/login',
     afterLogin: '/',
     logout: '/logout',
@@ -8,6 +9,7 @@ const Paths = {
     products: '/products',
     groups: '/groups',
     profile: '/profile/:id',
+
 }
 
 export default Paths;

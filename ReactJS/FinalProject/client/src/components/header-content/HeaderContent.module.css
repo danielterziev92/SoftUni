@@ -1,0 +1,40 @@
+.HeaderContent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-bottom: 1px solid #dadada !important;
+    margin: 0 60px;
+    padding: 20px;
+}
+
+.HeaderContent h4,
+.HeaderContent ul {
+    display: flex;
+    align-items: center;
+}
+
+.HeaderContent h4 {
+    font-size: 1.7rem;
+}
+
+.HeaderContent ul {
+    justify-content: end;
+}
+
+.HeaderContent ul li {
+    list-style: none;
+}
+
+.HeaderContent ul li:first-child::after {
+    content: "/";
+    color: #838a95;
+    margin: 0 7px;
+}
+
+.HeaderContent ul li a {
+    color: #838a95;
+    text-decoration: none;
+}
+
+.HeaderContent ul li a[href] {
+    color: #6366f1;
+}
