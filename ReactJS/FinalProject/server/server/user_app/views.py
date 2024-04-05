@@ -12,8 +12,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 
-from server.user_app.models import UserProfile, Company
-from server.user_app.serializers import UserCreateSerializer, UserSerializer, UserLoginSerializer, UserProfileSerializer
+from server.company.models import Company
+from server.user_app.models import UserProfile
+from server.user_app.serializers import UserCreateSerializer, UserSerializer, UserLoginSerializer
 
 UserModel = get_user_model()
 

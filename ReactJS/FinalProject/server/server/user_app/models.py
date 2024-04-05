@@ -68,6 +68,11 @@ class UserProfile(models.Model):
         blank=False,
     )
 
+    profile_picture = models.URLField(
+        null=True,
+        blank=True
+    )
+
     user = models.ForeignKey(
         UserApp,
         on_delete=models.CASCADE,
@@ -90,6 +95,3 @@ class UserProfile(models.Model):
         self.full_clean()
 
         super().save(*args, **kwargs)
-
-
-

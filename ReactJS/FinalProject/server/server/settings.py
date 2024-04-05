@@ -54,6 +54,7 @@ DJANGO_APPS = (
 PROJECT_APPS = (
     'server.product.apps.ProductConfig',
     'server.user_app.apps.UserAppConfig',
+    'server.company.apps.CompanyConfig',
 )
 
 THIRD_PARTY_APPS = (
