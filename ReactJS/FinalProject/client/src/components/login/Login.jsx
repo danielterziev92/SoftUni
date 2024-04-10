@@ -36,12 +36,12 @@ export default function Login() {
     const isAuthenticated = useSelector(selectIsAuthenticated);
 
     useLayoutEffect(() => {
-        if (isAuthenticated) return
+        if (isAuthenticated) return navigate(-1)
 
         const userCookieData = CookieManager.getCookie('userData');
         if (userCookieData !== null && objectManager.compareObjects(userCookieData, {}) && objectManager.notEmptyValues(user)) {
             dispatch(fetchUserData());
-            return;
+            return navigate(-1);
         }
 
         if (!objectManager.notEmptyValues(userCookieData)) {

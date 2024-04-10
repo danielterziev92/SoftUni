@@ -1,5 +1,5 @@
-import {useLayoutEffect} from "react";
-import {Route, Routes} from "react-router-dom";
+import {useLayoutEffect, useRef} from "react";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
 import {checkAuthentication, fetchUserData, updateUserDataAction} from "./features/user/userActions.js";
@@ -16,7 +16,7 @@ import Login from "./components/login/Login.jsx";
 import Logout from "./components/logout/Logout.jsx";
 import Register from "./components/register/Register.jsx";
 import MessageBoxDialog from "./components/message-box-dialog/MessageBoxDialog.jsx";
-import Profile from "./components/profile/Profile.jsx";
+import Profile from "./pages/profile/Profile.jsx";
 import Groups from "./components/groups/Groups.jsx";
 import Index from "./components/index/Index.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
@@ -26,22 +26,42 @@ import Paths from "./utils/Paths.js";
 
 export default function App() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const isAuthenticated = useSelector(selectIsAuthenticated);
 
+    const previousPage = useRef('');
+
     useLayoutEffect(() => {
-        dispatch(checkAuthentication());
+        previousPage.current = location.pathname;
+    }, []);
 
-        if (!isAuthenticated) return
+    useLayoutEffect(() => {
+        const fetchData = async () => {
+            const mandatoryValues = ['email', 'first_name', 'last_name', 'phone'];
 
-        const userLocalData = JSON.parse(localStorage.getItem('userData'));
+            await dispatch(checkAuthentication());
 
-        if (!userLocalData.hasOwnProperty('first_name')) {
-            dispatch(fetchUserData());
-            return;
+            if (!isAuthenticated) return navigate(Paths.login);
+
+            const userLocalData = JSON.parse(localStorage.getItem('userData'));
+            console.log(userLocalData);
+
+            const allKeysValuesNotEmptyString = mandatoryValues.every(key => {
+                return Object.keys(userLocalData).includes(key) && userLocalData[key] !== '';
+            })
+
+            if (!allKeysValuesNotEmptyString) {
+                await dispatch(fetchUserData());
+                return navigate(previousPage.current);
+            }
+
+            await dispatch(updateUserDataAction(userLocalData));
+            return navigate(previousPage.current);
         }
 
-        dispatch(updateUserDataAction(userLocalData));
+        fetchData();
     }, [isAuthenticated]);
 
 
