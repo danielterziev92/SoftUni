@@ -46,7 +46,6 @@ export default function App() {
             if (!isAuthenticated) return navigate(Paths.login);
 
             const userLocalData = JSON.parse(localStorage.getItem('userData'));
-            console.log(userLocalData);
 
             const allKeysValuesNotEmptyString = mandatoryValues.every(key => {
                 return Object.keys(userLocalData).includes(key) && userLocalData[key] !== '';

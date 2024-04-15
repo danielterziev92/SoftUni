@@ -34,11 +34,6 @@ export default function Profile() {
         , updateUserDataOnSubmit
     );
 
-
-    useLayoutEffect(() => {
-        console.log(formValue)
-    }, []);
-
     const handleDrop = (e) => {
         e.preventDefault();
         const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
@@ -57,6 +52,11 @@ export default function Profile() {
     const handleFileInputChange = (e) => {
         handleDrop(e);
     };
+
+    const removeImage = (e) => {
+        e.preventDefault();
+        updateFormValueByKeyAndValue(FormKey.droppedImage, []);
+    }
 
     async function updateUserDataOnSubmit(data) {
         // try {
@@ -79,7 +79,7 @@ export default function Profile() {
         <>
             <HeaderContent title={'Профил'} navigation={'profile'}/>
             <form onSubmit={onSubmitForm} className={style.ProfileForm}>
-                <div>
+                <div className={style.profileFormContainer}>
                     <div className={style.picture}>
                         <p>Add Profile Picture</p>
 
@@ -101,7 +101,7 @@ export default function Profile() {
                                 <div className={style.droppedImage}>
                                     {formValue[FormKey.droppedImage].map((image, index) => (
                                         <div key={index}>
-                                            <i className="fa-solid fa-circle-xmark"></i>
+                                            <i className="fa-solid fa-circle-xmark" onClick={removeImage}></i>
                                             <img src={URL.createObjectURL(image)} alt={`Dropped Image ${index + 1}`}/>
                                         </div>
                                     ))}
@@ -113,7 +113,8 @@ export default function Profile() {
                         <div>
                             <label htmlFor={FormKey.Email}>Имейл:</label>
                             <input type="email" name={FormKey.Email} value={formValue[FormKey.Email]}
-                                   onChange={changeDataHandler}/>
+                                   onChange={changeDataHandler} data-lpignore="true"
+                            />
                         </div>
                         <div>
                             <label htmlFor={FormKey.FirstName}>Име:</label>

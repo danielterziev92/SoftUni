@@ -7,7 +7,7 @@
     gap: 10px;
 }
 
-.ProfileForm div {
+.ProfileForm .profileFormContainer {
     display: grid;
     grid-template-areas:
         "picture info";
@@ -127,6 +127,7 @@
     border-radius: 10px;
     border: none;
     background-color: #ffffff;
+    width: 90%;
 }
 
 .ProfileForm div div input:focus {
