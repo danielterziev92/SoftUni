@@ -4,14 +4,16 @@ from server.user_app.views.authentication import LoginView, LogoutView, CheckAut
 from server.user_app.views.user_list import UserListView
 from server.user_app.views.user_info import UserInfoAPIView
 from server.user_app.views.user_create import UserCreateView
+from server.user_app.views.user_update import UserUpdateAPIView
 
 urlpatterns = (
     path('all/', UserListView.as_view(), name='users-all'),
-    path('create/', UserCreateView.as_view(), name='user_create'),
-    path('login/', LoginView.as_view(), name='user_login'),
-    path('logout/', LogoutView.as_view(), name='user_logout'),
-    path('check-auth/', CheckAuthenticationView.as_view(), name='user_authentication'),
-    path('user-info/', UserInfoAPIView.as_view(), name='user-info')
+    path('create/', UserCreateView.as_view(), name='user-create'),
+    path('login/', LoginView.as_view(), name='user-login'),
+    path('logout/', LogoutView.as_view(), name='user-logout'),
+    path('check-auth/', CheckAuthenticationView.as_view(), name='user-authentication'),
+    path('info/', UserInfoAPIView.as_view(), name='user-info'),
+    path('edit/', UserUpdateAPIView.as_view(), name='user-edit'),
     # path('', UserProductsView.as_view(), name='index'),
     # path('token/', include([
     #     path('', AppTokenObtainPairView.as_view(), name='token_obtain_pair'),
