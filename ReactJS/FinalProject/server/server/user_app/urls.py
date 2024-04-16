@@ -1,7 +1,9 @@
 from django.urls import path
 
-from server.user_app.views import UserListView, UserCreateView, LoginView, CheckAuthenticationView, \
-    LogoutView, UserInfoAPIView
+from server.user_app.views.authentication import LoginView, LogoutView, CheckAuthenticationView
+from server.user_app.views.user_list import UserListView
+from server.user_app.views.user_info import UserInfoAPIView
+from server.user_app.views.user_create import UserCreateView
 
 urlpatterns = (
     path('all/', UserListView.as_view(), name='users-all'),

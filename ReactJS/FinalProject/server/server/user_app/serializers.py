@@ -26,6 +26,14 @@ class UserCreateSerializer(serializers.Serializer):
     re_password = serializers.CharField(required=True, write_only=True)
 
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    profile_picture = serializers.URLField(allow_null=True, required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = ['first_name', 'last_name', 'phone', 'profile_picture']
+
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
@@ -46,15 +54,3 @@ class UserLoginSerializer(serializers.Serializer):
 #     class Meta:
 #         model = User
 #         fields = ['id', 'username', 'email', 'product_count', 'products']
-#
-#
-# class UnauthenticatedUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['id', 'username', 'email']
-#
-#
-# class ProductSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Product
-#         fields = ['id', 'name', 'price', 'quantity']

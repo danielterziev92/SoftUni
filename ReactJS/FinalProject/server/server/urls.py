@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from server.user_app.views import GetCSRFTokenView
+from server.user_app.views.authentication import GetCSRFTokenView
 
 urlpatterns = (
     path('admin/', admin.site.urls),
