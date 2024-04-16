@@ -34,7 +34,7 @@ class UserInfoAPIView(api_views.RetrieveAPIView, SessionMixin):
             user_info['first_name'] = user_profile.first_name
             user_info['last_name'] = user_profile.last_name
             user_info['phone'] = user_profile.phone
-            user_info['picture_url'] = user_profile.profile_picture or ''
+            user_info['picture_url'] = f'{user_profile.picture_url.url}.jpg' or ''
 
             if not company:
                 return Response(user_info, status=status.HTTP_200_OK)
