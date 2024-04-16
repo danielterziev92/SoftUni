@@ -6,12 +6,13 @@ from rest_framework import generics as api_views, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from cloudinary import api as cloudinary_api, uploader as cloudinary_uploader
+from rest_framework.utils import json
 
 from server.core.mixins.session_mixin import SessionMixin
 from server.user_app.models import UserProfile
 from server.user_app.serializers import UserUpdateSerializer
+
+from cloudinary import api as cloudinary_api, uploader as cloudinary_uploader
 
 UserModel = get_user_model()
 
@@ -26,25 +27,50 @@ class UserUpdateAPIView(api_views.UpdateAPIView, SessionMixin):
     def put(self, request, *args, **kwargs):
         image_file = request.FILES.get('image', None)
         user_data = request.data.get('userData', None)
-        user = SessionMixin.get_user_pk(session_id=request.COOKIES.get('sessionid'))
-        user_profile = UserProfile.objects.get(user=user)
 
-        if not image_file or not user_data:
-            return Response({'error': 'Image or data missing'}, status=status.HTTP_400_BAD_REQUEST)
+        if not user_data:
+            return Response({'error': 'Data is missing'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Parse user data
+        clear_user_data = json.loads(user_data)
+
+        # Get user and user profile
+        user = self.get_user_pk(session_id=request.COOKIES.get('sessionid'))
+        user_profile = UserProfile.objects.get(user=user)
+        folder_name = f'profile/{user.pk}'
 
         if image_file:
-            folder_name = f'profile/{user.pk}'
-            if user_profile.profile_picture == '':
+            if user_profile.picture_url is None:
                 cloudinary_api.create_folder(folder_name)
 
-            cloudinary_uploader.upload(file=image_file, folder=folder_name, eager=[
-                {
-                    "width": 400, "height": 400,
-                    "crop": "crop",
-                }
-            ])
+            # Upload image
+            uploaded_picture = cloudinary_uploader.upload(
+                file=image_file, folder=folder_name,
+                # upload_preset='profile_picture'
+            )
+            clear_user_data['picture_url'] = uploaded_picture.get('public_id')
+        else:
+            clear_user_data['picture_url'] = user_profile.picture_url
 
-        print('Image:', image_file)
-        print('UserData:', user_data)
+        # Update user profile with new data
+        are_equal, user_profile = self._check_new_and_old_data(user_profile, clear_user_data)
+        if are_equal:
+            user_profile.save()
 
-        return Response({'message': 'User data updated successfully'}, status=status.HTTP_200_OK)
+        # Serialize user profile to JSON string
+        profile_serializer = UserUpdateSerializer(user_profile)
+        serialized_profile = profile_serializer.data
+
+        return Response({'message': 'User data updated successfully', 'user_profile': serialized_profile},
+                        status=status.HTTP_200_OK)
+
+    @staticmethod
+    def _check_new_and_old_data(old_data, new_data):
+        are_equal = False
+
+        for field, value in new_data.items():
+            if getattr(old_data, field) != value:
+                are_equal = True
+                setattr(old_data, field, value)
+
+        return are_equal, old_data

@@ -7,6 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from server.user_app.manager import UserAppManager
 from server.utils.models_mixin import DateInfoMixin
 
+from cloudinary import models as cloudinary_models
+
 
 class UserApp(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     email = models.EmailField(
@@ -68,7 +70,7 @@ class UserProfile(models.Model):
         blank=False,
     )
 
-    profile_picture = models.URLField(
+    picture_url = cloudinary_models.CloudinaryField(
         null=True,
         blank=True
     )

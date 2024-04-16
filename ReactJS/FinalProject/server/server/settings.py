@@ -7,7 +7,7 @@ from decouple import config as de_config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-u+fpwonwgyg^k7z-mri7@84rjz6ruo4py5vma)d2bzj4hkkz81'
+SECRET_KEY = de_config('SECRET_KEY')
 
 DEBUG = True
 
@@ -151,14 +151,14 @@ CSRF_COOKIE_SECURE = True
 
 CSRF_COOKIE_SAMESITE = 'Lax'
 
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': de_config('CLOUDINARY_CLOUD_NAME'),
-#     'API_KEY': de_config('CLOUDINARY_API_KEY'),
-#     'API_SECRET': de_config('CLOUDINARY_API_SECRET'),
-# }
-#
-# cloudinary.config(
-#     cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
-#     api_key=CLOUDINARY_STORAGE.get('API_KEY'),
-#     api_secret=CLOUDINARY_STORAGE.get('API_SECRET'),
-# )
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': de_config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': de_config('CLOUDINARY_API_KEY'),
+    'API_SECRET': de_config('CLOUDINARY_API_SECRET'),
+}
+
+cloudinary.config(
+    cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
+    api_key=CLOUDINARY_STORAGE.get('API_KEY'),
+    api_secret=CLOUDINARY_STORAGE.get('API_SECRET'),
+)

@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
+from rest_framework.utils.json import dumps
 
 from server.user_app.models import UserProfile
 
@@ -27,11 +29,17 @@ class UserCreateSerializer(serializers.Serializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    profile_picture = serializers.URLField(allow_null=True, required=False)
+    picture_url = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfile
-        fields = ['first_name', 'last_name', 'phone', 'profile_picture']
+        fields = ['first_name', 'last_name', 'phone', 'picture_url']
+
+    def get_picture_url(self, obj):
+        picture_url = getattr(obj, 'picture_url', None)
+        if picture_url:
+            return f'{picture_url.url}.jpg'
+        return None
 
 
 class UserLoginSerializer(serializers.Serializer):
