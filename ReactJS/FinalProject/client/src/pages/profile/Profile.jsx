@@ -78,6 +78,25 @@ export default function Profile() {
         }
     }
 
+    async function deleteProfilePicture() {
+        try {
+            const axiosConfig = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': CookieManager.getCookie('csrftoken'),
+                },
+                withCredentials: true,
+            };
+
+            await axios.delete(Urls.user.update, axiosConfig).then(response => {
+                console.log(response);
+            })
+
+        } catch (e) {
+            addMessage(e)
+        }
+    }
+
     const resetUserEditOnClickHandler = () => {
         updateFormValue(user);
     }
@@ -155,8 +174,7 @@ export default function Profile() {
                         Редактирай
                     </button>
                     <button className={style.cancel} type="button" onClick={resetUserEditOnClickHandler}
-                            disabled={objectManager.compareObjects(_.pick(formValue, keyToCheck), user)}
-                    >
+                            disabled={objectManager.compareObjects(_.pick(formValue, keyToCheck), user)}>
                         Отказ
                     </button>
                 </div>

@@ -1,4 +1,4 @@
-import {useLayoutEffect} from "react";
+import {useLayoutEffect, useState} from "react";
 
 import style from './MessageBoxModal.module.css';
 import mainStyle from '../../components/Main.module.css';
@@ -14,6 +14,7 @@ export default function MessageBoxModal({
                                             errorButtonHandler,
                                             closeModalHanlder,
                                         }) {
+    const [topScrolledY, setTopScrolledY] = useState(0);
 
     useEscapeKey(closeModalHanlder);
 
@@ -23,6 +24,8 @@ export default function MessageBoxModal({
             mainElement.classList.add('overflow-hidden');
         }
 
+        setTopScrolledY(mainElement.scrollTop);
+
         return () => {
             if (mainElement) {
                 mainElement.classList.remove('overflow-hidden');
@@ -31,7 +34,7 @@ export default function MessageBoxModal({
     }, []);
 
     return (
-        <div className={style.overlay}>
+        <div className={style.overlay} style={{top: topScrolledY}}>
             <div>
                 <i className={`fas fa-times-circle ${style.close}`} onClick={closeModalHanlder}></i>
                 <div className={style.modal}>
