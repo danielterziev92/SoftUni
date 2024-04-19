@@ -6,7 +6,7 @@ import {checkAuthentication, fetchUserData, updateUserDataAction} from "./featur
 
 import {selectIsAuthenticated} from "./features/user/userSlice.js";
 
-import mainStyle from "./components/Main.module.css";
+import style from "./components/Main.module.css";
 
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import Aside from "./components/aside/Aside.jsx";
@@ -67,7 +67,7 @@ export default function App() {
     return (
         <ErrorBoundary>
             {isAuthenticated && <Aside/>}
-            <main className={mainStyle.MainContent}>
+            <main className={style.MainContent}>
                 <MessageBoxDialog/>
                 <Routes>
                     <Route path={Paths.index} element={<Index/>}/>

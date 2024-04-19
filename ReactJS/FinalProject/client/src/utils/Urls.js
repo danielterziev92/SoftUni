@@ -12,6 +12,7 @@ const Urls = {
         authentication: `${BASE_URL}/user/check-auth/`,
         profile: `${BASE_URL}/user/info/`,
         update: `${BASE_URL}/user/edit/`,
+        deleteProfilePicture: `${BASE_URL}/user/delete-profile-picture/`,
     },
 
 

@@ -1,4 +1,8 @@
+import {useLayoutEffect} from "react";
+
 import style from './MessageBoxModal.module.css';
+import mainStyle from '../../components/Main.module.css';
+
 import useEscapeKey from "../../hooks/useEscapeKey.js";
 
 export default function MessageBoxModal({
@@ -12,6 +16,19 @@ export default function MessageBoxModal({
                                         }) {
 
     useEscapeKey(closeModalHanlder);
+
+    useLayoutEffect(() => {
+        const mainElement = document.querySelector(`.${mainStyle.MainContent}`);
+        if (mainElement) {
+            mainElement.classList.add('overflow-hidden');
+        }
+
+        return () => {
+            if (mainElement) {
+                mainElement.classList.remove('overflow-hidden');
+            }
+        };
+    }, []);
 
     return (
         <div className={style.overlay}>

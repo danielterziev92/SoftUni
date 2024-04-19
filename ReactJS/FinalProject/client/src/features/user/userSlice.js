@@ -65,6 +65,10 @@ export const userSlice = createSlice({
         updateUserData: (state, action) => {
             state.data = action.payload;
         },
+        deleteProfilePicture: (state, action) => {
+            state.data.picture_url = '';
+            addMessage(action.payload.message);
+        }
     },
 });
 

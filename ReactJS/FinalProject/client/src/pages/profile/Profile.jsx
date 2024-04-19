@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {useSelector} from "react-redux";
 
 import axios from "axios";
@@ -18,6 +19,7 @@ import objectManager from "../../utils/compareObjects.js";
 import Urls from "../../utils/Urls.js";
 import CookieManager from "../../utils/cookieManager.js";
 import DragAndDropBox from "../../components/drag-and-drop-box/DragAndDropBox.jsx";
+import MessageBoxModal from "../../components/message-box-modal/MessageBoxModal.jsx";
 
 const FormKey = {
     Email: 'email',
@@ -34,6 +36,8 @@ const keyToSend = ['first_name', 'last_name', 'phone', 'picture_url', 'image'];
 
 export default function Profile() {
     const user = useSelector(selectUser);
+
+    const [isDeleteProfilePicture, setIsDeleteProfilePicture] = useState(false);
 
     const {formValue, updateFormValue, updateFormValueByKeyAndValue, changeDataHandler, onSubmitForm,} = useForm(
         {
@@ -80,6 +84,17 @@ export default function Profile() {
 
     return (
         <>
+            {isDeleteProfilePicture &&
+                <MessageBoxModal
+                    title={'Delete Profile Picture'}
+                    body={'Would you like to delete your profile?'}
+                    successButtonMessage={'Yes'}
+                    errorButtonMessage={'No'}
+                    successButtonHandler={() => console.log('Delete Picture')}
+                    errorButtonHandler={() => setIsDeleteProfilePicture(false)}
+                    closeModalHanlder={() => setIsDeleteProfilePicture(false)}
+                />
+            }
             <HeaderContent title={'Профил'} navigation={'profile'}/>
             <form onSubmit={onSubmitForm} className={style.ProfileForm}>
                 <div className={style.profileFormContainer}>
@@ -101,7 +116,9 @@ export default function Profile() {
                                     <figure>
                                         <img src={user.picture_url} alt="Profile Picture"/>
                                     </figure>
-                                    <button type="button">
+                                    <button type="button"
+                                            onClick={() => setIsDeleteProfilePicture(true)}
+                                    >
                                         <i className="fa-solid fa-trash-can"></i>
                                     </button>
                                 </div>
@@ -134,9 +151,14 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className={style.buttons}>
-                    <button disabled={objectManager.compareObjects(_.pick(formValue, keyToCheck), user)}>Редактирай
+                    <button disabled={objectManager.compareObjects(_.pick(formValue, keyToCheck), user)}>
+                        Редактирай
                     </button>
-                    <button className={style.cancel} type="button" onClick={resetUserEditOnClickHandler}>Отказ</button>
+                    <button className={style.cancel} type="button" onClick={resetUserEditOnClickHandler}
+                            disabled={objectManager.compareObjects(_.pick(formValue, keyToCheck), user)}
+                    >
+                        Отказ
+                    </button>
                 </div>
             </form>
         </>
