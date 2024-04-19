@@ -1,6 +1,5 @@
 import style from './MessageBoxModal.module.css';
 import useEscapeKey from "../../hooks/useEscapeKey.js";
-import {useEffect} from "react";
 
 export default function MessageBoxModal({
                                             title,

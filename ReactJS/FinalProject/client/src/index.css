@@ -33,6 +33,10 @@ aside::-webkit-scrollbar {
     /*-moz-osx-font-smoothing: grayscale;*/
     /*-webkit-text-size-adjust: 100%;*/
 
+
+    --main-color: ;
+    --secondaryColor: #6366f1;
+
     --spinner-color: #4f46e5;
 
     --background-primary: #e0e0e6;

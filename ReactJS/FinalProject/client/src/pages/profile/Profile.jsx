@@ -1,16 +1,23 @@
-import {useLayoutEffect, useState} from "react";
 import {useSelector} from "react-redux";
+
+import axios from "axios";
+
+import _ from 'lodash';
 
 import HeaderContent from "../../components/header-content/HeaderContent.jsx";
 
 import {selectUser} from "../../features/user/userSlice.js";
+import {updateUserDataAction} from "../../features/user/userActions.js";
+import {addMessage} from "../../features/message/messageSlice.js";
 
 import style from './Profile.module.css';
 
 import useForm from "../../hooks/useForm.js";
 
 import objectManager from "../../utils/compareObjects.js";
-import {Form} from "react-router-dom";
+import Urls from "../../utils/Urls.js";
+import CookieManager from "../../utils/cookieManager.js";
+import DragAndDropBox from "../../components/drag-and-drop-box/DragAndDropBox.jsx";
 
 const FormKey = {
     Email: 'email',
@@ -18,14 +25,17 @@ const FormKey = {
     FirstName: 'first_name',
     LastName: 'last_name',
     Phone: 'phone',
-    CompanyName: 'company_name',
+    CompanyId: 'company_id',
+    PictureUrl: 'picture_url'
 }
 
+const keyToCheck = ['id', 'email', 'first_name', 'last_name', 'phone', 'picture_url'];
+const keyToSend = ['first_name', 'last_name', 'phone', 'picture_url', 'image'];
 
 export default function Profile() {
     const user = useSelector(selectUser);
 
-    const {formValue, updateFormValueByKeyAndValue, changeDataHandler, onSubmitForm,} = useForm(
+    const {formValue, updateFormValue, updateFormValueByKeyAndValue, changeDataHandler, onSubmitForm,} = useForm(
         {
             ...Object.fromEntries(Object.keys(FormKey)
                 .map(key => [FormKey[key], key === 'droppedImage' ? [] : ''])),
@@ -34,45 +44,38 @@ export default function Profile() {
         , updateUserDataOnSubmit
     );
 
-    const handleDrop = (e) => {
-        e.preventDefault();
-        const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
-        if (!files || files.length === 0) return;
-
-        const imageFile = files[0];
-        if (!imageFile || !imageFile.type.startsWith('image/')) return;
-
-        updateFormValueByKeyAndValue(FormKey.droppedImage, [imageFile]);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-    };
-
-    const handleFileInputChange = (e) => {
-        handleDrop(e);
-    };
-
-    const removeImage = (e) => {
-        e.preventDefault();
-        updateFormValueByKeyAndValue(FormKey.droppedImage, []);
+    function updateDroppedImageHandler(image) {
+        updateFormValueByKeyAndValue(FormKey.droppedImage, image);
     }
 
     async function updateUserDataOnSubmit(data) {
-        // try {
-        //     await updateUserById(formValue.id, data);
-        //     updateMessage('Успешно успяхте да редактирате профила си');
-        //     updateStatus('success');
-        // } catch (e) {
-        //     updateMessage(e);
-        //     updateStatus('error');
-        // }
+        try {
+            const axiosConfig = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'X-CSRFToken': CookieManager.getCookie('csrftoken'),
+                },
+                withCredentials: true,
+            };
 
+            const {image, ...userData} = _.pick(data, keyToSend);
+
+            const requestBody = new FormData();
+            requestBody.append('userData', JSON.stringify(userData));
+            requestBody.append('image', image.pop());
+
+            await axios.put(Urls.user.update, requestBody, axiosConfig).then(response => {
+                const {message, user_profile} = response.data;
+                updateUserDataAction(user_profile);
+                addMessage(message);
+            })
+        } catch (error) {
+            addMessage(error);
+        }
     }
 
     const resetUserEditOnClickHandler = () => {
-        console.log(formValue)
-        // updateFormValue(user);
+        updateFormValue(user);
     }
 
     return (
@@ -81,39 +84,35 @@ export default function Profile() {
             <form onSubmit={onSubmitForm} className={style.ProfileForm}>
                 <div className={style.profileFormContainer}>
                     <div className={style.picture}>
-                        <p>Add Profile Picture</p>
-
-                        <div className={style.dragGroup}>
-                            <div className={style.dragZone}
-                                 onDrop={(e) => handleDrop(e)}
-                                 onDragOver={handleDragOver}
-                            >
-                                <i className="fa-regular fa-clone"></i>
-                                Drop & drop Image here or
-                                <span>Select</span>
-                                <input type="file"
-                                       onChange={handleFileInputChange}
-                                       onClick={(e) => e.target.value = null}
-                                       multiple={false}
-                                />
-                            </div>
-                            {formValue[FormKey.droppedImage] && formValue[FormKey.droppedImage].length > 0 &&
-                                <div className={style.droppedImage}>
-                                    {formValue[FormKey.droppedImage].map((image, index) => (
-                                        <div key={index}>
-                                            <i className="fa-solid fa-circle-xmark" onClick={removeImage}></i>
-                                            <img src={URL.createObjectURL(image)} alt={`Dropped Image ${index + 1}`}/>
-                                        </div>
-                                    ))}
+                        <p>Upload Your Profile Picture</p>
+                        <DragAndDropBox
+                            image={formValue[FormKey.droppedImage]}
+                            updateDroppedImage={updateDroppedImageHandler}
+                            style={{
+                                dragGroup: style.dragGroup,
+                                dragZone: style.dragZone,
+                                draggedImage: style.draggedImage
+                            }}
+                        />
+                        {user.picture_url !== '' &&
+                            <>
+                                <p>You Picture</p>
+                                <div className={style.profilePicture}>
+                                    <figure>
+                                        <img src={user.picture_url} alt="Profile Picture"/>
+                                    </figure>
+                                    <button type="button">
+                                        <i className="fa-solid fa-trash-can"></i>
+                                    </button>
                                 </div>
-                            }
-                        </div>
+                            </>
+                        }
                     </div>
                     <div className={style.info}>
                         <div>
                             <label htmlFor={FormKey.Email}>Имейл:</label>
                             <input type="email" name={FormKey.Email} value={formValue[FormKey.Email]}
-                                   onChange={changeDataHandler} data-lpignore="true"
+                                   onChange={changeDataHandler} readOnly={true} disabled={true}
                             />
                         </div>
                         <div>
@@ -134,31 +133,9 @@ export default function Profile() {
                         </div>
                     </div>
                 </div>
-                {/*<div>*/}
-                {/*    <label htmlFor={FormKey.LastLogin}>Последно посещение:</label>*/}
-                {/*    <input type="datetime-local" name={FormKey.LastLogin}*/}
-                {/*           value={formValue[FormKey.LastLogin].slice(0, -1).slice(0, 16)}*/}
-                {/*           onChange={changeDataHandler}*/}
-                {/*           disabled={true}*/}
-                {/*    />*/}
-                {/*</div>*/}
-                {/*<div>*/}
-                {/*    <label htmlFor={FormKey.IsSuperUser}>Админ ли сте ?</label>*/}
-                {/*    <input type="text" name={FormKey.IsSuperUser} value={formValue[FormKey.IsSuperUser] ? 'Да' : 'Не'}*/}
-                {/*           onChange={changeDataHandler} disabled={true}/>*/}
-                {/*</div>*/}
-                {/*<div>*/}
-                {/*    <label htmlFor={FormKey.IsStaff}>Служител ли сте ?</label>*/}
-                {/*    <input type="text" name={FormKey.IsStaff} value={formValue[FormKey.IsStaff] ? 'Да' : 'Не'}*/}
-                {/*           onChange={changeDataHandler} disabled={true}/>*/}
-                {/*</div>*/}
-                {/*<div>*/}
-                {/*    <label htmlFor={FormKey.IsActive}>Активен ли ви е профила ?</label>*/}
-                {/*    <input type="text" name={FormKey.IsActive} value={formValue[FormKey.IsActive] ? 'Да' : 'Не'}*/}
-                {/*           onChange={changeDataHandler} disabled={true}/>*/}
-                {/*</div>*/}
                 <div className={style.buttons}>
-                    <button disabled={objectManager.compareObjects(formValue, user)}>Редактирай</button>
+                    <button disabled={objectManager.compareObjects(_.pick(formValue, keyToCheck), user)}>Редактирай
+                    </button>
                     <button className={style.cancel} type="button" onClick={resetUserEditOnClickHandler}>Отказ</button>
                 </div>
             </form>

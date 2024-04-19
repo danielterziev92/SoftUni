@@ -5,12 +5,13 @@ const Urls = {
     CRSFToken: `${BASE_URL}/crsf-token/`,
     index: `${BASE_URL}/`,
     user: {
-        details: `${BASE_URL}/user/:id/`,
+        details: `${BASE_URL}/user/`,
         register: `${BASE_URL}/user/create/`,
         login: `${BASE_URL}/user/login/`,
         logout: `${BASE_URL}/user/logout/`,
         authentication: `${BASE_URL}/user/check-auth/`,
-        profile: `${BASE_URL}/user/user-info/`,
+        profile: `${BASE_URL}/user/info/`,
+        update: `${BASE_URL}/user/edit/`,
     },
 
 
