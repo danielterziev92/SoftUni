@@ -1,6 +1,7 @@
 from django.urls import path
 
 from server.user_app.views.authentication import LoginView, LogoutView, CheckAuthenticationView
+from server.user_app.views.user_delete import DeleteUserProfilePicture
 from server.user_app.views.user_list import UserListView
 from server.user_app.views.user_info import UserInfoAPIView
 from server.user_app.views.user_create import UserCreateView
@@ -14,6 +15,7 @@ urlpatterns = (
     path('check-auth/', CheckAuthenticationView.as_view(), name='user-authentication'),
     path('info/', UserInfoAPIView.as_view(), name='user-info'),
     path('edit/', UserUpdateAPIView.as_view(), name='user-edit'),
+    path('delete-profile-picture/', DeleteUserProfilePicture.as_view(), name='user-delete-profile-picture'),
     # path('', UserProductsView.as_view(), name='index'),
     # path('token/', include([
     #     path('', AppTokenObtainPairView.as_view(), name='token_obtain_pair'),

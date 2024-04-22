@@ -1,3 +1,4 @@
+from django.db.models.expressions import NoneType
 from django.http import Http404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
@@ -34,7 +35,10 @@ class UserInfoAPIView(api_views.RetrieveAPIView, SessionMixin):
             user_info['first_name'] = user_profile.first_name
             user_info['last_name'] = user_profile.last_name
             user_info['phone'] = user_profile.phone
-            user_info['picture_url'] = f'{user_profile.picture_url.url}.jpg' or ''
+            try:
+                user_info['picture'] = user_profile.picture_url.url
+            except AttributeError:
+                user_info['picture_url'] = ''
 
             if not company:
                 return Response(user_info, status=status.HTTP_200_OK)

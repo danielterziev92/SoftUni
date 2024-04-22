@@ -61,7 +61,7 @@ class UserUpdateAPIView(api_views.UpdateAPIView, SessionMixin):
         profile_serializer = UserUpdateSerializer(user_profile)
         serialized_profile = profile_serializer.data
 
-        return Response({'message': 'User data updated successfully', 'user_profile': serialized_profile},
+        return Response({'message': 'User data updated successfully', 'data': serialized_profile},
                         status=status.HTTP_200_OK)
 
     @staticmethod
