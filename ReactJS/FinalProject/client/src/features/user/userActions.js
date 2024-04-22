@@ -107,7 +107,10 @@ export const fetchUserData = createAsyncThunk(
     }
 )
 
-export const updateUserDataAction = (userData) => ({
-    type: 'user/updateUserData',
-    payload: userData,
-});
+export const updateUserDataAction = (userData) => {
+    console.log('userData', userData); // Log the userData before creating the action
+    return {
+        type: 'user/updateUserData',
+        payload: userData,
+    };
+};

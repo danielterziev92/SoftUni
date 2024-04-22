@@ -1,12 +1,12 @@
 import {useLayoutEffect, useState} from "react";
 
 export default function DragAndDropBox({image, updateDroppedImage, style}) {
-    const [displayedImage, setDisplayedImage] = useState([]);
+    const [displayedImage, setDisplayedImage] = useState(null);
 
     useLayoutEffect(() => {
-        image.length > 0
+        typeof image === 'object'
             ? setDisplayedImage(image)
-            : setDisplayedImage([]);
+            : setDisplayedImage(null);
     }, [image]);
 
     const handleDrop = (e) => {
@@ -17,12 +17,12 @@ export default function DragAndDropBox({image, updateDroppedImage, style}) {
         const imageFile = files[0];
         if (!imageFile || !imageFile.type.startsWith('image/')) return;
 
-        updateDroppedImage([imageFile]);
+        updateDroppedImage(imageFile);
     };
 
     const removeImage = (e) => {
         e.preventDefault();
-        updateDroppedImage([]);
+        updateDroppedImage(null);
     }
 
     const handleDragOver = (e) => {
@@ -44,11 +44,11 @@ export default function DragAndDropBox({image, updateDroppedImage, style}) {
                            multiple={false}
                     />
                 </div>
-                {displayedImage.length > 0 &&
+                {displayedImage &&
                     <div className={style.draggedImage}>
                         <div>
                             <i className="fa-solid fa-circle-xmark" onClick={removeImage}></i>
-                            <img src={URL.createObjectURL(displayedImage.pop())} alt="Dropped Image"/>
+                            <img src={URL.createObjectURL(displayedImage)} alt="Dropped Image"/>
                         </div>
                     </div>
                 }

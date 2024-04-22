@@ -63,9 +63,11 @@ export const userSlice = createSlice({
             addMessage(action.payload.message);
         },
         updateUserData: (state, action) => {
+            state.loading = false;
             state.data = action.payload;
         },
         deleteProfilePicture: (state, action) => {
+            state.loading = false;
             state.data.picture_url = '';
             addMessage(action.payload.message);
         }
@@ -84,9 +86,11 @@ export const {
     fetchUserDataSuccess,
     fetchUserDataFailure,
     updateUserData,
+    deleteProfilePicture
 } = userSlice.actions;
 
 export const selectUser = (state) => state.user.data;
 export const selectIsAuthenticated = (state) => state.user.isAuthenticated;
+export const isUserDataLoading = (state) => state.user.loading;
 
 export default userSlice.reducer;
