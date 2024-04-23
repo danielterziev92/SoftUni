@@ -6,7 +6,7 @@ import clipboard from 'clipboard-copy';
 import asideStyle from './Aside.module.css';
 
 
-import {selectUser} from "../../features/user/userSlice.js";
+// import {selectUser} from "../../features/user/userSlice.js";
 
 import NavigationGroups from "../navigation-groups/NavigationGroups.jsx";
 
@@ -15,7 +15,7 @@ import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 
 export default function Aside() {
-    const user = useSelector(selectUser);
+    const user = useSelector(state => state.user.data);
     const {updateMessage, updateStatus} = useContext(MessageContext);
 
 
@@ -39,9 +39,7 @@ export default function Aside() {
             </div>
             <div className={asideStyle.profile}>
                 <figure>
-                    <img
-                        src="/public/close-up-confident-male-employee-white-collar-shirt-smiling-camera-standing-self-assured-against-studio-background.jpg"
-                        alt="User Prifile Picture"/>
+                    <img src={user.picture_url} alt="User Prifile Picture"/>
                 </figure>
                 {/*<p>{userDetails.first_name} {userDetails.last_name}</p>*/}
                 <div className={asideStyle.profileEmail}>

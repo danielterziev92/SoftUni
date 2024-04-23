@@ -10,7 +10,12 @@ import DragAndDropBox from "../../components/drag-and-drop-box/DragAndDropBox.js
 import MessageBoxModal from "../../components/message-box-modal/MessageBoxModal.jsx";
 import Spinner from "../../components/spinner/Spinner.jsx";
 
-import {deleteProfilePicture, isUserDataLoading, selectUser} from "../../features/user/userSlice.js";
+import {
+    deleteProfilePictureFailure,
+    deleteProfilePicturePending,
+    deleteProfilePictureSuccess, updateUserDataFailure,
+    updateUserDataPending
+} from "../../features/user/userSlice.js";
 import {updateUserDataAction} from "../../features/user/userActions.js";
 import {addMessage} from "../../features/message/messageSlice.js";
 
@@ -37,15 +42,13 @@ const keyToCheck = ['id', 'email', 'first_name', 'last_name', 'phone', 'picture_
 const keyToSend = ['first_name', 'last_name', 'phone', 'picture_url', 'image'];
 
 export default function Profile() {
-    const user = useSelector(selectUser);
-    const isStoreLoading = useSelector(isUserDataLoading);
+    const user = useSelector(state => state.user.data);
+    const isStoreLoading = useSelector(state => state.user.loading);
     const dispatch = useDispatch();
 
     const [isDeleteProfilePicture, setIsDeleteProfilePicture] = useState(false);
-    const [canUpdateForm, setCanUpdateForm] = useState(true);
-    const [canCancelForm, setCanCancelForm] = useState(true);
+    const [canSubmitForm, setCanSubmitForm] = useState(true);
     const [droppedImage, setDroppedImage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
     const {formValue, updateFormValue, changeDataHandler, onSubmitForm,} = useForm(
         {
@@ -57,20 +60,12 @@ export default function Profile() {
     );
 
     useEffect(() => {
-        if (droppedImage) {
-            setCanUpdateForm(false);
-            setCanCancelForm(false);
+        if (droppedImage || !objectManager.compareObjects(_.pick(formValue, keyToCheck), user)) {
+            setCanSubmitForm(false);
             return
         }
 
-        if (!objectManager.compareObjects(_.pick(formValue, keyToCheck), user)) {
-            setCanUpdateForm(false);
-            setCanCancelForm(false);
-            return
-        }
-
-        setCanUpdateForm(true);
-        setCanCancelForm(true);
+        setCanSubmitForm(true);
     }, [formValue, droppedImage]);
 
     function updateDroppedImageHandler(image) {
@@ -94,21 +89,17 @@ export default function Profile() {
                 requestBody.append('image', droppedImage);
             }
 
-            setIsLoading(true);
+            dispatch(updateUserDataPending());
 
             await axios.put(Urls.user.update, requestBody, axiosConfig).then(response => {
                 const {message, data} = response.data;
-                const newFormValues = {...formValue, ...data};
-                dispatch(updateUserDataAction(newFormValues));
+                dispatch(updateUserDataAction(data));
                 addMessage(message);
-                updateFormValue(newFormValues);
                 setDroppedImage(null);
             })
         } catch (error) {
             addMessage(error);
         }
-
-        setIsLoading(false);
     }
 
     async function deleteProfilePictureHandler() {
@@ -119,14 +110,14 @@ export default function Profile() {
             },
             withCredentials: true,
         };
-        setIsLoading(true);
+        dispatch(deleteProfilePicturePending());
 
         const response = await axios.delete(Urls.user.deleteProfilePicture, axiosConfig);
-        dispatch(deleteProfilePicture(response.data));
-        updateFormValue({...formValue, picture_url: ''});
+
+        if (response.status === 202 || response.status === 404) dispatch(deleteProfilePictureFailure(response.data));
+        if (response.status === 200) dispatch(deleteProfilePictureSuccess(response.data));
 
         setIsDeleteProfilePicture(false);
-        setIsLoading(false);
     }
 
     const resetUserEditOnClickHandler = () => {
@@ -135,7 +126,7 @@ export default function Profile() {
 
     return (
         <>
-            {isStoreLoading || isLoading
+            {isStoreLoading
                 ? <Spinner/>
                 : (<>
                         {isDeleteProfilePicture &&
@@ -163,7 +154,7 @@ export default function Profile() {
                                             draggedImage: style.draggedImage
                                         }}
                                     />
-                                    {formValue.picture_url !== '' &&
+                                    {user.picture_url !== '' &&
                                         <>
                                             <p>You Picture</p>
                                             <div className={style.profilePicture}>
@@ -205,11 +196,11 @@ export default function Profile() {
                                 </div>
                             </div>
                             <div className={style.buttons}>
-                                <button disabled={canUpdateForm}>
+                                <button disabled={canSubmitForm}>
                                     Редактирай
                                 </button>
                                 <button className={style.cancel} type="button" onClick={resetUserEditOnClickHandler}
-                                        disabled={canCancelForm}>
+                                        disabled={canSubmitForm}>
                                     Отказ
                                 </button>
                             </div>

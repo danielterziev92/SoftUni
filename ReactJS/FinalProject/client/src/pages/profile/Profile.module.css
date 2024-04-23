@@ -92,8 +92,8 @@
 
 .ProfileForm .picture .dragGroup .draggedImage div i {
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: -5px;
+    top: -5px;
     color: var(--redColor);
     font-size: 1.2rem;
 }

@@ -62,18 +62,35 @@ export const userSlice = createSlice({
             state.loading = false;
             addMessage(action.payload.message);
         },
-        updateUserData: (state, action) => {
+        updateUserDataPending: (state, action) => {
+            state.loading = true;
+        },
+        updateUserDataSuccess: (state, action) => {
             return {
                 ...state,
                 loading: false,
-                data: action.payload,
+                data: {...state.data, ...action.payload},
             }
         },
-        deleteProfilePicture: (state, action) => {
+        updateUserDataFailure: (state, action) => {
             state.loading = false;
-            state.data.picture_url = '';
             addMessage(action.payload.message);
-        }
+        },
+        deleteProfilePicturePending: (state, action) => {
+            state.loading = true;
+        },
+        deleteProfilePictureSuccess: (state, action) => {
+            addMessage(action.payload.message);
+            return {
+                ...state,
+                loading: false,
+                data: {...state.data, picture_url: '',}
+            };
+        },
+        deleteProfilePictureFailure: (state, action) => {
+            state.loading = false;
+            addMessage(action.payload.message);
+        },
     },
 });
 
@@ -88,8 +105,12 @@ export const {
     fetchUserDataPending,
     fetchUserDataSuccess,
     fetchUserDataFailure,
-    updateUserData,
-    deleteProfilePicture
+    updateUserDataPending,
+    updateUserDataSuccess,
+    updateUserDataFailure,
+    deleteProfilePicturePending,
+    deleteProfilePictureSuccess,
+    deleteProfilePictureFailure,
 } = userSlice.actions;
 
 export const selectUser = (state) => state.user.data;

@@ -108,6 +108,6 @@ export const fetchUserData = createAsyncThunk(
 )
 
 export const updateUserDataAction = (userData) => ({
-    type: 'user/updateUserData',
+    type: 'user/updateUserDataSuccess',
     payload: userData,
 });
