@@ -36,7 +36,7 @@ class UserInfoAPIView(api_views.RetrieveAPIView, SessionMixin):
             user_info['last_name'] = user_profile.last_name
             user_info['phone'] = user_profile.phone
             try:
-                user_info['picture'] = user_profile.picture_url.url
+                user_info['picture_url'] = user_profile.picture_url.url + '.jpg'
             except AttributeError:
                 user_info['picture_url'] = ''
 

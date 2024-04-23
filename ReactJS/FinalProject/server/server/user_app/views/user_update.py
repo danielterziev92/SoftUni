@@ -25,44 +25,50 @@ class UserUpdateAPIView(api_views.UpdateAPIView, SessionMixin):
     authentication_classes = (SessionAuthentication,)
 
     def put(self, request, *args, **kwargs):
-        image_file = request.FILES.get('image', None)
-        user_data = request.data.get('userData', None)
+        try:
+            image_file = request.FILES.get('image', None)
+            user_data = request.data.get('userData', None)
 
-        if not user_data:
-            return Response({'error': 'Data is missing'}, status=status.HTTP_400_BAD_REQUEST)
+            if not user_data:
+                return Response({'error': 'Data is missing'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Parse user data
-        clear_user_data = json.loads(user_data)
+            # Parse user data
+            clear_user_data = json.loads(user_data)
 
-        # Get user and user profile
-        user = self.get_user_pk(session_id=request.COOKIES.get('sessionid'))
-        user_profile = UserProfile.objects.get(user=user)
-        folder_name = f'profile/{user.pk}'
+            # Get user and user profile
+            user = self.get_user_pk(session_id=request.COOKIES.get('sessionid'))
+            user_profile = UserProfile.objects.get(user=user)
+            folder_name = f'profile/{user.pk}'
 
-        if image_file:
-            if user_profile.picture_url is None:
-                cloudinary_api.create_folder(folder_name)
+            if image_file:
+                if hasattr(user_profile.picture_url, 'public_id'):
+                    cloudinary_uploader.destroy(public_id=user_profile.picture_url.public_id)
 
-            # Upload image
-            uploaded_picture = cloudinary_uploader.upload(
-                file=image_file, folder=folder_name,
-                # upload_preset='profile_picture'
-            )
-            clear_user_data['picture_url'] = uploaded_picture.get('public_id')
-        else:
-            clear_user_data['picture_url'] = user_profile.picture_url
+                if user_profile.picture_url is None:
+                    cloudinary_api.create_folder(folder_name)
 
-        # Update user profile with new data
-        are_equal, user_profile = self._check_new_and_old_data(user_profile, clear_user_data)
-        if are_equal:
-            user_profile.save()
+                # Upload image
+                uploaded_picture = cloudinary_uploader.upload(
+                    file=image_file, folder=folder_name,
+                    # upload_preset='profile_picture'
+                )
+                clear_user_data['picture_url'] = uploaded_picture.get('public_id')
+            else:
+                clear_user_data['picture_url'] = user_profile.picture_url
 
-        # Serialize user profile to JSON string
-        profile_serializer = UserUpdateSerializer(user_profile)
-        serialized_profile = profile_serializer.data
+            # Update user profile with new data
+            are_equal, user_profile = self._check_new_and_old_data(user_profile, clear_user_data)
+            if are_equal:
+                user_profile.save()
 
-        return Response({'message': 'User data updated successfully', 'data': serialized_profile},
-                        status=status.HTTP_200_OK)
+            # Serialize user profile to JSON string
+            profile_serializer = UserUpdateSerializer(user_profile)
+            serialized_profile = profile_serializer.data
+
+            return Response({'message': 'User data updated successfully', 'data': serialized_profile},
+                            status=status.HTTP_200_OK)
+        except UserProfile.DoesNotExist:
+            return Response({'message': 'Profile does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     @staticmethod
     def _check_new_and_old_data(old_data, new_data):

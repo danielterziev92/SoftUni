@@ -10,6 +10,8 @@ from server.core.mixins.session_mixin import SessionMixin
 
 from server.user_app.models import UserProfile
 
+from cloudinary import uploader as cloudinary_uploader
+
 
 @method_decorator(csrf_protect, name='dispatch')
 class DeleteUserProfilePicture(api_views.DestroyAPIView, SessionMixin):
@@ -20,10 +22,12 @@ class DeleteUserProfilePicture(api_views.DestroyAPIView, SessionMixin):
         try:
             user_pk = self.get_user_pk(session_id=request.COOKIES.get('sessionid'))
             user = UserProfile.objects.get(user_id=user_pk)
+            user_picture_url = user.picture_url
 
-            if not user.picture_url and user.picture_url == '':
+            if not user_picture_url and user_picture_url == '':
                 return Response({'message': 'Profile do not have a picture profile'}, status=status.HTTP_204_NO_CONTENT)
 
+            cloudinary_uploader.destroy(public_id=user_picture_url.public_id)
             user.picture_url = None
             user.save()
 
