@@ -76,13 +76,18 @@
 
 .ProfileForm .picture .dragGroup .draggedImage {
     width: 100%;
-    max-width: 200px;
+    /*max-width: 200px;*/
     height: 100%;
     max-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ProfileForm .picture .dragGroup .draggedImage div {
     position: relative;
+    padding: 0;
+    margin: 0;
 }
 
 .ProfileForm .picture .dragGroup .draggedImage div i {

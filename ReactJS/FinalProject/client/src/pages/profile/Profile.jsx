@@ -22,6 +22,8 @@ import objectManager from "../../utils/compareObjects.js";
 import Urls from "../../utils/Urls.js";
 import CookieManager from "../../utils/cookieManager.js";
 
+const HeaderContentTile = 'Profile'
+
 const FormKey = {
     Email: 'email',
     FirstName: 'first_name',
@@ -96,9 +98,9 @@ export default function Profile() {
 
             await axios.put(Urls.user.update, requestBody, axiosConfig).then(response => {
                 const {message, data} = response.data;
-                dispatch(updateUserDataAction(data));
-                addMessage(message);
                 const newFormValues = {...formValue, ...data};
+                dispatch(updateUserDataAction(newFormValues));
+                addMessage(message);
                 updateFormValue(newFormValues);
                 setDroppedImage(null);
             })
@@ -147,7 +149,7 @@ export default function Profile() {
                                 closeModalHanlder={() => setIsDeleteProfilePicture(false)}
                             />
                         }
-                        <HeaderContent title={'Профил'} navigation={'profile'}/>
+                        <HeaderContent title={HeaderContentTile} navigation={'profile'}/>
                         <form onSubmit={onSubmitForm} className={style.ProfileForm}>
                             <div className={style.profileFormContainer}>
                                 <div className={style.picture}>
