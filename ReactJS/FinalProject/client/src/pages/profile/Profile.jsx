@@ -96,8 +96,11 @@ export default function Profile() {
 
             await axios.put(Urls.user.update, requestBody, axiosConfig).then(response => {
                 const {message, data} = response.data;
-                updateUserDataAction(data);
+                dispatch(updateUserDataAction(data));
                 addMessage(message);
+                const newFormValues = {...formValue, ...data};
+                updateFormValue(newFormValues);
+                setDroppedImage(null);
             })
         } catch (error) {
             addMessage(error);
@@ -118,6 +121,7 @@ export default function Profile() {
 
         const response = await axios.delete(Urls.user.deleteProfilePicture, axiosConfig);
         dispatch(deleteProfilePicture(response.data));
+        updateFormValue({...formValue, picture_url: ''});
 
         setIsDeleteProfilePicture(false);
         setIsLoading(false);
@@ -157,7 +161,7 @@ export default function Profile() {
                                             draggedImage: style.draggedImage
                                         }}
                                     />
-                                    {user.picture_url !== '' &&
+                                    {formValue.picture_url !== '' &&
                                         <>
                                             <p>You Picture</p>
                                             <div className={style.profilePicture}>
@@ -175,23 +179,23 @@ export default function Profile() {
                                 </div>
                                 <div className={style.info}>
                                     <div>
-                                        <label htmlFor={FormKey.Email}>Имейл:</label>
+                                        <label htmlFor={FormKey.Email}>Email:</label>
                                         <input type="email" name={FormKey.Email} value={formValue[FormKey.Email]}
                                                onChange={changeDataHandler} readOnly={true} disabled={true}
                                         />
                                     </div>
                                     <div>
-                                        <label htmlFor={FormKey.FirstName}>Име:</label>
+                                        <label htmlFor={FormKey.FirstName}>First Name:</label>
                                         <input type="text" name={FormKey.FirstName} value={formValue[FormKey.FirstName]}
                                                onChange={changeDataHandler}/>
                                     </div>
                                     <div>
-                                        <label htmlFor={FormKey.LastName}>Фамилия:</label>
+                                        <label htmlFor={FormKey.LastName}>Last Name:</label>
                                         <input type="text" name={FormKey.LastName} value={formValue[FormKey.LastName]}
                                                onChange={changeDataHandler}/>
                                     </div>
                                     <div>
-                                        <label htmlFor={FormKey.Phone}>Телефон:</label>
+                                        <label htmlFor={FormKey.Phone}>Phone Number:</label>
                                         <input type={'tel:+359' + formValue[FormKey.Phone]}
                                                value={'+359' + formValue[FormKey.Phone]}
                                                onChange={changeDataHandler}/>

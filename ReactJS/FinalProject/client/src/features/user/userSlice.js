@@ -63,8 +63,11 @@ export const userSlice = createSlice({
             addMessage(action.payload.message);
         },
         updateUserData: (state, action) => {
-            state.loading = false;
-            state.data = action.payload;
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+            }
         },
         deleteProfilePicture: (state, action) => {
             state.loading = false;

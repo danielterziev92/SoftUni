@@ -119,7 +119,7 @@
 }
 
 .ProfileForm .picture .profilePicture figure {
-    width: 250px;
+    width: 70%;
     height: 250px;
     margin: 0;
     display: flex;
