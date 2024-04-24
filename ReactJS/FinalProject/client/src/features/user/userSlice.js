@@ -1,6 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {useDispatch} from "react-redux";
 
 import {addMessage} from "../message/messageSlice.js";
+import {addMessageAction} from "../message/messageActions.js";
+
+// const dispatch = useDispatch();
 
 const initialState = {
     data: {
@@ -74,7 +78,6 @@ export const userSlice = createSlice({
         },
         updateUserDataFailure: (state, action) => {
             state.loading = false;
-            addMessage(action.payload.message);
         },
         deleteProfilePicturePending: (state, action) => {
             state.loading = true;
@@ -89,7 +92,6 @@ export const userSlice = createSlice({
         },
         deleteProfilePictureFailure: (state, action) => {
             state.loading = false;
-            addMessage(action.payload.message);
         },
     },
 });
@@ -115,6 +117,9 @@ export const {
 
 export const selectUser = (state) => state.user.data;
 export const selectIsAuthenticated = (state) => state.user.isAuthenticated;
-export const isUserDataLoading = (state) => state.user.loading;
+
+export const dispatchAddMessage = (message) => (dispatch) => {
+    dispatch(addMessage(message));
+};
 
 export default userSlice.reducer;

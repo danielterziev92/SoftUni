@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    messages: [],
+    all: [],
 };
 
 export const messageSlice = createSlice({
@@ -9,14 +9,21 @@ export const messageSlice = createSlice({
     initialState,
     reducers: {
         addMessage: (state, action) => {
-            state.messages.push(action.payload);
+            state.all.push({
+                message: action.payload.message,
+                status: action.payload.status,
+                timeoutId: 0,
+            });
         },
-        clearMessages: (state) => {
-            state.messages = [];
+        clearAllMessages: (state) => {
+            state.all = [];
         },
     },
 });
 
-export const { addMessage, clearMessages } = messageSlice.actions;
+export const {
+    addMessage,
+    clearAllMessages,
+} = messageSlice.actions;
 
 export default messageSlice.reducer;

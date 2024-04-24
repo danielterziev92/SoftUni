@@ -26,6 +26,7 @@ import useForm from "../../hooks/useForm.js";
 import objectManager from "../../utils/compareObjects.js";
 import Urls from "../../utils/Urls.js";
 import CookieManager from "../../utils/cookieManager.js";
+import {addMessageAction} from "../../features/message/messageActions.js";
 
 const HeaderContentTile = 'Profile'
 
@@ -94,11 +95,12 @@ export default function Profile() {
             await axios.put(Urls.user.update, requestBody, axiosConfig).then(response => {
                 const {message, data} = response.data;
                 dispatch(updateUserDataAction(data));
-                addMessage(message);
+                dispatch(addMessageAction(message, response.status));
                 setDroppedImage(null);
             })
         } catch (error) {
-            addMessage(error);
+            dispatch(updateUserDataFailure());
+            dispatch(addMessageAction(error.response.data.message, error.response.status));
         }
     }
 
@@ -112,10 +114,15 @@ export default function Profile() {
         };
         dispatch(deleteProfilePicturePending());
 
-        const response = await axios.delete(Urls.user.deleteProfilePicture, axiosConfig);
-
-        if (response.status === 202 || response.status === 404) dispatch(deleteProfilePictureFailure(response.data));
-        if (response.status === 200) dispatch(deleteProfilePictureSuccess(response.data));
+        try {
+            const response = await axios.delete(Urls.user.deleteProfilePicture, axiosConfig);
+            const {status, data} = response;
+            dispatch(deleteProfilePictureSuccess());
+            dispatch(addMessageAction(data.message, status))
+        } catch (error) {
+            dispatch(deleteProfilePictureFailure());
+            dispatch(addMessage(error.response.data.message));
+        }
 
         setIsDeleteProfilePicture(false);
     }
