@@ -1,13 +1,11 @@
 import {useEffect, useLayoutEffect, useRef} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-
-import {addMessage} from "../../features/message/messageSlice.js";
-import {selectIsAuthenticated, selectUser} from "../../features/user/userSlice.js";
+import {toast} from "react-hot-toast";
 
 import {fetchUserData, loginUser, updateUserDataAction} from "../../features/user/userActions.js";
 
-import authStyle from "../Authentication.module.css";
+import authStyle from "../../components/Authentication.module.css";
 
 import useForm from "../../hooks/useForm.js";
 
@@ -32,8 +30,8 @@ export default function Login() {
     const focusedInput = useRef('username');
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
 
-    const user = useSelector(selectUser);
-    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const user = useSelector(state => state.user.data);
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
     useLayoutEffect(() => {
         if (isAuthenticated) return navigate(-1)
@@ -58,12 +56,15 @@ export default function Login() {
     }, [focusedInput.current]);
 
     function loginSubmitFormHandler(data) {
-        dispatch(loginUser(data)).then(result => {
-            if (result.payload && result.payload.message === 'Login successful.') {
-                addMessage(result.payload.message)
-                navigate('/');
+        toast.promise(dispatch(loginUser(data)), {
+            loading: 'Logging in...',
+            success: 'Login successful',
+            error: 'Error logging in',
+        }).then(
+            _ => {
+                navigate(Paths.afterLogin);
             }
-        });
+        );
     }
 
 
@@ -74,14 +75,16 @@ export default function Login() {
                     {Object.entries(formValue).map(([key, value]) => (
                         <div key={key}>
                             <label htmlFor={key}>{FormInformation[key].label}</label>
-                            <input id={key} value={formValue[key]} name={key} type={FormInformation[key].type}
+                            <input id={key} value={formValue[key]} name={key}
+                                   type={FormInformation[key].type}
                                    onChange={changeDataHandler}
                                    ref={focusedInput.current === key ? focusedInput : null}
                             />
                         </div>
                     ))}
                     <div>
-                        <button type="submit" disabled={user.loading}>{user.loading ? 'Зарежда се...' : 'Вход'}</button>
+                        <button type="submit"
+                                disabled={user.loading}>{user.loading ? 'Зарежда се...' : 'Вход'}</button>
                     </div>
                     <div>
                         <span>Нямате регистрация ?</span>

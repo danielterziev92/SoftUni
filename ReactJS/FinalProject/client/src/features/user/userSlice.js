@@ -1,7 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {useDispatch} from "react-redux";
 
-import {addMessage} from "../message/messageSlice.js";
 import {addMessageAction} from "../message/messageActions.js";
 
 // const dispatch = useDispatch();
@@ -31,11 +29,9 @@ export const userSlice = createSlice({
             state.loading = false;
             state.isAuthenticated = true;
             state.data = action.payload.user;
-            addMessage(action.payload.message);
         },
         loginUserFailure: (state, action) => {
             state.loading = false;
-            addMessage(action.payload.message);
         },
         logoutUser: (state) => {
             state.data = {};
@@ -45,15 +41,9 @@ export const userSlice = createSlice({
         checkAuthPending: (state) => {
             state.loading = true;
         },
-        checkAuthSuccess: (state, action) => {
+        checkAuthFinished: (state, action) => {
             state.loading = false;
-            state.isAuthenticated = true;
-            addMessage(action.payload.message);
-        },
-        checkAuthFailure: (state, action) => {
-            state.loading = false;
-            addMessage(action.payload.message);
-            state.isAuthenticated = false;
+            state.isAuthenticated = action.payload;
         },
         fetchUserDataPending: (state, action) => {
             state.loading = true;
@@ -64,7 +54,6 @@ export const userSlice = createSlice({
         },
         fetchUserDataFailure: (state, action) => {
             state.loading = false;
-            addMessage(action.payload.message);
         },
         updateUserDataPending: (state, action) => {
             state.loading = true;
@@ -79,19 +68,12 @@ export const userSlice = createSlice({
         updateUserDataFailure: (state, action) => {
             state.loading = false;
         },
-        deleteProfilePicturePending: (state, action) => {
-            state.loading = true;
-        },
-        deleteProfilePictureSuccess: (state, action) => {
-            addMessage(action.payload.message);
+        deleteProfilePicture: (state, action) => {
             return {
                 ...state,
                 loading: false,
                 data: {...state.data, picture_url: '',}
             };
-        },
-        deleteProfilePictureFailure: (state, action) => {
-            state.loading = false;
         },
     },
 });
@@ -101,25 +83,18 @@ export const {
     loginUserSuccess,
     loginUserFailure,
     logoutUser,
-    checkAuthPending,
-    checkAuthSuccess,
-    checkAuthFailure,
+    checkAuthPending, checkAuthFinished,
     fetchUserDataPending,
     fetchUserDataSuccess,
     fetchUserDataFailure,
     updateUserDataPending,
     updateUserDataSuccess,
     updateUserDataFailure,
-    deleteProfilePicturePending,
-    deleteProfilePictureSuccess,
-    deleteProfilePictureFailure,
+    deleteProfilePicture,
 } = userSlice.actions;
 
 export const selectUser = (state) => state.user.data;
 export const selectIsAuthenticated = (state) => state.user.isAuthenticated;
 
-export const dispatchAddMessage = (message) => (dispatch) => {
-    dispatch(addMessage(message));
-};
 
 export default userSlice.reducer;

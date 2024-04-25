@@ -1,10 +1,9 @@
 import {useLayoutEffect, useRef} from "react";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import {Toaster} from "react-hot-toast";
 
 import {checkAuthentication, fetchUserData, updateUserDataAction} from "./features/user/userActions.js";
-
-import {selectIsAuthenticated} from "./features/user/userSlice.js";
 
 import style from "./components/Main.module.css";
 
@@ -12,10 +11,9 @@ import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import Aside from "./components/aside/Aside.jsx";
 import Products from "./components/products/Products.jsx";
 import ProductsProvider from "./contexts/ProductsContext.jsx";
-import Login from "./components/login/Login.jsx";
+import Login from "./pages/login/Login.jsx";
 import Logout from "./components/logout/Logout.jsx";
 import Register from "./components/register/Register.jsx";
-import MessageBoxDialog from "./components/message-box-dialog/MessageBoxDialog.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import Groups from "./components/groups/Groups.jsx";
 import Index from "./components/index/Index.jsx";
@@ -29,7 +27,7 @@ export default function App() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const isAuthenticated = useSelector(store => store.user.isAuthenticated);
 
     const previousPage = useRef('');
 
@@ -38,20 +36,32 @@ export default function App() {
     }, []);
 
     useLayoutEffect(() => {
-        const fetchData = async () => {
-            const mandatoryValues = ['email', 'first_name', 'last_name', 'phone'];
-
+        const checkAuth = async () => {
+            if (isAuthenticated) return;
             await dispatch(checkAuthentication());
 
             if (!isAuthenticated) return navigate(Paths.login);
+        }
+
+        checkAuth();
+    }, []);
+
+    useLayoutEffect(() => {
+        const fetchData = async () => {
+            if (!isAuthenticated) return;
+
+            const mandatoryValues = ['email', 'first_name', 'last_name', 'phone'];
 
             const userLocalData = JSON.parse(localStorage.getItem('userData'));
 
-            const allKeysValuesNotEmptyString = mandatoryValues.every(key => {
-                return Object.keys(userLocalData).includes(key) && userLocalData[key] !== '';
-            })
+            let areAllKeysValuesNotEmptyString = false;
+            if (userLocalData) {
+                areAllKeysValuesNotEmptyString = mandatoryValues.every(key => {
+                    return Object.keys(userLocalData).includes(key) && userLocalData[key] !== '';
+                })
+            }
 
-            if (!allKeysValuesNotEmptyString) {
+            if (!areAllKeysValuesNotEmptyString) {
                 await dispatch(fetchUserData());
                 return navigate(previousPage.current);
             }
@@ -68,7 +78,7 @@ export default function App() {
         <ErrorBoundary>
             {isAuthenticated && <Aside/>}
             <main className={style.MainContent}>
-                <MessageBoxDialog/>
+                <Toaster/>
                 <Routes>
                     <Route path={Paths.index} element={<Index/>}/>
                     <Route path={Paths.login} element={<Login/>}/>

@@ -7,7 +7,7 @@ import messageReducer from '../features/message/messageSlice';
 export const store = configureStore({
     reducer: {
         user: userReducer,
-        messages: messageReducer,
+        notification: messageReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
