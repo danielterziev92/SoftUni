@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 
-import {fetchUserData, loginUser, updateUserDataAction} from "../../features/user/userActions.js";
+import {fetchUserDataAction, loginUserAction, updateUserDataAction} from "../../features/user/userActions.js";
 
 import authStyle from "../../components/Authentication.module.css";
 
@@ -38,7 +38,7 @@ export default function Login() {
 
         const userCookieData = CookieManager.getCookie('userData');
         if (userCookieData !== null && objectManager.compareObjects(userCookieData, {}) && objectManager.notEmptyValues(user)) {
-            dispatch(fetchUserData());
+            dispatch(fetchUserDataAction());
             return navigate(-1);
         }
 
@@ -56,7 +56,7 @@ export default function Login() {
     }, [focusedInput.current]);
 
     function loginSubmitFormHandler(data) {
-        toast.promise(dispatch(loginUser(data)), {
+        toast.promise(dispatch(loginUserAction(data)), {
             loading: 'Logging in...',
             success: 'Login successful',
             error: 'Error logging in',

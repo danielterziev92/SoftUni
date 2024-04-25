@@ -3,26 +3,19 @@ import {toast} from "react-hot-toast";
 
 import axios from "axios";
 
-import {
-    loginUserPending,
-    loginUserSuccess,
-    loginUserFailure,
-    checkAuthPending,
-    checkAuthFinished,
-    fetchUserDataPending,
-    fetchUserDataSuccess,
-    fetchUserDataFailure,
-    deleteProfilePicture,
-} from "./userSlice.js"
+import _ from 'lodash';
+
+import {loginUser, checkAuth, fetchUserData, deleteProfilePicture, updateUserData,} from "./userSlice.js"
 
 import {fetchCSRFToken} from "../../services/authServices.js";
 
 import CookieManager from "../../utils/cookieManager.js";
 
 import Urls from "../../utils/Urls.js";
+import {keyToSend} from "../../pages/profile/Profile.jsx";
 
 
-export const loginUser = createAsyncThunk(
+export const loginUserAction = createAsyncThunk(
     'user/loginUser',
     async (userData, {rejectWithValue, dispatch}) => {
         try {
@@ -35,27 +28,20 @@ export const loginUser = createAsyncThunk(
                 withCredentials: true,
             };
 
-            dispatch(loginUserPending);
-            console.log('pending')
-
             const response = await axios.post(Urls.user.login, userData, config);
-            console.log(response)
-            dispatch(loginUserSuccess(response.data));
+            dispatch(loginUser(response.data));
 
             localStorage.setItem('userData', JSON.stringify(response.data.user));
 
-            return response.data;
+            return response;
         } catch (error) {
-
-            dispatch(loginUserFailure(error.response.data));
-
-            return rejectWithValue(error.response.data);
+            return error.response;
         }
     }
 );
 
 
-export const checkAuthentication = createAsyncThunk(
+export const checkAuthenticationAction = createAsyncThunk(
     'user/checkAuthentication',
     async (_, {dispatch}) => {
         const csrfToken = CookieManager.getCookie('csrftoken');
@@ -72,14 +58,13 @@ export const checkAuthentication = createAsyncThunk(
             withCredentials: true,
         };
 
-        dispatch(checkAuthPending());
         const response = await axios.get(Urls.user.authentication, axiosConfig);
 
-        dispatch(checkAuthFinished(response.data.isAuthenticated));
+        dispatch(checkAuth(response.data.isAuthenticated));
     }
 );
 
-export const fetchUserData = createAsyncThunk(
+export const fetchUserDataAction = createAsyncThunk(
     'user/fetchUserData',
     async (_, {dispatch}) => {
         const csrfToken = CookieManager.getCookie('csrftoken');
@@ -93,40 +78,46 @@ export const fetchUserData = createAsyncThunk(
         };
 
         try {
-            dispatch(fetchUserDataPending());
             const response = await axios.get(Urls.user.profile, axiosConfig);
 
-            dispatch(fetchUserDataSuccess(response.data));
+            dispatch(fetchUserData(response.data));
 
             localStorage.setItem('userData', JSON.stringify(response.data));
         } catch (error) {
-            dispatch(fetchUserDataFailure());
             toast.error(error.response.data.message, {duration: 5000,});
         }
     }
 )
 
-export const updateProfileData = createAsyncThunk(
+export const updateProfileDataAction = createAsyncThunk(
     'user/checkAuthentication',
-    async (_, {dispatch}) => {
-        const csrfToken = CookieManager.getCookie('csrftoken');
-
-        if (!csrfToken) {
-            fetchCSRFToken();
-        }
-
+    async (dataset, {dispatch}) => {
         const axiosConfig = {
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
+                'Content-Type': 'multipart/form-data',
+                'X-CSRFToken': CookieManager.getCookie('csrftoken'),
             },
             withCredentials: true,
         };
 
-        dispatch(checkAuthPending());
-        const response = await axios.get(Urls.user.authentication, axiosConfig);
+        try {
+            const {data, droppedImage} = dataset;
+            const userData = _.pick(data, keyToSend);
 
-        dispatch(checkAuthFinished(response.data.isAuthenticated));
+            const requestBody = new FormData();
+            requestBody.append('userData', JSON.stringify(userData));
+
+            if (droppedImage) {
+                requestBody.append('image', droppedImage);
+            }
+
+            const response = await axios.put(Urls.user.update, requestBody, axiosConfig)
+
+            dispatch(updateUserData(response.data.data));
+            return response;
+        } catch (error) {
+            return error.response;
+        }
     }
 );
 

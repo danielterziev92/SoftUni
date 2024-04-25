@@ -1,18 +1,10 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-
-import {
-    updateUserDataFailure,
-    updateUserDataPending
-} from "../../features/user/userSlice.js";
-import {
-    deleteProfilePictureAction,
-    updateUserDataAction
-} from "../../features/user/userActions.js";
-
-import axios from "axios";
+import {toast} from "react-hot-toast";
 
 import _ from 'lodash';
+
+import {deleteProfilePictureAction, updateProfileDataAction} from "../../features/user/userActions.js";
 
 import HeaderContent from "../../components/header-content/HeaderContent.jsx";
 import DragAndDropBox from "../../components/drag-and-drop-box/DragAndDropBox.jsx";
@@ -23,10 +15,6 @@ import style from './Profile.module.css';
 import useForm from "../../hooks/useForm.js";
 
 import objectManager from "../../utils/compareObjects.js";
-import Urls from "../../utils/Urls.js";
-import CookieManager from "../../utils/cookieManager.js";
-import {addMessageAction} from "../../features/message/messageActions.js";
-import {toast} from "react-hot-toast";
 
 const HeaderContentTile = 'Profile'
 
@@ -39,8 +27,8 @@ const FormKey = {
     PictureUrl: 'picture_url'
 }
 
-const keyToCheck = ['id', 'email', 'first_name', 'last_name', 'phone', 'picture_url'];
-const keyToSend = ['first_name', 'last_name', 'phone', 'picture_url', 'image'];
+export const keyToCheck = ['id', 'email', 'first_name', 'last_name', 'phone', 'picture_url'];
+export const keyToSend = ['first_name', 'last_name', 'phone', 'picture_url', 'image'];
 
 export default function Profile() {
     const user = useSelector(state => state.user.data);
@@ -50,7 +38,7 @@ export default function Profile() {
     const [canSubmitForm, setCanSubmitForm] = useState(true);
     const [droppedImage, setDroppedImage] = useState(null);
 
-    const {formValue, updateFormValue, changeDataHandler, onSubmitForm,} = useForm(
+    const {formValue, updateFormValue, updateFormValueByKeyAndValue, changeDataHandler, onSubmitForm,} = useForm(
         {
             ...Object.fromEntries(Object.keys(FormKey)
                 .map(key => [FormKey[key], ''])),
@@ -73,34 +61,21 @@ export default function Profile() {
     }
 
     async function updateUserDataOnSubmit(data) {
-        try {
-            const axiosConfig = {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'X-CSRFToken': CookieManager.getCookie('csrftoken'),
-                },
-                withCredentials: true,
-            };
-            const userData = _.pick(data, keyToSend);
 
-            const requestBody = new FormData();
-            requestBody.append('userData', JSON.stringify(userData));
-            if (droppedImage) {
-                requestBody.append('image', droppedImage);
-            }
+        const toastId = toast.loading('Updating...');
 
-            dispatch(updateUserDataPending());
+        const response = await dispatch(updateProfileDataAction({data, droppedImage}));
 
-            await axios.put(Urls.user.update, requestBody, axiosConfig).then(response => {
-                const {message, data} = response.data;
-                dispatch(updateUserDataAction(data));
-                dispatch(addMessageAction(message, response.status));
-                setDroppedImage(null);
-            })
-        } catch (error) {
-            dispatch(updateUserDataFailure());
-            dispatch(addMessageAction(error.response.data.message, error.response.status));
+        if (response.payload.status === 200) {
+            updateFormValue({...formValue, ...response.payload.data.data})
+
+            toast.success('Profile updated successfully.');
+            setDroppedImage(null);
+        } else {
+            toast.error('Something went wrong.');
         }
+
+        toast.dismiss(toastId);
     }
 
     async function deleteProfilePictureHandler() {
@@ -110,8 +85,10 @@ export default function Profile() {
         const response = await dispatch(deleteProfilePictureAction(formValue));
 
         if (response.payload.status === 200) {
-            toast.success(response.payload.data.message);
+            updateFormValueByKeyAndValue(FormKey.PictureUrl, '');
             setDroppedImage(null);
+            setShowDeleteProfilePictureModal(false);
+            toast.success(response.payload.data.message);
         } else {
             toast.error(response.payload.data.message);
         }

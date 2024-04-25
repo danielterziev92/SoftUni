@@ -3,7 +3,7 @@ import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Toaster} from "react-hot-toast";
 
-import {checkAuthentication, fetchUserData, updateUserDataAction} from "./features/user/userActions.js";
+import {checkAuthenticationAction, fetchUserDataAction, updateUserDataAction} from "./features/user/userActions.js";
 
 import style from "./components/Main.module.css";
 
@@ -38,7 +38,7 @@ export default function App() {
     useLayoutEffect(() => {
         const checkAuth = async () => {
             if (isAuthenticated) return;
-            await dispatch(checkAuthentication());
+            await dispatch(checkAuthenticationAction());
 
             if (!isAuthenticated) return navigate(Paths.login);
         }
@@ -62,7 +62,7 @@ export default function App() {
             }
 
             if (!areAllKeysValuesNotEmptyString) {
-                await dispatch(fetchUserData());
+                await dispatch(fetchUserDataAction());
                 return navigate(previousPage.current);
             }
 
@@ -78,7 +78,7 @@ export default function App() {
         <ErrorBoundary>
             {isAuthenticated && <Aside/>}
             <main className={style.MainContent}>
-                <Toaster/>
+                <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
                 <Routes>
                     <Route path={Paths.index} element={<Index/>}/>
                     <Route path={Paths.login} element={<Login/>}/>
