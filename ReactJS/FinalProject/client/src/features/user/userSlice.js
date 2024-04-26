@@ -21,7 +21,7 @@ export const userSlice = createSlice({
     reducers: {
         loginUser: (state, action) => {
             state.isAuthenticated = true;
-            state.data = action.payload.user;
+            state.data = action.payload;
         },
         logoutUser: (state) => {
             state.data = {};
@@ -33,18 +33,14 @@ export const userSlice = createSlice({
         fetchUserData: (state, action) => {
             state.data = action.payload;
         },
-        updateUserData: (state, action) => {
-            return {
-                ...state,
-                data: {...state.data, ...action.payload},
-            }
-        },
-        deleteProfilePicture: (state, action) => {
-            return {
-                ...state,
-                data: {...state.data, picture_url: '',}
-            };
-        },
+        updateUserData: (state, action) => ({
+            ...state,
+            data: {...state.data, ...action.payload},
+        }),
+        deleteProfilePicture: (state, action) => ({
+            ...state,
+            data: {...state.data, picture_url: '',}
+        }),
     },
 });
 

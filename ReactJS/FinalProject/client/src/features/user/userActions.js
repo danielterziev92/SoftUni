@@ -33,9 +33,9 @@ export const loginUserAction = createAsyncThunk(
 
             localStorage.setItem('userData', JSON.stringify(response.data.user));
 
-            return response;
+            return response.data;
         } catch (error) {
-            return error.response;
+            return rejectWithValue(error.response.data);
         }
     }
 );

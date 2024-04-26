@@ -46,7 +46,7 @@ export default function Login() {
             navigate(-1)
         }
 
-        updateUserDataAction(userCookieData);
+        dispatch(updateUserDataAction(userCookieData));
     }, []);
 
     useEffect(() => {
@@ -55,16 +55,19 @@ export default function Login() {
         }
     }, [focusedInput.current]);
 
-    function loginSubmitFormHandler(data) {
-        toast.promise(dispatch(loginUserAction(data)), {
-            loading: 'Logging in...',
-            success: 'Login successful',
-            error: 'Error logging in',
-        }).then(
-            _ => {
-                navigate(Paths.afterLogin);
-            }
-        );
+    async function loginSubmitFormHandler(data) {
+        const toastId = toast.loading('Loading...');
+
+        const response = await dispatch(loginUserAction(data));
+
+        if (response.meta.requestStatus === 'fulfilled') {
+            toast.success(response.payload.message);
+        } else {
+            const {message} = response.payload;
+            toast.error(message);
+        }
+
+        toast.dismiss(toastId);
     }
 
 
