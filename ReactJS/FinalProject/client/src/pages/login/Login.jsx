@@ -1,5 +1,5 @@
 import {useEffect, useLayoutEffect, useRef} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 
@@ -19,13 +19,14 @@ const initialUserData = {
 }
 
 export const FormInformation = {
-    email: {type: 'email', label: 'Имейл'},
-    password: {type: 'password', label: 'Парола'},
+    email: {type: 'email', label: 'Email'},
+    password: {type: 'password', label: 'Password'},
 }
 
 export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const focusedInput = useRef('username');
     const {formValue, changeDataHandler, onSubmitForm,} = useForm(initialUserData, loginSubmitFormHandler);
@@ -34,7 +35,7 @@ export default function Login() {
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
     useLayoutEffect(() => {
-        if (isAuthenticated) return navigate(-1)
+        if (isAuthenticated) return location.pathname === Paths.login ? navigate(Paths.index) : navigate(-1);
 
         const userCookieData = CookieManager.getCookie('userData');
         if (userCookieData !== null && objectManager.compareObjects(userCookieData, {}) && objectManager.notEmptyValues(user)) {
@@ -62,6 +63,7 @@ export default function Login() {
 
         if (response.meta.requestStatus === 'fulfilled') {
             toast.success(response.payload.message);
+            navigate(Paths.afterLogin);
         } else {
             const {message} = response.payload;
             toast.error(message);
@@ -86,12 +88,11 @@ export default function Login() {
                         </div>
                     ))}
                     <div>
-                        <button type="submit"
-                                disabled={user.loading}>{user.loading ? 'Зарежда се...' : 'Вход'}</button>
+                        <button type="submit">Login</button>
                     </div>
                     <div>
-                        <span>Нямате регистрация ?</span>
-                        <Link to={Paths.register}>Регистирай се</Link>
+                        <span>Don&apos;t have a registration?</span>
+                        <Link to={Paths.register}>Sign up</Link>
                     </div>
                 </form>
             </article>

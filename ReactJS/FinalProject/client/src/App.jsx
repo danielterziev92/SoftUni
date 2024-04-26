@@ -1,4 +1,4 @@
-import {useLayoutEffect, useRef} from "react";
+import {useLayoutEffect, useRef, useState} from "react";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Toaster} from "react-hot-toast";
@@ -21,6 +21,7 @@ import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Page404 from "./components/page-404/Page404.jsx";
 
 import Paths from "./utils/Paths.js";
+import Spinner from "./components/spinner/Spinner.jsx";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ export default function App() {
     const isAuthenticated = useSelector(store => store.user.isAuthenticated);
 
     const previousPage = useRef('');
+    const [isLoading, setIsLoading] = useState(true);
 
     useLayoutEffect(() => {
         previousPage.current = location.pathname;
@@ -39,6 +41,7 @@ export default function App() {
         const checkAuth = async () => {
             if (isAuthenticated) return;
             await dispatch(checkAuthenticationAction());
+            setIsLoading(false);
 
             if (!isAuthenticated) return navigate(Paths.login);
         }
@@ -76,23 +79,28 @@ export default function App() {
 
     return (
         <ErrorBoundary>
+            {isLoading
+                ? <Spinner/>
+                : (<>
             {isAuthenticated && <Aside/>}
-            <main className={style.MainContent}>
-                <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
-                <Routes>
-                    <Route path={Paths.index} element={<Index/>}/>
-                    <Route path={Paths.login} element={<Login/>}/>
-                    <Route path={Paths.register} element={<Register/>}/>
-                    <Route element={<PrivateRoutes/>}>
-                        <Route path={Paths.logout} element={<Logout/>}/>
-                        <Route path={Paths.profile} element={<Profile/>}/>
-                        <Route path={Paths.products}
-                               element={<ProductsProvider><Products/></ProductsProvider>}/>
-                        <Route path={Paths.groups} element={<Groups/>}/>
-                    </Route>
-                    <Route path='*' element={<Page404/>}/>
-                </Routes>
-            </main>
+                <main className={style.MainContent}>
+                    <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
+                    <Routes>
+                        <Route path={Paths.index} element={<Index/>}/>
+                        <Route path={Paths.login} element={<Login/>}/>
+                        <Route path={Paths.register} element={<Register/>}/>
+                        <Route element={<PrivateRoutes/>}>
+                            <Route path={Paths.logout} element={<Logout/>}/>
+                            <Route path={Paths.profile} element={<Profile/>}/>
+                            <Route path={Paths.products}
+                                   element={<ProductsProvider><Products/></ProductsProvider>}/>
+                            <Route path={Paths.groups} element={<Groups/>}/>
+                        </Route>
+                        <Route path='*' element={<Page404/>}/>
+                    </Routes>
+                </main>
+                </>)
+            }
         </ErrorBoundary>
     );
 }
