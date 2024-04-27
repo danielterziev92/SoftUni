@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import generics as api_views, status
 from rest_framework.authentication import SessionAuthentication
@@ -30,7 +31,7 @@ class UserUpdateAPIView(api_views.UpdateAPIView, SessionMixin):
             user_data = request.data.get('userData', None)
 
             if not user_data:
-                return Response({'error': 'Data is missing'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': _('Data is missing')}, status=status.HTTP_404_NOT_FOUND)
 
             # Parse user data
             clear_user_data = json.loads(user_data)
@@ -65,10 +66,10 @@ class UserUpdateAPIView(api_views.UpdateAPIView, SessionMixin):
             profile_serializer = UserUpdateSerializer(user_profile)
             serialized_profile = profile_serializer.data
 
-            return Response({'message': 'User data updated successfully', 'data': serialized_profile},
+            return Response({'message': _('User data updated successfully'), 'data': serialized_profile},
                             status=status.HTTP_200_OK)
         except UserProfile.DoesNotExist:
-            return Response({'message': 'Profile does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': _('Profile does not exist')}, status=status.HTTP_404_NOT_FOUND)
 
     @staticmethod
     def _check_new_and_old_data(old_data, new_data):

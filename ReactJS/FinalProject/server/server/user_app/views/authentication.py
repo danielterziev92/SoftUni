@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
@@ -8,8 +8,12 @@ from rest_framework import generics as api_views, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from server.core.mixins.session_mixin import SessionMixin
 from server.user_app.serializers import UserLoginSerializer
+
+UserModel = get_user_model()
 
 
 @method_decorator(csrf_protect, name='dispatch')
@@ -28,6 +32,9 @@ class LoginView(api_views.GenericAPIView):
 
         if not password:
             return Response({'message': _('Password is not provided.')}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not UserModel.objects.filter(email=email).exists():
+            return Response({'message': _('Email is not registered.')}, status=status.HTTP_400_BAD_REQUEST)
 
         user = authenticate(email=email, password=password)
 
@@ -55,13 +62,13 @@ class LogoutView(api_views.GenericAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({'message': _('User is not authenticated.')}, status=status.HTTP_401_UNAUTHORIZED)
+
         logout(request)
 
-        response = Response({'message': 'You have been logged out.'})
-        response.delete_cookie('csrftoken')
-
-        return response
+        return Response({'message': _('You have been logged out.')})
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -84,13 +91,12 @@ class CheckAuthenticationView(api_views.GenericAPIView):
             return Response(
                 {
                     'message': _('Authentication credentials were not provided'),
-                    'isAuthenticated': True
+                    'isAuthenticated': False
                 },
                 status=status.HTTP_403_FORBIDDEN
             )
 
         return Response(
-            {
-                'message': _('User is authenticated.'),
-                'isAuthenticated': True
-            }, status=status.HTTP_200_OK)
+            {'isAuthenticated': True},
+            status=status.HTTP_200_OK
+        )

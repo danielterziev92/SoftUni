@@ -1,7 +1,7 @@
-from django.db.models.expressions import NoneType
 from django.http import Http404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import generics as api_views, status
 from rest_framework.authentication import SessionAuthentication
@@ -47,4 +47,4 @@ class UserInfoAPIView(api_views.RetrieveAPIView, SessionMixin):
 
             return Response(user_info, status=status.HTTP_200_OK)
         except Http404:
-            return Response({'message': 'Session not found'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'message': _('Session not found')}, status=status.HTTP_406_NOT_ACCEPTABLE)
