@@ -6,8 +6,6 @@ import useMessageContext from "../../hooks/useMessageContext.js";
 
 import useForm from "../../hooks/useForm.js";
 
-import {addGroup} from "../../services/groupService.js";
-
 const FormKey = {
     Code: 'code',
     Name: 'name',
@@ -29,18 +27,18 @@ export default function GroupAdd({allGroups, hideModal, setNewGroup}) {
         }
 
         const parentCategoryId = allGroups.find(group => group.name === data?.parent_category)?.id;
-        try {
-            const response = await addGroup({
-                            code: data.code,
-                            name: data.name,
-                            parent_category: Number(parentCategoryId) || null
-                        });
-            setNewGroup(response);
-            hideModal();
-        } catch (e) {
-            updateMessage(e);
-            updateStatus('error');
-        }
+        // try {
+        //     const response = await addGroup({
+        //                     code: data.code,
+        //                     name: data.name,
+        //                     parent_category: Number(parentCategoryId) || null
+        //                 });
+        //     setNewGroup(response);
+        //     hideModal();
+        // } catch (e) {
+        //     updateMessage(e);
+        //     updateStatus('error');
+        // }
     }
 
     return (
@@ -63,11 +61,11 @@ export default function GroupAdd({allGroups, hideModal, setNewGroup}) {
                         value={formValue.parent_category_name || ''}
                         onChange={changeDataHandler}>
                         <option value="">Главна категория</option>
-                        {allGroups.map(category => (
-                            <option key={category.id} value={category.name}>
-                                {category.name}
-                            </option>
-                        ))}
+                        {/*{allGroups.map(category => (*/}
+                        {/*    <option key={category.id} value={category.name}>*/}
+                        {/*        {category.name}*/}
+                        {/*    </option>*/}
+                        {/*))}*/}
                     </select>
                 </form>}
             errorButtonMessage={'Отказ'}

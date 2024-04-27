@@ -47,10 +47,9 @@ export const userSlice = createSlice({
 export const {
     loginUser,
     logoutUser,
-    checkAuth, checkAuthFinished,
+    checkAuth,
     fetchUserData,
     updateUserData,
-    updateUserDataFailure,
     deleteProfilePicture,
 } = userSlice.actions;
 

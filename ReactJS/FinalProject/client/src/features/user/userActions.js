@@ -5,34 +5,49 @@ import axios from "axios";
 
 import _ from 'lodash';
 
-import {loginUser, checkAuth, fetchUserData, deleteProfilePicture, updateUserData,} from "./userSlice.js"
-
-import {fetchCSRFToken} from "../../services/authServices.js";
+import {loginUser, logoutUser, checkAuth, fetchUserData, deleteProfilePicture, updateUserData,} from "./userSlice.js"
 
 import CookieManager from "../../utils/cookieManager.js";
 
 import Urls from "../../utils/Urls.js";
 import {keyToSend} from "../../pages/profile/Profile.jsx";
+import cookieManager from "../../utils/cookieManager.js";
+
+async function getCRSFToken() {
+    let csrfToken = CookieManager.getCookie('csrftoken');
+
+    if (!csrfToken) {
+        const response = await axios.get(Urls.CRSFToken);
+        csrfToken = response.data.csrfToken;
+        cookieManager.setCookie('csrftoken', csrfToken, 1);
+    }
+
+    return csrfToken;
+}
+
+async function getAxiosConfig(contentType) {
+    const csrfToken = await getCRSFToken()
+
+    return {
+        headers: {
+            'Content-Type': contentType,
+            'X-CSRFToken': csrfToken,
+        },
+        withCredentials: true,
+    }
+}
 
 
 export const loginUserAction = createAsyncThunk(
     'user/loginUser',
     async (userData, {rejectWithValue, dispatch}) => {
-        try {
-            const csrfToken = CookieManager.getCookie('csrftoken');
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
-                },
-                withCredentials: true,
-            };
+        const axiosConfig = await getAxiosConfig('application/json');
 
-            const response = await axios.post(Urls.user.login, userData, config);
+        try {
+            const response = await axios.post(Urls.user.login, userData, axiosConfig);
             dispatch(loginUser(response.data));
 
             localStorage.setItem('userData', JSON.stringify(response.data.user));
-
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -44,19 +59,7 @@ export const loginUserAction = createAsyncThunk(
 export const checkAuthenticationAction = createAsyncThunk(
     'user/checkAuthentication',
     async (_, {dispatch}) => {
-        const csrfToken = CookieManager.getCookie('csrftoken');
-
-        if (!csrfToken) {
-            fetchCSRFToken();
-        }
-
-        const axiosConfig = {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            withCredentials: true,
-        };
+        const axiosConfig = await getAxiosConfig('application/json');
 
         const response = await axios.get(Urls.user.authentication, axiosConfig);
 
@@ -67,15 +70,7 @@ export const checkAuthenticationAction = createAsyncThunk(
 export const fetchUserDataAction = createAsyncThunk(
     'user/fetchUserData',
     async (_, {dispatch}) => {
-        const csrfToken = CookieManager.getCookie('csrftoken');
-
-        const axiosConfig = {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            withCredentials: true,
-        };
+        const axiosConfig = await getAxiosConfig('application/json');
 
         try {
             const response = await axios.get(Urls.user.profile, axiosConfig);
@@ -92,13 +87,7 @@ export const fetchUserDataAction = createAsyncThunk(
 export const updateProfileDataAction = createAsyncThunk(
     'user/checkAuthentication',
     async (dataset, {dispatch}) => {
-        const axiosConfig = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'X-CSRFToken': CookieManager.getCookie('csrftoken'),
-            },
-            withCredentials: true,
-        };
+        const axiosConfig = await getAxiosConfig('multipart/form-data');
 
         try {
             const {data, droppedImage} = dataset;
@@ -124,13 +113,7 @@ export const updateProfileDataAction = createAsyncThunk(
 export const deleteProfilePictureAction = createAsyncThunk(
     'user/deleteProfilePicture',
     async (_, {dispatch}) => {
-        const axiosConfig = {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': CookieManager.getCookie('csrftoken'),
-            },
-            withCredentials: true,
-        };
+        const axiosConfig = await getAxiosConfig('application/json');
 
         try {
             const response = await axios.delete(Urls.user.deleteProfilePicture, axiosConfig);
@@ -142,7 +125,24 @@ export const deleteProfilePictureAction = createAsyncThunk(
     }
 );
 
+export const logoutUserAction = createAsyncThunk(
+    'user/logoutUser',
+    async (_, {dispatch}) => {
+        const axiosConfig = await getAxiosConfig('application/json');
+
+        try {
+            const response = await axios.get(Urls.user.logout, axiosConfig);
+            dispatch(logoutUser());
+            localStorage.removeItem('userData');
+            return response.data;
+        } catch (error) {
+            console.log('error', error.response)
+            return error.response.data;
+        }
+    }
+);
+
 export const updateUserDataAction = (userData) => ({
-    type: 'user/updateUserDataSuccess',
+    type: 'user/updateUserData',
     payload: userData,
 });

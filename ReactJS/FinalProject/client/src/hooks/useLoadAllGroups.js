@@ -1,18 +1,15 @@
-import {useContext, useLayoutEffect, useState} from "react";
-import {MessageContext} from "../contexts/MessageContext.jsx";
-import {getAllGroups} from "../services/groupService.js";
+import { useLayoutEffect, useState} from "react";
 
 const useLoadAllGroups = () => {
     const [groups, setGroups] = useState([]);
-    const {updateMessage, updateStatus} = useContext(MessageContext);
 
     useLayoutEffect(() => {
-        getAllGroups()
-            .then(data => uniqueGroups(data))
-            .catch(e => {
-                updateMessage(e);
-                updateStatus('error');
-            })
+        // getAllGroups()
+        //     .then(data => uniqueGroups(data))
+        //     .catch(e => {
+        //         updateMessage(e);
+        //         updateStatus('error');
+        //     })
     }, []);
 
     const uniqueGroups = (data) => {

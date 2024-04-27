@@ -1,9 +1,4 @@
-import {createContext, useContext, useEffect, useReducer, useRef, useState} from "react";
-import {initialProductData} from "../components/product-form/ProductForm.jsx";
-import {SingleProductContext} from "./SingleProductContext.js";
-import {ProductFormContext} from "./ProductFormContext.js";
-import useLoadAllGroups from "../hooks/useLoadAllGroups.js";
-import {getProductById} from "../services/productService.js";
+import {createContext} from "react";
 
 const ProductDataContext = createContext();
 ProductDataContext.displayName = 'ProductDataContext';

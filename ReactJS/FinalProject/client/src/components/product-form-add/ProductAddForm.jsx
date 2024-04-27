@@ -1,25 +1,17 @@
-import {useContext, useRef} from "react";
+import {useRef} from "react";
 
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
 import ProductForm, {initialProductData} from "../product-form/ProductForm.jsx";
 
-import {createProduct} from '../../services/productService.js'
-
-import {MessageContext} from "../../contexts/MessageContext.jsx";
-import {SingleProductContext} from "../../contexts/SingleProductContext.js";
-import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 import {validationFormRules} from "../product-form-base-info/validationFormRules.js";
 
 import useFormValidation from "../../hooks/useFormValidation.js";
-import {ProductFormContext} from "../../contexts/ProductFormContext.js";
 
 function areAllFalsyExceptField(obj) {
     return Object.values(obj).every(value => !value);
 }
 
 export default function ProductAddForm({closeModalHandler}) {
-    const {updateMessage, updateStatus} = useContext(MessageContext);
-    const {addToAllProducts} = useContext(ProductsContext)
     const formRef = useRef();
     const {validateForm} = useFormValidation(validationFormRules);
 
@@ -40,21 +32,13 @@ export default function ProductAddForm({closeModalHandler}) {
         })
 
         if (!areAllFalsyExceptField(result)) {
-            updateMessage('Моля попълнете всички полета');
-            updateStatus('error');
             return;
         }
 
         try {
-            const result = await createProduct({...productData});
-            addToAllProducts(result);
-            updateMessage('Успешно добавихте продукт');
-            updateStatus('success');
             closeModalHandler();
         } catch (e) {
             const messages = Object.values(e)
-            updateMessage(messages)
-            updateStatus('error');
         }
 
     }
@@ -82,11 +66,7 @@ export default function ProductAddForm({closeModalHandler}) {
         <MessageBoxModal
             title={'Добавяне на продукт'}
             body={
-                <SingleProductContext.Provider value={{...singleProductContextValue}}>
-                    <ProductFormContext.Provider value={{...productFormContextValue}}>
-                        <ProductForm/>
-                    </ProductFormContext.Provider>
-                </SingleProductContext.Provider>
+                <ProductForm/>
             }
             errorButtonMessage={'Отказ'}
             errorButtonHandler={closeModalHandler}

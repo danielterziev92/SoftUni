@@ -1,5 +1,5 @@
-import {useEffect, useLayoutEffect, useRef} from "react";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {Link, useLocation, useNavigate,} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 
@@ -12,6 +12,7 @@ import useForm from "../../hooks/useForm.js";
 import Paths from "../../utils/Paths.js";
 import CookieManager from "../../utils/cookieManager.js";
 import objectManager from "../../utils/compareObjects.js";
+
 
 const initialUserData = {
     email: '',
@@ -34,6 +35,7 @@ export default function Login() {
     const user = useSelector(state => state.user.data);
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
+
     useLayoutEffect(() => {
         if (isAuthenticated) return location.pathname === Paths.login ? navigate(Paths.index) : navigate(-1);
 
@@ -55,6 +57,7 @@ export default function Login() {
             focusedInput.current.focus();
         }
     }, [focusedInput.current]);
+
 
     async function loginSubmitFormHandler(data) {
         const toastId = toast.loading('Loading...');

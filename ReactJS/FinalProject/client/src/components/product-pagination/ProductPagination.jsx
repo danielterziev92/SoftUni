@@ -3,7 +3,6 @@ import {useContext, useEffect, useRef, useState} from "react";
 import paginationStyle from './ProductPagination.module.css';
 
 import {ProductsContext} from "../../contexts/ProductsContext.jsx";
-import {getAllProducts} from "../../services/productService.js";
 import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 const initialPagination = {
@@ -112,15 +111,15 @@ export default function ProductPagination({setPaginationState, productToShow, se
     const goLastPageClickHandler = () => goToPageClickHandler(calculateTotalPages());
 
     async function refreshAllProductClickHandler() {
-        try {
-            const allProducts = await getAllProducts();
-            updateAllProducts(allProducts);
-            setProductToShow(allProducts);
-            updateMessage('Всички продукти са обновени');
-            updateStatus('success');
-        } catch (e) {
-            console.log(e);
-        }
+        // try {
+        //     const allProducts = await getAllProducts();
+        //     updateAllProducts(allProducts);
+        //     setProductToShow(allProducts);
+        //     updateMessage('Всички продукти са обновени');
+        //     updateStatus('success');
+        // } catch (e) {
+        //     console.log(e);
+        // }
     }
 
 

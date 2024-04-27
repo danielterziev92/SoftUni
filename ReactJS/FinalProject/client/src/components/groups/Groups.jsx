@@ -8,7 +8,6 @@ import GroupAdd from "../group-add/GroupAdd.jsx";
 
 import useMessageContext from "../../hooks/useMessageContext.js";
 
-import {deleteGroupById, getAllGroups, updateGroupById} from "../../services/groupService.js";
 import compareObjects from "../../utils/compareObjects.js";
 
 export default function Groups() {
@@ -23,7 +22,7 @@ export default function Groups() {
     const [newGroup, setNewGroup] = useState({});
 
     useLayoutEffect(() => {
-        getAllGroups().then(setGroups).catch(console.log);
+        // getAllGroups().then(setGroups).catch(console.log);
     }, []);
 
     useEffect(() => {
@@ -75,33 +74,33 @@ export default function Groups() {
 
     async function updateGroupInfo(data) {
         const selectedGroup = filteredCategory.find(group => group.name === data.parent_category_name);
-        const {parent_category_name, id, ...correctData} = {
-            ...data,
-            parent_category: Number(selectedGroup?.id) || null
-        };
-        try {
-            const response = await updateGroupById(selectedGroupData.id, correctData);
-            updateMessage('Успешно променихте групата');
-            updateStatus('success');
-            console.log('the response is ', response)
-            setGroups(updateGroupName(data));
-        } catch (e) {
-            updateMessage(e);
-            updateStatus('error');
-        }
+        // const {parent_category_name, id, ...correctData} = {
+        //     ...data,
+        //     parent_category: Number(selectedGroup?.id) || null
+        // };
+        // try {
+        //     // const response = await updateGroupById(selectedGroupData.id, correctData);
+        //     updateMessage('Успешно променихте групата');
+        //     updateStatus('success');
+        //     // console.log('the response is ', response)
+        //     setGroups(updateGroupName(data));
+        // } catch (e) {
+        //     updateMessage(e);
+        //     updateStatus('error');
+        // }
     }
 
     async function deleteGroupClickHandler(id) {
-        try {
-            await deleteGroupById(id);
-            updateMessage('Успешно изтрихте групата');
-            updateStatus('success');
-            const newGroups = await getAllGroups();
-            setGroups(newGroups);
-        } catch (e) {
-            updateMessage(e);
-            updateStatus('error');
-        }
+        // try {
+        //     await deleteGroupById(id);
+        //     updateMessage('Успешно изтрихте групата');
+        //     updateStatus('success');
+        //     const newGroups = await getAllGroups();
+        //     setGroups(newGroups);
+        // } catch (e) {
+        //     updateMessage(e);
+        //     updateStatus('error');
+        // }
     }
 
     return (

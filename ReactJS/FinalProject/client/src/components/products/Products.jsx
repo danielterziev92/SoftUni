@@ -3,15 +3,12 @@ import {useContext, useEffect, useState} from "react";
 import navStyle from '../Main.module.css'
 
 import ProductAddForm from "../product-form-add/ProductAddForm.jsx";
-import MessageBoxDialog from "../message-box-dialog/MessageBoxDialog.jsx";
 import SearchProduct from "../search-product/SearchProduct.jsx";
 import Spinner from "../spinner/Spinner.jsx";
 import ProductList from "../product-list/ProductList.jsx";
 
 import {ProductsContext} from "../../contexts/ProductsContext.jsx";
 
-import {getAllProducts} from "../../services/productService.js";
-import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 const initialState = {
     title: 'Всички продукти',
@@ -25,14 +22,13 @@ export default function Products() {
     const [searchProduct, setSearchProduct] = useState('');
     const [isShowAddProduct, setIsShowAddProduct] = useState(false);
 
-    const {updateMessage, isMessageBoxShow} = useContext(MessageContext);
     const {allProducts, updateAllProducts, setMatchesProducts, isSearchingProducts} = useContext(ProductsContext);
 
     useEffect(() => {
-        getAllProducts()
-            .then(updateAllProducts)
-            .catch(e => updateMessage({message: e, status: 'error'}))
-            .finally(() => setProductsState(state => ({...state, isSpinnerShow: false})));
+        // getAllProducts()
+        //     .then(updateAllProducts)
+        //     .catch(e => updateMessage({message: e, status: 'error'}))
+        //     .finally(() => setProductsState(state => ({...state, isSpinnerShow: false})));
     }, []);
 
     useEffect(() => {
@@ -49,7 +45,6 @@ export default function Products() {
 
     return (
         <>
-            {isMessageBoxShow && <MessageBoxDialog/>}
             <nav className={navStyle.Nav}>
                 <ul>
                     <li><h2>Всички продукти</h2></li>

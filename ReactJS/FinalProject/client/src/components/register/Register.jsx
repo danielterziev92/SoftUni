@@ -7,7 +7,6 @@ import {MessageContext} from "../../contexts/MessageContext.jsx";
 
 import useForm from "../../hooks/useForm.js";
 
-import {loginUser, registerUser} from "../../services/userService.js";
 
 import Paths from "../../utils/Paths.js";
 
@@ -69,7 +68,6 @@ const reducerActions = {
 
 export default function Register() {
     const {updateMessage, updateStatus} = useContext(MessageContext);
-    const {loginUserInApp} = useContext(AuthenticationContext);
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -111,14 +109,14 @@ export default function Register() {
             return;
         }
 
-        try {
-            await registerUser({...value});
-            const token = await loginUser({username: value.username, password: value.password});
-            loginUserInApp(token);
-        } catch (e) {
-            updateMessage(e.message);
-            updateStatus('error');
-        }
+        // try {
+        //     await registerUser({...value});
+        //     const token = await loginUser({username: value.username, password: value.password});
+        //     loginUserInApp(token);
+        // } catch (e) {
+        //     updateMessage(e.message);
+        //     updateStatus('error');
+        // }
 
         function checkAllValue(obj) {
             if (Object.values(obj).every(value => !value) || Object.values(obj).some(value => !value)) {

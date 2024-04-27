@@ -1,8 +1,4 @@
-import {useContext, useEffect, useReducer, useRef, useState} from "react";
-
-import {SingleProductContext} from "../../contexts/SingleProductContext.js";
-import {ProductFormContext} from "../../contexts/ProductFormContext.js";
-import ProductDataContext from "../../contexts/ProductDataContext.js";
+import {useEffect, useReducer, useRef, useState} from "react";
 
 import styleForm from './ProductForm.module.css';
 
@@ -10,9 +6,6 @@ import useEscapeKey from "../../hooks/useEscapeKey.js";
 import useLoadAllGroups from "../../hooks/useLoadAllGroups.js";
 import ProductFormBaseInfo from "../product-form-base-info/ProductFormBaseInfo.jsx";
 import MessageBoxModal from "../message-box-modal/MessageBoxModal.jsx";
-
-import {getProductById} from "../../services/productService.js";
-
 
 export const initialProductData = {
     name: '',
@@ -43,34 +36,27 @@ export default function ProductForm() {
     const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
     const isFirstRender = useRef(true);
 
-    const {product} = useContext(SingleProductContext)
-    const {
-        productChanged,
-        updateProductChanged,
-        deleteProductClickHandler,
-        closeModalHandler
-    } = useContext(ProductFormContext);
     const groups = useLoadAllGroups();
 
     useEffect(() => {
-        if (product.id === undefined) {
-            return;
-        }
-
-        getProductById(product.id)
-            .then(updateProductState)
-            .catch(e => console.log(e));
+        // if (product.id === undefined) {
+        //     return;
+        // }
+        //
+        // getProductById(product.id)
+        //     .then(updateProductState)
+        //     .catch(e => console.log(e));
     }, []);
 
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-
-        updateProductState(product);
-        updateProductChanged(false);
-    }, [productChanged]);
+    // useEffect(() => {
+    //     if (isFirstRender.current) {
+    //         isFirstRender.current = false;
+    //         return;
+    //     }
+    //
+    // updateProductState(product);
+    // updateProductChanged(false);
+    // }, [productChanged]);
 
     useEffect(() => {
         updateProductDataByKey('selectedGroup', productData.group);
@@ -90,7 +76,7 @@ export default function ProductForm() {
 
     const deleteModalBody = (
         <div className={styleForm.deleteModalBody}>
-            <p>Сигурни ли сте, че искате да изтриете <span className={styleForm.productTitle}>{product.name}</span></p>
+            {/*<p>Сигурни ли сте, че искате да изтриете <span className={styleForm.productTitle}>{product.name}</span></p>*/}
             <p className={styleForm.attention}>Този процес е необратим.</p>
         </div>
     );
@@ -99,16 +85,11 @@ export default function ProductForm() {
 
     const showModalClickHandler = () => setIsDeleteModalShow(true);
 
-    useEscapeKey(isDeleteModalShow ? hideDeleteModalClickHandler : closeModalHandler);
+    // useEscapeKey(isDeleteModalShow ? hideDeleteModalClickHandler : closeModalHandler);
 
-    const productDataContextValue = {
-        productData,
-        updateProductState,
-        updateProductDataByKey
-    }
 
     return (
-        <ProductDataContext.Provider value={{...productDataContextValue}}>
+        <>
             {isDeleteModalShow &&
                 <MessageBoxModal
                     title={'Изтриване на продукт'}
@@ -123,6 +104,6 @@ export default function ProductForm() {
                 />
             }
             <ProductFormBaseInfo showModalClickHandler={showModalClickHandler}/>
-        </ProductDataContext.Provider>
+        </>
     );
 }
