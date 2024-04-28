@@ -1,4 +1,4 @@
-import {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {useEffect, useLayoutEffect, useRef} from "react";
 import {Link, useLocation, useNavigate,} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
@@ -34,6 +34,7 @@ export default function Login() {
 
     const user = useSelector(state => state.user.data);
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    const browserHistory = useSelector(state => state.history.browser);
 
 
     useLayoutEffect(() => {
@@ -66,7 +67,8 @@ export default function Login() {
 
         if (response.meta.requestStatus === 'fulfilled') {
             toast.success(response.payload.message);
-            navigate(Paths.afterLogin);
+            const moveTo = browserHistory[0] !== Paths.login ? browserHistory[0] : Paths.afterLogin
+            navigate(moveTo);
         } else {
             const {message} = response.payload;
             toast.error(message);

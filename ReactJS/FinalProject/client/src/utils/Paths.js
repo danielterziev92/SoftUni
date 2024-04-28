@@ -8,7 +8,7 @@ const Paths = {
     register: '/register',
     products: '/products',
     groups: '/groups',
-    profile: '/profile/',
+    profile: '/profile',
 
 }
 

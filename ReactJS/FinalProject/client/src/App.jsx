@@ -1,4 +1,4 @@
-import {useLayoutEffect, useRef, useState} from "react";
+import {useLayoutEffect, useState} from "react";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Toaster} from "react-hot-toast";
@@ -32,7 +32,6 @@ export default function App() {
     const isAuthenticated = useSelector(store => store.user.isAuthenticated);
     const lastVisitedPage = useSelector(state => state.history.browser[state.history.browser.length - 1]);
 
-    const previousPage = useRef('');
     const [isLoading, setIsLoading] = useState(true);
 
     useLayoutEffect(() => {
@@ -69,11 +68,9 @@ export default function App() {
 
             if (!areAllKeysValuesNotEmptyString) {
                 await dispatch(fetchUserDataAction());
-                return navigate(previousPage.current);
             }
 
             await dispatch(updateUserDataAction(userLocalData));
-            return navigate(previousPage.current);
         }
 
         fetchData();
