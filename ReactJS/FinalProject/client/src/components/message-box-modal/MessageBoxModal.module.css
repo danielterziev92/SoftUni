@@ -1,75 +1,80 @@
+:root {
+    --borderOpacity: 0.35;
+}
+
 .overlay {
     position: absolute;
     width: 100%;
     height: 100vh;
     z-index: 2;
-    background-color: rgb(0, 0, 0, 0.1);
+    background-color: rgb(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.overlay div {
+.overlay .ModalDialog {
+    margin: 28px auto;
+    position: relative;
+    background-color: var(--whiteColor);
+    border-radius: 10px;
+}
+
+.overlay .ModalDialog .Content {
+    max-height: 100%;
+}
+
+.overlay .ModalDialog .Content .Header {
+    padding: 28px 40px 26px;
+    border-bottom: 1px solid rgb(var(--grayColorRGB), var(--borderOpacity));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.overlay .ModalDialog .Content .Header .CloseButton {
+    color: var(--grayColor);
+    font-size: 1.2rem;
+    cursor: pointer;
     position: relative;
 }
 
-.close {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    z-index: 2;
-    color: var(--redColor);
-    background-color: #ffffff;
-    border-radius: 50%;
-    font-size: 2rem;
-    cursor: pointer;
+/*.overlay .ModalDialog .Content .Header .CloseButton ::after {*/
+/*    content: 'Close';*/
+/*    position: absolute;*/
+/*    font-size: 0.8rem;*/
+/*    text-transform: capitalize;*/
+/*    font-family: 'Podkova', serif;*/
+/*    margin-left: 10px;*/
+/*    left: 100%;*/
+/*    top: 50%;*/
+/*    transform: translateY(-50%);*/
+/*    background-color: var(--primaryColor);*/
+/*    color: var(--whiteColor);*/
+/*    padding: 0.5rem;*/
+/*    border-radius: 4px;*/
+/*    white-space: nowrap;*/
+/*    opacity: 0;*/
+/*    transition: opacity 0.3s ease-in-out;*/
+/*}*/
+
+/*.overlay .ModalDialog .Content .Header .CloseButton :hover::after {*/
+/*    opacity: 1;*/
+/*}*/
+
+.overlay .ModalDialog .Content .Body {
+    padding: 28px 40px 30px;
+    overflow-y: auto;
+    position: relative;
+    flex: 1 1 auto;
 }
 
-.modal {
-    background-color: #ffffff;
-    border: 1px solid rgb(0, 0, 0, 0.3);
-    border-radius: 20px;
-    box-sizing: border-box;
-}
-
-.modal .title {
-    border-bottom: 1px solid rgb(0, 0, 0, 0.3);
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    font-weight: bolder;
-}
-
-.modal .body {
-    padding: 30px 10px;
-}
-
-.modal .buttons {
-    border-top: 1px solid rgb(0, 0, 0, 0.3);
-    padding: 10px 40px;
+.overlay .ModalDialog .Content .Footer {
     display: flex;
-    justify-content: flex-end;
+    flex-shrink: 0;
+    flex-wrap: wrap;
     align-items: center;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.modal .buttons button {
-    border: none;
-    border-radius: 10px;
-    color: #ffffff;
-    padding: 10px;
-    font-size: 1.2rem;
-    font-weight: bolder;
-}
-
-.modal .buttons .success {
-    --color: #68d177;
-
-    background-color: var(--color);
-    margin: 0 10px;
-}
-
-.modal .buttons .error {
-    --color: #da6e59;
-
-    background-color: var(--color);
+    justify-content: end;
+    border-top: 1px solid rgb(var(--grayColorRGB), var(--borderOpacity));
+    padding: 20px 20px;
 }

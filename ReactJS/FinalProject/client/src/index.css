@@ -37,6 +37,7 @@ aside::-webkit-scrollbar {
     --primaryColor: #1e293b;
     --secondaryColor: #6366f1;
     --grayColor: #838a95;
+    --grayColorRGB: 131, 138, 149;
     --redColor: #E83547;
     --greenColor: #03b288;
     --whiteColor: #fff;

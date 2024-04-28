@@ -51,6 +51,7 @@
 .HeaderContent button {
     width: 30px;
     height: 30px;
+    cursor: pointer;
     position: relative;
     border: none;
     border-radius: 5px;

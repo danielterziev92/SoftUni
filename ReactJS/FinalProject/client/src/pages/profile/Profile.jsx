@@ -4,7 +4,11 @@ import {toast} from "react-hot-toast";
 
 import _ from 'lodash';
 
-import {deleteProfilePictureAction, updateProfileDataAction} from "../../features/user/userActions.js";
+import {
+    deleteProfilePictureAction,
+    fetchUserDataAction,
+    updateProfileDataAction
+} from "../../features/user/userActions.js";
 
 import HeaderContent from "../../components/header-content/HeaderContent.jsx";
 import DragAndDropBox from "../../components/drag-and-drop-box/DragAndDropBox.jsx";
@@ -71,14 +75,12 @@ export default function Profile() {
     }
 
     async function updateUserDataOnSubmit(data) {
-
         const toastId = toast.loading('Updating...');
 
         const response = await dispatch(updateProfileDataAction({data, droppedImage}));
 
         if (response.payload.status === 200) {
             updateFormValue({...formValue, ...response.payload.data.data})
-
             toast.success('Profile updated successfully.');
             setDroppedImage(null);
         } else {
@@ -89,7 +91,6 @@ export default function Profile() {
     }
 
     async function deleteProfilePictureHandler() {
-
         const toastId = toast.loading('Deleting...');
 
         const response = await dispatch(deleteProfilePictureAction(formValue));
@@ -106,24 +107,35 @@ export default function Profile() {
         toast.dismiss(toastId);
     }
 
-    const resetUserEditOnClickHandler = () => {
-        updateFormValue({...formValue, ...user});
+    const resetUserEditOnClickHandler = () => updateFormValue({...formValue, ...user});
+
+    const refreshUserData = () => dispatch(fetchUserDataAction());
+
+    const MessageBoxModalFooter = () => {
+        return (
+            <>
+                <button className="btn success-solid mr-10" onClick={deleteProfilePictureHandler}>Yes</button>
+                <button className="btn danger-solid" onClick={() => setShowDeleteProfilePictureModal(false)}>No</button>
+            </>
+        )
     }
 
     return (
         <>
             {showDeleteProfilePictureModal &&
                 <MessageBoxModal
+                    contentStyleSize={'modal-small'}
                     title={'Delete Profile Picture'}
                     body={'Would you like to delete your profile?'}
-                    successButtonMessage={'Yes'}
-                    errorButtonMessage={'No'}
-                    successButtonHandler={deleteProfilePictureHandler}
-                    errorButtonHandler={() => setShowDeleteProfilePictureModal(false)}
+                    footer={MessageBoxModalFooter}
                     closeModalHanlder={() => setShowDeleteProfilePictureModal(false)}
                 />
             }
-            <HeaderContent title={HeaderContentTile} navigations={headerContentNavigations} refreshFunc={'asd'}/>
+            <HeaderContent
+                title={HeaderContentTile}
+                navigations={headerContentNavigations}
+                refreshFunc={refreshUserData}
+            />
             <form onSubmit={onSubmitForm} className={style.ProfileForm}>
                 <div className={style.profileFormContainer}>
                     <div className={style.picture}>
