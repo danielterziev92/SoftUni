@@ -7,17 +7,20 @@
 }
 
 .HeaderContent h4,
-.HeaderContent ul {
+.HeaderContent div,
+.HeaderContent div ul {
     display: flex;
     align-items: center;
+    justify-content: end;
 }
 
 .HeaderContent h4 {
     font-size: 1.7rem;
+    justify-content: start;
 }
 
 .HeaderContent ul {
-    justify-content: end;
+    margin-right: 20px;
 }
 
 .HeaderContent ul li {
@@ -26,15 +29,65 @@
 
 .HeaderContent ul li:first-child::after {
     content: "/";
-    color: #838a95;
+    color: var(--grayColor);
     margin: 0 7px;
 }
 
 .HeaderContent ul li a {
-    color: #838a95;
+    color: var(--grayColor);
     text-decoration: none;
 }
 
 .HeaderContent ul li a[href] {
-    color: #6366f1;
+    color: var(--secondaryColor);
+}
+
+.HeaderContent ul li .Disable {
+    color: var(--grayColor) !important;
+    pointer-events: none;
+    text-decoration: none;
+}
+
+.HeaderContent button {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--secondaryColor);
+    color: var(--whiteColor);
+}
+
+.HeaderContent button::after {
+    content: "Refresh data";
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--whiteColor);
+    padding: 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.HeaderContent button::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    top: 40px;
+    background: var(--primaryColor);
+    left: 50%;
+    transform: rotate(45deg) translateX(-50%);
+}
+
+.HeaderContent button::after,
+.HeaderContent button::before {
+    position: absolute;
+    background-color: var(--primaryColor);
+    opacity: 0;
+    transition: opacity ease;
+}
+
+.HeaderContent button:hover::after,
+.HeaderContent button:hover::before {
+    opacity: 1;
 }

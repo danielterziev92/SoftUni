@@ -2,23 +2,24 @@ import {Link} from "react-router-dom";
 
 import style from './HeaderContent.module.css';
 
-import Paths from "../../utils/Paths.js";
-
-
-export default function HeaderContent({title, navigation}) {
+export default function HeaderContent({title, navigations, refreshFunc}) {
 
 
     return (
         <div className={style.HeaderContent}>
             <h4>{title}</h4>
-            <ul>
-                <li>
-                    <Link to={Paths.dashboard}>Dashboard</Link>
-                </li>
-                <li>
-                    <a>{navigation.charAt(0).toUpperCase() + navigation.slice(1)}</a>
-                </li>
-            </ul>
+            <div>
+                <ul>
+                    {navigations.map((nav, index) => (
+                        <li key={index}>
+                            <Link to={nav.active ? nav.to : '#'} className={!nav.active && style.Disable}>
+                                {nav.name.charAt(0).toUpperCase() + nav.name.slice(1)}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+                <button onClick={refreshFunc}><i className="fa-solid fa-arrow-rotate-right"></i></button>
+            </div>
         </div>
     )
 }

@@ -15,6 +15,7 @@ import style from './Profile.module.css';
 import useForm from "../../hooks/useForm.js";
 
 import objectManager from "../../utils/compareObjects.js";
+import Paths from "../../utils/Paths.js";
 
 const HeaderContentTile = 'Profile'
 
@@ -26,6 +27,11 @@ const FormKey = {
     CompanyId: 'company_id',
     PictureUrl: 'picture_url'
 }
+
+const headerContentNavigations = [
+    {name: 'Dashbord', to: Paths.dashboard, active: true},
+    {name: 'Profile', to: Paths.profile, active: false},
+]
 
 export const keyToCheck = ['id', 'email', 'first_name', 'last_name', 'phone', 'picture_url'];
 export const keyToSend = ['first_name', 'last_name', 'phone', 'picture_url', 'image'];
@@ -46,6 +52,10 @@ export default function Profile() {
         }
         , updateUserDataOnSubmit
     );
+
+    useEffect(() => {
+        updateFormValue(user);
+    }, [user])
 
     useEffect(() => {
         if (droppedImage || !objectManager.compareObjects(_.pick(formValue, keyToCheck), user)) {
@@ -113,7 +123,7 @@ export default function Profile() {
                     closeModalHanlder={() => setShowDeleteProfilePictureModal(false)}
                 />
             }
-            <HeaderContent title={HeaderContentTile} navigation={'profile'}/>
+            <HeaderContent title={HeaderContentTile} navigations={headerContentNavigations} refreshFunc={'asd'}/>
             <form onSubmit={onSubmitForm} className={style.ProfileForm}>
                 <div className={style.profileFormContainer}>
                     <div className={style.picture}>

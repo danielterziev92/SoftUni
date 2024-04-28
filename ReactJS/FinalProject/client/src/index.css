@@ -34,8 +34,9 @@ aside::-webkit-scrollbar {
     /*-webkit-text-size-adjust: 100%;*/
 
 
-    --primary-color: #1e293b;
+    --primaryColor: #1e293b;
     --secondaryColor: #6366f1;
+    --grayColor: #838a95;
     --redColor: #E83547;
     --greenColor: #03b288;
     --whiteColor: #fff;
