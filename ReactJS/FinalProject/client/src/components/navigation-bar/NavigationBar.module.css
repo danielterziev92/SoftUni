@@ -192,7 +192,7 @@
 
 .NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu {
     position: absolute;
-    top: 65px;
+    top: 115%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;

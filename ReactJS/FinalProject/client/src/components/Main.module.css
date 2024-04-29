@@ -9,7 +9,7 @@
 }
 
 .MainContent.Minimized {
-    width: calc(100vw - 250px);
+    width: calc(100vw - var(--aside-width));
 }
 
 .MainContent.Expand {

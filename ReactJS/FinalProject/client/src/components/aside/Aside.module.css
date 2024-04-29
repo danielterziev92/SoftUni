@@ -1,16 +1,11 @@
 .Aside {
-    .verticalNavGroupItems .verticalNavGroupItem:last-child {
-        margin-top: auto;
-        justify-content: flex-end;
-        background-color: red;
-    }
-
     grid-area: aside;
     background-color: var(--aside-background);
     min-height: 100vh;
     max-height: 100vh;
-    width: 250px;
+    width: var(--aside-width);
     overflow-y: scroll;
+    padding: 40px;
     box-sizing: border-box;
 
     scrollbar-width: inherit;
@@ -30,103 +25,63 @@
     }
 }
 
-.Aside .Logo {
+.Aside ul {
+    position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    padding: 20px;
-    color: white;
-}
-
-.Aside .Logo figure {
-    width: 80%;
-}
-
-.Aside .Logo img {
-    width: 100%;
-}
-
-.Aside .profile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
-    padding: 10px 0;
-}
-
-.Aside .profile figure {
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    border: 1px solid black;
-    border-radius: 50%;
-    display: flex;
     justify-content: center;
-    align-items: center;
 }
 
-.Aside .profile figure img {
+.Aside ul li {
+    list-style: none;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.Aside ul li a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 128px;
+    height: 100px;
+    background-color: #2c3a52;
+    color: var(--whiteColor);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 19px 5px;
+    text-decoration: none;
+}
+
+.Aside ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    border-radius: 10px;
+    background: linear-gradient(132deg, #4f46e5 4.27%, #6366f1 100%);
+    opacity: 0;
+    transition: all ease 0.5s;
+    z-index: 1;
+}
+
+.Aside ul li a:hover::after {
+    opacity: 1;
     height: 100%;
 }
 
-.Aside .profile p {
-    padding-top: 20px;
-    font-size: 1.1rem;
+.Aside ul li a i {
+    font-size: 2rem;
+    z-index: 2;
 }
 
-.Aside .profile .profileEmail {
-    padding: 5px 0 20px 0;
-    font-size: 0.7rem;
-    color: #bbbbbb;
-}
-
-.Aside .profile p {
-    color: white;
-}
-
-.Aside .profile .profileEmail i {
-    margin-left: 10px;
-    position: relative;
+.Aside ul li a span {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: lighter;
+    z-index: 2;
 }
 
 
-.Aside .profile .profileEmail i .tooltip {
-    display: none;
-    position: absolute;
-    background-color: #ffffff;
-    color: #000000;
-    padding: 5px;
-    border-radius: 5px;
-    bottom: 20px;
-    right: -5px;
-    font-size: 0.7rem;
-    z-index: 1000;
-    font-family: Arial, serif;
-    white-space: nowrap;
-}
-
-.Aside .profile .profileEmail i .tooltip::before {
-    content: "";
-    background-color: #ffffff;
-    width: 7px;
-    height: 7px;
-    position: absolute;
-    bottom: -3px;
-    right: 5px;
-    transform: rotate(45deg);
-    z-index: 9;
-}
-
-.Aside .profile .profileEmail i:hover .tooltip {
-    display: inline-block;
-}
-
-.verticalNavGroupItems {
-    height: calc(100vh - 350px);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
