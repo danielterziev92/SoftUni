@@ -76,7 +76,7 @@ aside::-webkit-scrollbar {
 
     --table-list-products-close-button: #d51920;
 
-
+    --nav-bar-height: 80px;
     --nav-width: 200px;
     --aside-width: 100px;
 }
@@ -97,10 +97,33 @@ body {
 }
 
 #root {
-    display: flex;
     overflow: hidden;
+    display: grid;
+    grid-template-areas:
+          "nav-bar nav-bar"
+          "aside main";
+    height: 100vh;
 }
 
 .overflow-hidden {
     overflow-y: hidden;
+}
+
+.tooltip::after {
+    z-index: 3;
+    position: absolute;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    font-family: 'Podkova', serif;
+    background-color: var(--primaryColor);
+    color: var(--whiteColor);
+    padding: 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
 }

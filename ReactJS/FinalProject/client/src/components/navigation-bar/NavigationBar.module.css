@@ -1,0 +1,233 @@
+.NavigationBar {
+    grid-area: nav-bar;
+    width: 100%;
+    height: var(--nav-bar-height);
+    padding: 25px 50px;
+    background-color: var(--whiteColor);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.NavigationBar .LeftContainer,
+.NavigationBar .RightContainer {
+    width: 50%;
+    margin: 0;
+    padding: 0;
+}
+
+.NavigationBar .LeftContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 70px;
+}
+
+.NavigationBar .LeftContainer figure {
+    height: 50px;
+}
+
+.NavigationBar .LeftContainer figure img {
+    height: 100%;
+}
+
+.NavigationBar .LeftContainer .Menu {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.NavigationBar .LeftContainer .MenuLine {
+    width: 100%;
+    height: 4px;
+    background-color: black;
+    margin-bottom: 5px;
+    transition: transform 0.3s;
+}
+
+.NavigationBar .LeftContainer .Menu.Close .MenuLine:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+}
+
+.NavigationBar .LeftContainer .Menu.Close .MenuLine:nth-child(2) {
+    opacity: 0;
+}
+
+.NavigationBar .LeftContainer .Menu.Close .MenuLine:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.NavigationBar .RightContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    gap: 30px;
+}
+
+.NavigationBar .RightContainer .POS {
+    text-decoration: none;
+    border: 2px solid var(--secondaryColor);
+    border-radius: 5px;
+    color: var(--secondaryColor);
+    font-size: 1.2rem;
+    font-weight: bolder;
+    padding: 7px 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 10px 0 rgba(99, 102, 241, .2);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.NavigationBar .RightContainer .POS:hover {
+    background-color: var(--secondaryColor);
+    color: var(--whiteColor);
+}
+
+.NavigationBar .RightContainer .FullScreen {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    font-size: 1.5rem;
+    color: var(--primaryColor);
+    cursor: pointer;
+}
+
+.NavigationBar .RightContainer .FullScreen::after {
+    content: 'Full Screen';
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.NavigationBar .RightContainer .Notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+
+.NavigationBar .RightContainer .Notification::after {
+    content: 'Notification';
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.NavigationBar .RightContainer .Notification i {
+    font-size: 1.5rem;
+    color: var(--primaryColor);
+}
+
+.NavigationBar .RightContainer .Notification span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    content: '1';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: -10px;
+    background-color: var(--greenColor);
+    font-size: 0.8rem;
+}
+
+.NavigationBar .RightContainer .Notification .NotificationDropdown {
+
+}
+
+.NavigationBar .RightContainer .ProfileDropdown {
+    position: relative;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown button {
+    display: grid;
+    grid-template-areas:
+        "picture name"
+        "picture role";
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown button figure {
+    grid-area: picture;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown button figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown button span {
+    width: 100%;
+    text-align: start;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown button .UserName {
+    grid-area: name;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    color: var(--primaryColor);
+}
+
+.NavigationBar .RightContainer .ProfileDropdown button .UserRole {
+    grid-area: role;
+    color: var(--grayColor)
+}
+
+.NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+    background-color: var(--whiteColor);
+    border: 1px solid rgb(var(--grayColorRGB), 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu ul {
+    padding: 0 10px;
+    list-style: none;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu ul li {
+    min-width: 120px;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu ul li:hover a {
+    color: var(--secondaryColor);
+    /*background-color: rgb(var(--grayColorRGB), 0.25);*/
+}
+
+.NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--primaryColor);
+    line-height: 2;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+}
+
+.NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu ul li i {
+    margin-right: 20px;
+}

@@ -1,9 +1,11 @@
 .Aside {
-.verticalNavGroupItems .verticalNavGroupItem:last-child {
-    margin-top: auto;
-    justify-content: flex-end;
-    background-color: red;
-}
+    .verticalNavGroupItems .verticalNavGroupItem:last-child {
+        margin-top: auto;
+        justify-content: flex-end;
+        background-color: red;
+    }
+
+    grid-area: aside;
     background-color: var(--aside-background);
     min-height: 100vh;
     max-height: 100vh;

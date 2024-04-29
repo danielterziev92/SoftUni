@@ -1,11 +1,19 @@
 .MainContent {
-    width: 100%;
+    grid-area: main;
     min-height: 100vh;
-    max-height: 100vh;
+    max-height: calc(100vh - var(--nav-bar-height));
     overflow: scroll;
     background-color: var(--background-secondary);
     box-sizing: content-box;
     position: relative;
+}
+
+.MainContent.Minimized {
+    width: calc(100vw - 250px);
+}
+
+.MainContent.Expand {
+    width: 100vw;
 }
 
 .MainContent .Nav {

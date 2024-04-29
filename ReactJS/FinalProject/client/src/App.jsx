@@ -22,7 +22,8 @@ import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
 import Page404 from "./components/page-404/Page404.jsx";
 import Paths from "./utils/Paths.js";
-import {addBrowserHistoryAction} from "./features/history/historyAction.js";
+import {addBrowserHistoryAction} from "./features/history/historyActions.js";
+import NavigationBar from "./components/navigation-bar/NavigationBar.jsx";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -31,6 +32,7 @@ export default function App() {
 
     const isAuthenticated = useSelector(store => store.user.isAuthenticated);
     const lastVisitedPage = useSelector(state => state.history.browser[state.history.browser.length - 1]);
+    const showAsideBar = useSelector(state => state.common.isMinimizedAsideBar);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -82,8 +84,9 @@ export default function App() {
             {isLoading
                 ? <Spinner/>
                 : (<>
-                    {isAuthenticated && <Aside/>}
-                    <main className={style.MainContent}>
+                    <NavigationBar/>
+                    {(isAuthenticated && showAsideBar) && <Aside/>}
+                    <main className={`${style.MainContent} ${showAsideBar ? style.Minimized : style.Expand}`}>
                         <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
                         <Routes>
                             <Route path={Paths.index} element={<Index/>}/>

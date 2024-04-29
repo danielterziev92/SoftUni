@@ -9,7 +9,7 @@ const Paths = {
     products: '/products',
     groups: '/groups',
     profile: '/profile',
-
+    POS: '/POS',
 }
 
 export default Paths;
