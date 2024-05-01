@@ -1,0 +1,305 @@
+:root {
+    --mainColor: #00eeff;
+}
+
+.Background {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--primaryColor);
+}
+
+.Wrapper {
+    position: relative;
+    width: 1200px;
+    height: 700px;
+    background: transparent;
+    border: 2px solid var(--mainColor);
+    overflow: hidden;
+    box-shadow: 0 0 25px var(--mainColor);
+}
+
+.Wrapper .FormBox {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Wrapper .FormBox.Login {
+    left: 0;
+    padding: 0 60px 0 40px;
+}
+
+.Wrapper .FormBox.Login .Animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition: 0.7s ease;
+    transition-delay: calc(0.1s * var(--j));
+}
+
+.Wrapper.Active .FormBox.Login .Animation {
+    transform: translateX(-120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition-delay: calc(0.1s * var(--i));
+}
+
+.Wrapper .FormBox.Register {
+    right: 0;
+    padding: 0 60px 0 40px;
+    pointer-events: none;
+}
+
+.Wrapper.Active .FormBox.Register {
+    pointer-events: auto;
+}
+
+.Wrapper .FormBox.Register .Animation {
+    transform: translateX(120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition: 0.7s ease;
+    transition-delay: calc(0.1s * var(--j));
+}
+
+.Wrapper.Active .FormBox.Register .Animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: calc(0.1s * var(--i));
+}
+
+.Wrapper .FormBox h2 {
+    font-size: 32px;
+    color: var(--whiteColor);
+    text-align: center;
+}
+
+.Wrapper .FormBox form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.Wrapper .FormBox .InputBox {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 25px 0;
+}
+
+.Wrapper .FormBox .InputBox input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid var(--whiteColor);
+    font-size: 16px;
+    color: var(--whiteColor);
+    font-weight: 500;
+    transition: 0.5s;
+}
+
+.Wrapper .FormBox .InputBox input:focus,
+.Wrapper .FormBox .InputBox input:valid {
+    border-bottom-color: var(--mainColor);
+}
+
+.Wrapper .FormBox .InputBox label,
+.Wrapper .FormBox .InputBox i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--whiteColor);
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.Wrapper .FormBox .InputBox label {
+    left: 0;
+}
+
+.Wrapper .FormBox .InputBox input:focus ~ label,
+.Wrapper .FormBox .InputBox input:valid ~ label {
+    top: -5px;
+    color: var(--mainColor);
+}
+
+.Wrapper .FormBox .InputBox i {
+    right: 0;
+}
+
+.Wrapper .FormBox .InputBox input:focus ~ i,
+.Wrapper .FormBox .InputBox input:valid ~ i {
+    color: var(--mainColor);
+}
+
+.Wrapper .FormBox .Button {
+    position: relative;
+    width: 200px;
+    height: 45px;
+    background: transparent;
+    border: 2px solid var(--mainColor);
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--whiteColor);
+    font-weight: 600;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.Wrapper .FormBox .Button::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 300%;
+    background: linear-gradient(var(--primaryColor), var(--mainColor), var(--primaryColor), var(--mainColor));
+    z-index: -1;
+    transition: 0.5s;
+}
+
+.Wrapper .FormBox .Button:hover::before {
+    top: 0;
+}
+
+.Wrapper .FormBox .LogregLink {
+    width: 100%;
+    font-size: 14.5px;
+    color: var(--whiteColor);
+    text-align: center;
+    margin: 20px 0 10px;
+}
+
+.Wrapper .FormBox .LogregLink p a {
+    color: var(--mainColor);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.Wrapper .FormBox .LogregLink p a:hover {
+    text-decoration: underline;
+}
+
+.Wrapper .InfoText {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Wrapper .InfoText.Login {
+    right: 0;
+    text-align: right;
+    padding: 0 40px 60px 150px;
+}
+
+.Wrapper .InfoText.Login .Animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition: 0.7s ease;
+    transition-delay: calc(0.1s * var(--j));
+}
+
+.Wrapper.Active .InfoText.Login .Animation {
+    transform: translateX(120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition-delay: calc(0.1s * var(--i));
+}
+
+.Wrapper .InfoText.Register {
+    left: 0;
+    text-align: left;
+    padding: 0 150px 60px 40px;
+    pointer-events: none;
+}
+
+.Wrapper.Active .InfoText.Register {
+    pointer-events: auto;
+}
+
+.Wrapper .InfoText.Register .Animation {
+    transform: translateX(-120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition: 0.7s ease;
+    transition-delay: calc(0.1s * var(--j));
+}
+
+.Wrapper.Active .InfoText.Register .Animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: calc(0.1s * var(--i));
+}
+
+.Wrapper .InfoText h2 {
+    font-size: 36px;
+    color: var(--whiteColor);
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.Wrapper .InfoText p {
+    font-size: 20px;
+    color: var(--whiteColor);
+    margin-top: 10px;
+}
+
+.Wrapper .BgAnimate {
+    position: absolute;
+    top: -4px;
+    right: 0;
+    width: 1400px;
+    height: 900px;
+    background: linear-gradient(45deg, var(--primaryColor), var(--mainColor));
+    border-bottom: 3px solid var(--mainColor);
+    transform: rotate(10deg) skewY(40deg);
+    transform-origin: bottom right;
+    transition: 1.5s ease;
+    transition-delay: 1.6s;
+}
+
+.Wrapper.Active .BgAnimate {
+    transform: rotate(0) skewY(0);
+    transition-delay: 0.5s;
+}
+
+.Wrapper .BgAnimate2 {
+    position: absolute;
+    top: 100%;
+    left: 400px;
+    width: 1200px;
+    height: 1000px;
+    background: var(--primaryColor);
+    border-top: 3px solid var(--mainColor);
+    transform: rotate(0) skewY(0);
+    transform-origin: bottom left;
+    transition: 1.5s ease;
+    transition-delay: 0.5s;
+}
+
+.Wrapper.Active .BgAnimate2 {
+    transform: rotate(-11deg) skewY(-41deg);
+    transition-delay: 1.2s;
+}

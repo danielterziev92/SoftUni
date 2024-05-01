@@ -1,21 +1,35 @@
-import {useState} from "react";
-import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+
+import {changeIsMinimizedAsideBarAction} from "../../features/common/commonActions.js";
 
 import style from './NavigationBar.module.css';
 
 import Paths from "../../utils/Paths.js";
-import {changeIsMinimizedAsideBarAction} from "../../features/common/commonActions.js";
 
 export default function NavigationBar() {
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const user = useSelector((state) => state.user.data);
     const showAsideBar = useSelector(state => state.common.isMinimizedAsideBar);
 
+    const [showComponent, setShowComponent] = useState(false);
     const [showProfileDropdown, setShowProfileDropdown] = useState(false);
     const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
     const [isFullScreen, setIsFullScreen] = useState(false);
+
+    useEffect(() => {
+        const pathsNotToShow = [Paths.login, Paths.logout, Paths.index]
+
+        if (pathsNotToShow.includes(location.pathname)) {
+            setShowComponent(false);
+            return;
+        }
+
+        setShowComponent(true);
+    }, [location.pathname]);
 
     const onClickToggleFullScreenHandler = () => {
         if (!isFullScreen && document.documentElement.requestFullscreen) {
@@ -26,6 +40,8 @@ export default function NavigationBar() {
             setIsFullScreen(false);
         }
     };
+
+    if (!showComponent) return (<></>);
 
     return (
         <div className={style.NavigationBar}>

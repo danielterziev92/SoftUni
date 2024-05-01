@@ -85,7 +85,7 @@ export default function App() {
                 ? <Spinner/>
                 : (<>
                     <NavigationBar/>
-                    {(isAuthenticated && showAsideBar) && <Aside/>}
+                    <Aside/>
                     <main className={`${style.MainContent} ${showAsideBar ? style.Minimized : style.Expand}`}>
                         <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
                         <Routes>

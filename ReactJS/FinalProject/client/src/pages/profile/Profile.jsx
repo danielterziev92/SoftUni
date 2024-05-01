@@ -76,6 +76,7 @@ export default function Profile() {
 
     async function updateUserDataOnSubmit(data) {
         const toastId = toast.loading('Updating...');
+        setCanSubmitForm(true);
 
         const response = await dispatch(updateProfileDataAction({data, droppedImage}));
 
@@ -192,11 +193,11 @@ export default function Profile() {
                 </div>
                 <div className={style.buttons}>
                     <button disabled={canSubmitForm}>
-                        Редактирай
+                        Edit
                     </button>
                     <button className={style.cancel} type="button" onClick={resetUserEditOnClickHandler}
                             disabled={canSubmitForm}>
-                        Отказ
+                        Cancel
                     </button>
                 </div>
             </form>
