@@ -21,7 +21,7 @@ export default function NavigationBar() {
     const [isFullScreen, setIsFullScreen] = useState(false);
 
     useEffect(() => {
-        const pathsNotToShow = [Paths.login, Paths.logout, Paths.index]
+        const pathsNotToShow = [Paths.auth, Paths.logout, Paths.index]
 
         if (pathsNotToShow.includes(location.pathname)) {
             setShowComponent(false);

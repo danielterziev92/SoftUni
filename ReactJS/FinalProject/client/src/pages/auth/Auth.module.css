@@ -130,7 +130,8 @@
 }
 
 .Wrapper .FormBox .InputBox input:focus ~ label,
-.Wrapper .FormBox .InputBox input:valid ~ label {
+.Wrapper .FormBox .InputBox input:valid ~ label,
+.Wrapper .FormBox .InputBox .NotEmpty ~ label {
     top: -5px;
     color: var(--mainColor);
 }
@@ -290,7 +291,7 @@
     top: 100%;
     left: 400px;
     width: 1200px;
-    height: 1000px;
+    height: 1020px;
     background: var(--primaryColor);
     border-top: 3px solid var(--mainColor);
     transform: rotate(0) skewY(0);

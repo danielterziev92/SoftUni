@@ -12,7 +12,7 @@ import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import Aside from "./components/aside/Aside.jsx";
 import Products from "./components/products/Products.jsx";
 import ProductsProvider from "./contexts/ProductsContext.jsx";
-import Login from "./pages/login/Login.jsx";
+import Auth from "./pages/auth/Auth.jsx";
 import Logout from "./pages/logout/Logout.jsx";
 import Register from "./components/register/Register.jsx";
 import Profile from "./pages/profile/Profile.jsx";
@@ -47,7 +47,7 @@ export default function App() {
             await dispatch(checkAuthenticationAction());
             setIsLoading(false);
 
-            if (!isAuthenticated) return navigate(Paths.login);
+            if (!isAuthenticated) return navigate(Paths.auth);
         }
 
         checkAuth();
@@ -90,7 +90,7 @@ export default function App() {
                         <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
                         <Routes>
                             <Route path={Paths.index} element={<Index/>}/>
-                            <Route path={Paths.login} element={<Login/>}/>
+                            <Route path={Paths.auth} element={<Auth/>}/>
                             <Route path={Paths.register} element={<Register/>}/>
                             <Route element={<PrivateRoutes/>}>
                                 <Route path={Paths.logout} element={<Logout/>}/>

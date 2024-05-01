@@ -13,7 +13,7 @@ export default function Page404() {
                     <li className={style.logo}>
                         <img src="../../../public/logo.svg" alt="Logo"/>
                     </li>
-                    <li><Link to={Paths.login}>Вход</Link></li>
+                    <li><Link to={Paths.auth}>Вход</Link></li>
                     <li><Link to={Paths.register}>Регистрация</Link></li>
                 </ul>
             </nav>

@@ -253,7 +253,7 @@ export default function Register() {
                     </div>
                     <div>
                         <span>Имате регистрация ?</span>
-                        <Link to={Paths.login}>Впиши се</Link>
+                        <Link to={Paths.auth}>Впиши се</Link>
                     </div>
                 </form>
             </article>

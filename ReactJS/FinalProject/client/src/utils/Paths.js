@@ -1,10 +1,10 @@
 const Paths = {
     index: '/',
     dashboard: '/dashboard',
-    login: '/login',
+    auth: '/auth',
     afterLogin: '/',
     logout: '/logout',
-    afterLogout: '/login',
+    afterLogout: '/auth',
     register: '/register',
     products: '/products',
     groups: '/groups',

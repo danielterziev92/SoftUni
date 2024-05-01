@@ -16,7 +16,7 @@ const PrivateRoutes = () => {
         dispatch(fetchUserDataAction());
     }, [dispatch]);
 
-    return isAuthenticated ? <Outlet/> : <Navigate to={Paths.login} replace/>;
+    return isAuthenticated ? <Outlet/> : <Navigate to={Paths.auth} replace/>;
 };
 
 export default PrivateRoutes;
