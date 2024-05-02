@@ -1,7 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-// const dispatch = useDispatch();
-
 const initialState = {
     data: {
         id: '',
@@ -33,6 +31,10 @@ export const userSlice = createSlice({
         fetchUserData: (state, action) => {
             state.data = action.payload;
         },
+        createUser: (state, action) => ({
+            ...state,
+            data: {...state.data, ...action.payload},
+        }),
         updateUserData: (state, action) => ({
             ...state,
             data: {...state.data, ...action.payload},
@@ -49,6 +51,7 @@ export const {
     logoutUser,
     checkAuth,
     fetchUserData,
+    createUser,
     updateUserData,
     deleteProfilePicture,
 } = userSlice.actions;

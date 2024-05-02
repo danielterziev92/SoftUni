@@ -140,9 +140,40 @@
     right: 0;
 }
 
+.Wrapper .FormBox .InputBox .ShowHidePassword {
+    right: 30px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.Wrapper .FormBox .InputBox .ShowHidePassword:hover {
+    color: var(--mainColor);
+}
+
 .Wrapper .FormBox .InputBox input:focus ~ i,
 .Wrapper .FormBox .InputBox input:valid ~ i {
     color: var(--mainColor);
+}
+
+.Wrapper .FormBox .ValidationMessages {
+    transform: translateX(120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition: 0.7s ease;
+    transition-delay: calc(0.1s * var(--j));
+}
+
+.Wrapper.Active .FormBox .ValidationMessages {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: calc(0.1s * var(--i));
+    margin-bottom: 20px;
+}
+
+.Wrapper.Active .FormBox .ValidationMessages li {
+    color: var(--redColor);
+    list-style: none;
 }
 
 .Wrapper .FormBox .Button {
@@ -175,6 +206,10 @@
 
 .Wrapper .FormBox .Button:hover::before {
     top: 0;
+}
+
+.Wrapper .FormBox .Button:disabled {
+    text-decoration: line-through;
 }
 
 .Wrapper .FormBox .LogregLink {
@@ -269,13 +304,13 @@
 
 .Wrapper .BgAnimate {
     position: absolute;
-    top: -4px;
+    top: -650px;
     right: 0;
-    width: 1400px;
-    height: 900px;
-    background: linear-gradient(45deg, var(--primaryColor), var(--mainColor));
+    width: 2500px;
+    height: 2500px;
+    background: linear-gradient(95deg, var(--primaryColor), var(--mainColor));
     border-bottom: 3px solid var(--mainColor);
-    transform: rotate(10deg) skewY(40deg);
+    transform: rotate(31deg) skewY(40deg) translateX(100px);
     transform-origin: bottom right;
     transition: 1.5s ease;
     transition-delay: 1.6s;
@@ -289,9 +324,9 @@
 .Wrapper .BgAnimate2 {
     position: absolute;
     top: 100%;
-    left: 400px;
+    left: 880px;
     width: 1200px;
-    height: 1020px;
+    height: 1200px;
     background: var(--primaryColor);
     border-top: 3px solid var(--mainColor);
     transform: rotate(0) skewY(0);
@@ -301,6 +336,6 @@
 }
 
 .Wrapper.Active .BgAnimate2 {
-    transform: rotate(-11deg) skewY(-41deg);
+    transform: rotate(-25deg) skewY(-50deg);
     transition-delay: 1.2s;
 }

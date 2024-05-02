@@ -5,7 +5,15 @@ import axios from "axios";
 
 import _ from 'lodash';
 
-import {loginUser, logoutUser, checkAuth, fetchUserData, deleteProfilePicture, updateUserData,} from "./userSlice.js"
+import {
+    loginUser,
+    logoutUser,
+    checkAuth,
+    fetchUserData,
+    createUser,
+    updateUserData,
+    deleteProfilePicture,
+} from "./userSlice.js"
 
 import CookieManager from "../../utils/cookieManager.js";
 
@@ -38,7 +46,7 @@ async function getAxiosConfig(contentType) {
 }
 
 
-export const loginUserAction = createAsyncThunk(
+export const singInUserAction = createAsyncThunk(
     'user/loginUser',
     async (userData, {rejectWithValue, dispatch}) => {
         const axiosConfig = await getAxiosConfig('application/json');
@@ -55,6 +63,42 @@ export const loginUserAction = createAsyncThunk(
     }
 );
 
+export const signUpUserAction = createAsyncThunk(
+    'user/createUser',
+    async (userData, {rejectWithValue, dispatch}) => {
+        const axiosConfig = await getAxiosConfig('application/json');
+        console.log(axiosConfig)
+
+        try {
+            const response = await axios.post(Urls.user.register, userData, axiosConfig);
+            console.log(response)
+            // dispatch(createUser(response.data));
+
+            //     localStorage.setItem('userData', JSON.stringify(response.data.user));
+            //     return response.data;
+        } catch (error) {
+            console.log(error.response)
+            //     return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const logoutUserAction = createAsyncThunk(
+    'user/logoutUser',
+    async (_, {dispatch}) => {
+        const axiosConfig = await getAxiosConfig('application/json');
+
+        try {
+            const response = await axios.get(Urls.user.logout, axiosConfig);
+            dispatch(logoutUser());
+            localStorage.removeItem('userData');
+            return response.data;
+        } catch (error) {
+            console.log('error', error.response)
+            return error.response.data;
+        }
+    }
+);
 
 export const checkAuthenticationAction = createAsyncThunk(
     'user/checkAuthentication',
@@ -125,22 +169,6 @@ export const deleteProfilePictureAction = createAsyncThunk(
     }
 );
 
-export const logoutUserAction = createAsyncThunk(
-    'user/logoutUser',
-    async (_, {dispatch}) => {
-        const axiosConfig = await getAxiosConfig('application/json');
-
-        try {
-            const response = await axios.get(Urls.user.logout, axiosConfig);
-            dispatch(logoutUser());
-            localStorage.removeItem('userData');
-            return response.data;
-        } catch (error) {
-            console.log('error', error.response)
-            return error.response.data;
-        }
-    }
-);
 
 export const updateUserDataAction = (userData) => ({
     type: 'user/updateUserData',

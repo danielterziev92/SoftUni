@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 
-import {loginUserAction} from "../../features/user/userActions.js";
+import {singInUserAction} from "../../features/user/userActions.js";
 
 import style from "../../pages/auth/Auth.module.css";
 
@@ -27,6 +27,7 @@ export default function SignIn({setIsWrapperActive}) {
     const navigate = useNavigate();
 
     const [isEmailValid, setIsEmailValid] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const focusedInput = useRef(FormKey.Email);
     const {formValue, changeDataHandler, onSubmitForm} = useForm(initialData, singInSubmitFormHandler);
 
@@ -49,7 +50,7 @@ export default function SignIn({setIsWrapperActive}) {
     async function singInSubmitFormHandler(data) {
         const toastId = toast.loading('Loading...');
 
-        const response = await reduxDispatch(loginUserAction(data));
+        const response = await reduxDispatch(singInUserAction(data));
 
         if (response.meta.requestStatus === 'fulfilled') {
             toast.success(response.payload.message);
@@ -79,11 +80,17 @@ export default function SignIn({setIsWrapperActive}) {
                         <i className="fa-solid fa-envelope"></i>
                     </div>
                     <div className={`${style.InputBox} ${style.Animation}`} style={{'--i': 2, '--j': 23}}>
-                        <input type={FormKey.Password} required={true} name={FormKey.Password}
+                        <input type={showPassword ? 'text' : FormKey.Password} required={true} name={FormKey.Password}
                                value={formValue[FormKey.Password]} onChange={changeDataHandler}
                                ref={focusedInput.current === FormKey.Password ? focusedInput : null}
                         />
                         <label>Password</label>
+                        {showPassword
+                            ? <i className={`fa-solid fa-eye-slash ${style.ShowHidePassword}`}
+                                 onClick={() => setShowPassword(false)}></i>
+                            : <i className={`fa-solid fa-eye ${style.ShowHidePassword}`}
+                                 onClick={() => setShowPassword(true)}></i>
+                        }
                         <i className="fa-solid fa-lock"></i>
                     </div>
                     <button className={`${style.Button} ${style.Animation}`} style={{'--i': 3, '--j': 24}}>
