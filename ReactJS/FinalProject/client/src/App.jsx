@@ -24,6 +24,8 @@ import Page404 from "./components/page-404/Page404.jsx";
 import Paths from "./utils/Paths.js";
 import {addBrowserHistoryAction} from "./features/history/historyActions.js";
 import NavigationBar from "./components/navigation-bar/NavigationBar.jsx";
+import SignIn from "./components/sign-in/SignIn.jsx";
+import SignUp from "./components/sing-up/SignUp.jsx";
 
 export default function App() {
     const dispatch = useDispatch();
@@ -41,17 +43,17 @@ export default function App() {
         dispatch(addBrowserHistoryAction(location.pathname));
     }, [dispatch, location.pathname]);
 
-    useLayoutEffect(() => {
-        const checkAuth = async () => {
-            if (isAuthenticated) return;
-            await dispatch(checkAuthenticationAction());
-            setIsLoading(false);
-
-            if (!isAuthenticated) return navigate(Paths.auth);
-        }
-
-        checkAuth();
-    }, []);
+    // useLayoutEffect(() => {
+    //     const checkAuth = async () => {
+    //         if (isAuthenticated) return;
+    //         await dispatch(checkAuthenticationAction());
+    //         setIsLoading(false);
+    //
+    //         if (!isAuthenticated) return navigate(Paths.auth);
+    //     }
+    //
+    //     checkAuth();
+    // }, []);
 
     useLayoutEffect(() => {
         const fetchData = async () => {
@@ -81,29 +83,27 @@ export default function App() {
 
     return (
         <ErrorBoundary>
-            {isLoading
-                ? <Spinner/>
-                : (<>
-                    <NavigationBar/>
-                    <Aside/>
-                    <main className={`${style.MainContent} ${showAsideBar ? style.Minimized : style.Expand}`}>
-                        <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
-                        <Routes>
-                            <Route path={Paths.index} element={<Index/>}/>
-                            <Route path={Paths.auth} element={<Auth/>}/>
-                            <Route path={Paths.register} element={<Register/>}/>
-                            <Route element={<PrivateRoutes/>}>
-                                <Route path={Paths.logout} element={<Logout/>}/>
-                                <Route path={Paths.profile} element={<Profile/>}/>
-                                <Route path={Paths.products}
-                                       element={<ProductsProvider><Products/></ProductsProvider>}/>
-                                <Route path={Paths.groups} element={<Groups/>}/>
-                            </Route>
-                            <Route path='*' element={<Page404/>}/>
-                        </Routes>
-                    </main>
-                </>)
-            }
+            <>
+                <NavigationBar/>
+                <Aside/>
+                <main className={`${style.MainContent} ${showAsideBar ? style.Minimized : style.Expand}`}>
+                    <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
+                    <Routes>
+                        <Route path={Paths.index} element={<Index/>}/>
+                        <Route path={Paths.auth} element={<Auth/>}>
+                        </Route>
+                        <Route path={Paths.register} element={<Register/>}/>
+                        <Route element={<PrivateRoutes/>}>
+                            <Route path={Paths.logout} element={<Logout/>}/>
+                            <Route path={Paths.profile} element={<Profile/>}/>
+                            <Route path={Paths.products}
+                                   element={<ProductsProvider><Products/></ProductsProvider>}/>
+                            <Route path={Paths.groups} element={<Groups/>}/>
+                        </Route>
+                        <Route path='*' element={<Page404/>}/>
+                    </Routes>
+                </main>
+            </>
         </ErrorBoundary>
     );
 }

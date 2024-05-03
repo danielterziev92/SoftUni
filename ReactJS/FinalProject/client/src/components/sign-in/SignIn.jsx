@@ -28,16 +28,9 @@ export default function SignIn({setIsWrapperActive}) {
 
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const focusedInput = useRef(FormKey.Email);
     const {formValue, changeDataHandler, onSubmitForm} = useForm(initialData, singInSubmitFormHandler);
 
     const browserHistory = useSelector(state => state.history.browser);
-
-    useEffect(() => {
-        if (!isEmailValid && focusedInput.current) {
-            focusedInput.current.focus();
-        }
-    }, []);
 
     function onBlurCheckEmailHandler() {
         if (formValue[FormKey.Email] === '') return;
@@ -70,10 +63,9 @@ export default function SignIn({setIsWrapperActive}) {
                 <h2 className={style.Animation} style={{'--i': 0, '--j': 21}}>Sign In</h2>
                 <form onSubmit={onSubmitForm}>
                     <div className={`${style.InputBox} ${style.Animation}`} style={{'--i': 1, '--j': 22}}>
-                        <input className={formValue[FormKey.Email] !== '' && style.NotEmpty}
+                        <input className={formValue[FormKey.Email] === '' ? '' : style.NotEmpty}
                                type={FormKey.Email} required={true} name={FormKey.Email} aria-required={true}
                                value={formValue[FormKey.Email]} onChange={changeDataHandler}
-                               ref={focusedInput.current === FormKey.Email ? focusedInput : null}
                                onBlur={onBlurCheckEmailHandler}
                         />
                         <label>Email</label>
@@ -82,13 +74,12 @@ export default function SignIn({setIsWrapperActive}) {
                     <div className={`${style.InputBox} ${style.Animation}`} style={{'--i': 2, '--j': 23}}>
                         <input type={showPassword ? 'text' : FormKey.Password} required={true} name={FormKey.Password}
                                value={formValue[FormKey.Password]} onChange={changeDataHandler}
-                               ref={focusedInput.current === FormKey.Password ? focusedInput : null}
                         />
                         <label>Password</label>
                         {showPassword
-                            ? <i className={`fa-solid fa-eye-slash ${style.ShowHidePassword}`}
+                            ? <i className={`fa-solid fa-eye ${style.ShowHidePassword}`}
                                  onClick={() => setShowPassword(false)}></i>
-                            : <i className={`fa-solid fa-eye ${style.ShowHidePassword}`}
+                            : <i className={`fa-solid fa-eye-slash ${style.ShowHidePassword}`}
                                  onClick={() => setShowPassword(true)}></i>
                         }
                         <i className="fa-solid fa-lock"></i>
@@ -99,7 +90,7 @@ export default function SignIn({setIsWrapperActive}) {
                     <div className={`${style.LogregLink} ${style.Animation}`} style={{'--i': 4, '--j': 25}}>
                         <p>
                             Don&apos;t have an account?
-                            <a onClick={() => setIsWrapperActive(true)}>Sign Up</a>
+                            <a href={Paths.signUp} onClick={() => setIsWrapperActive(true)}>Sign Up</a>
                         </p>
                     </div>
                 </form>
