@@ -40,5 +40,11 @@ class UserCreateView(api_views.CreateAPIView):
         validated_data = serializer.validated_data
         validated_data.pop('re_password', None)
 
-        UserModel.objects.create_user(**validated_data)
-        return Response({'message': _('User created successfully.')}, status=status.HTTP_201_CREATED)
+        user = UserModel.objects.create_user(**validated_data)
+
+        user_info = {
+            'id': user.pk,
+            'email': user.email,
+        }
+
+        return Response({'message': _('User created successfully.'), 'data': user_info}, status=status.HTTP_201_CREATED)

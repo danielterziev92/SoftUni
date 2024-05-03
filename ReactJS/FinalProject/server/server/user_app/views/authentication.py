@@ -39,7 +39,7 @@ class LoginView(api_views.GenericAPIView):
         user = authenticate(email=email, password=password)
 
         if user is None:
-            return Response({'message': _('User does not exist.')}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': _('The password entered is not correct.')}, status=status.HTTP_400_BAD_REQUEST)
 
         if not user.is_active:
             return Response(
@@ -88,15 +88,6 @@ class CheckAuthenticationView(api_views.GenericAPIView):
         is_authenticated = request.user.is_authenticated
 
         if not is_authenticated:
-            return Response(
-                {
-                    'message': _('Authentication credentials were not provided'),
-                    'isAuthenticated': False
-                },
-                status=status.HTTP_403_FORBIDDEN
-            )
+            return Response({'isAuthenticated': False}, status=status.HTTP_403_FORBIDDEN)
 
-        return Response(
-            {'isAuthenticated': True},
-            status=status.HTTP_200_OK
-        )
+        return Response({'isAuthenticated': True}, status=status.HTTP_200_OK)
