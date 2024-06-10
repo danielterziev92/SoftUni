@@ -8,16 +8,15 @@ from rest_framework import generics as api_views, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from server.core.mixins.session_mixin import SessionMixin
+from server.user_app.mixins import UserInfoMixin
 from server.user_app.serializers import UserLoginSerializer
 
 UserModel = get_user_model()
 
 
 @method_decorator(csrf_protect, name='dispatch')
-class LoginView(api_views.GenericAPIView):
+class LoginView(api_views.GenericAPIView, UserInfoMixin):
     permission_classes = (AllowAny,)
     authentication_classes = (SessionAuthentication,)
     serializer_class = UserLoginSerializer
@@ -48,12 +47,10 @@ class LoginView(api_views.GenericAPIView):
             )
 
         login(request, user)
+        user_data = self.get_user_basic_data(user=user)
         return Response({
             'message': _('Login successful.'),
-            'user': {
-                'id': user.pk,
-                'email': user.email,
-            },
+            'user': user_data,
         }, status=status.HTTP_200_OK)
 
 
@@ -76,18 +73,18 @@ class GetCSRFTokenView(api_views.GenericAPIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
-        return Response(
-            {
-                'message': _('CSRF token is set at cookie.'),
-                'csrfToken': get_token(request)
-            }, status=status.HTTP_200_OK)
+        return Response({'csrfToken': get_token(request)}, status=status.HTTP_200_OK)
 
 
-class CheckAuthenticationView(api_views.GenericAPIView):
+@method_decorator(csrf_protect, name='dispatch')
+class CheckAuthenticationView(api_views.RetrieveAPIView):
+    permission_classes = (AllowAny,)
+
     def get(self, request, *args, **kwargs):
+        session_id = request.COOKIES.get('sessionid')
         is_authenticated = request.user.is_authenticated
 
-        if not is_authenticated:
-            return Response({'isAuthenticated': False}, status=status.HTTP_403_FORBIDDEN)
+        if not session_id or not is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         return Response({'isAuthenticated': True}, status=status.HTTP_200_OK)

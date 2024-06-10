@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {toast} from "react-hot-toast";
 
@@ -44,6 +45,8 @@ const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+")
 
 export default function SignUp({setIsWrapperActive}) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
@@ -51,7 +54,12 @@ export default function SignUp({setIsWrapperActive}) {
     const [validationPasswordMessages, setValidationPasswordMessages] = useState([]);
     const [passwordMismatch, setPasswordMismatch] = useState(false);
 
-    const {formValue, changeDataHandler, onSubmitForm} = useForm(initialFormData, singUpSubmitFormHandler);
+    const {
+        formValue,
+        updateFormValue,
+        changeDataHandler,
+        onSubmitForm
+    } = useForm(initialFormData, singUpSubmitFormHandler);
 
     useEffect(() => {
         const password = formValue[FormKey.Password];
@@ -94,11 +102,12 @@ export default function SignUp({setIsWrapperActive}) {
         const toastId = toast.loading('Loading...');
 
         const response = await dispatch(signUpUserAction(data));
-
+        const {message} = response.payload;
         if (response.meta.requestStatus === 'fulfilled') {
-            toast.success(response.payload.message);
+            toast.success(message);
+            updateFormValue(initialFormData);
+            navigate(Paths.afterSignUp, {replace: true})
         } else {
-            const {message} = response.payload;
             toast.error(message);
         }
 

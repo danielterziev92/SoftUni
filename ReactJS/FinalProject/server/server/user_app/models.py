@@ -81,6 +81,13 @@ class UserProfile(models.Model):
         related_name='users'
     )
 
+    @property
+    def get_profile_picture(self):
+        if self.picture_url.url == '':
+            return 'https://res.cloudinary.com/dujto2hys/image/upload/v1691348755/user-avatar_cyynjj_yswdit.png'
+
+        return self.picture_url.url + '.jpg'
+
     class Meta:
         verbose_name_plural = 'Users Profile'
 

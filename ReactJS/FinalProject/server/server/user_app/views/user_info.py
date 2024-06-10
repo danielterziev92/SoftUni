@@ -9,36 +9,25 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from server.company.models import Company
-from server.core.mixins.session_mixin import SessionMixin
-from server.user_app.models import UserProfile
+from server.user_app.mixins import UserInfoMixin
 
 
 @method_decorator(csrf_protect, name='dispatch')
-class UserInfoAPIView(api_views.RetrieveAPIView, SessionMixin):
+class UserInfoAPIView(api_views.RetrieveAPIView, UserInfoMixin):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
 
     def get(self, request, *args, **kwargs):
         try:
-            user = SessionMixin.get_user_pk(session_id=request.COOKIES.get('sessionid'))
-            user_profile = UserProfile.objects.filter(user_id=user.pk).first()
-            company = Company.objects.filter(owner_id=user.pk).first()
-
-            user_info = {
-                'id': user.pk,
-                'email': user.email,
-            }
+            user_info = self.get_user_basic_data(request)
+            user_id = user_info['id']
+            user_profile = self.get_user_profile_data(id=user_id)
+            company = Company.objects.filter(owner_id=user_id).first()
 
             if not user_profile:
                 return Response(user_info, status=status.HTTP_200_OK)
 
-            user_info['first_name'] = user_profile.first_name
-            user_info['last_name'] = user_profile.last_name
-            user_info['phone'] = user_profile.phone
-            try:
-                user_info['picture_url'] = user_profile.picture_url.url + '.jpg'
-            except AttributeError:
-                user_info['picture_url'] = ''
+            user_info.update(user_profile)
 
             if not company:
                 return Response(user_info, status=status.HTTP_200_OK)
