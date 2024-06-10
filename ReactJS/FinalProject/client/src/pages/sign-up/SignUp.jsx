@@ -1,15 +1,15 @@
 import {useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-hot-toast";
 
 import {signUpUserAction} from "../../features/user/userActions.js";
 
-import style from "../../pages/auth/Auth.module.css";
+import mainStyle from "../sign-in/SignIn.module.css";
+import style from "./SignUp.module.css";
 
 import useForm from "../../hooks/useForm.js";
 import Paths from "../../utils/Paths.js";
-
 
 const initialFormData = {
     email: '',
@@ -41,17 +41,19 @@ const regexCriteriaMessages = {
     lengthRegex: 'Password must be between 8 and 24 symbols',
 }
 
+
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export default function SignUp({setIsWrapperActive}) {
+export default function SignUp() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
+
+    const theme = useSelector(state => state.common.theme);
 
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
     const [showMessages, setShowMessages] = useState(false);
-    const [validationPasswordMessages, setValidationPasswordMessages] = useState([]);
+    const [validationPasswordMessages, setValidationPasswordMessages] = useState({});
     const [passwordMismatch, setPasswordMismatch] = useState(false);
 
     const {
@@ -63,20 +65,18 @@ export default function SignUp({setIsWrapperActive}) {
 
     useEffect(() => {
         const password = formValue[FormKey.Password];
-        const messages = new Set(validationPasswordMessages);
+        const messages = {...validationPasswordMessages};
 
         Object.entries(regexCriteria).forEach(([key, regex]) => {
             if (!regex.test(password)) {
-                messages.add(regexCriteriaMessages[key]);
+                messages[key] = {message: regexCriteriaMessages[key], status: 'error'};
             } else {
-                messages.delete(regexCriteriaMessages[key]);
+                messages[key] = {message: regexCriteriaMessages[key], status: 'success'};
             }
         });
 
-        setValidationPasswordMessages(Array.from(messages));
+        setValidationPasswordMessages(messages);
     }, [formValue[FormKey.Password]]);
-
-    // 123asdwq@Q
 
     useEffect(() => {
         const {password, re_password} = formValue;
@@ -96,7 +96,10 @@ export default function SignUp({setIsWrapperActive}) {
         }
     }
 
-    const canSubmitForm = () => !(Object.values(formValue).every(value => value !== "" && value !== false) && validationPasswordMessages.length === 0)
+    function canSubmitForm() {
+        return !(Object.values(formValue).every(value => value !== "" && value !== false) &&
+            Object.values(validationPasswordMessages).every(message => message.status === "success"));
+    }
 
     async function singUpSubmitFormHandler(data) {
         const toastId = toast.loading('Loading...');
@@ -114,14 +117,20 @@ export default function SignUp({setIsWrapperActive}) {
         toast.dismiss(toastId);
     }
 
+    function PasswordMismatch() {
+        if (!passwordMismatch) {
+            return <p className={style.PasswordMismatch}>Passwords mismatch!</p>
+        }
+        return <p className={style.PasswordMatch}>Passwords match!</p>
+    }
 
     return (
-        <>
-            <div className={`${style.FormBox} ${style.Register}`}>
-                <h2 className={style.Animation} style={{'--i': 19, '--j': 0}}>Sign Up</h2>
+        <section className={theme === 'Dark' && mainStyle.Dark}>
+            <article className={`${mainStyle.Wrapper}`}>
+                <h2>Sign Up</h2>
                 <form onSubmit={onSubmitForm}>
-                    <div className={`${style.InputBox} ${style.Animation}`} style={{'--i': 20, '--j': 1}}>
-                        <input className={formValue[FormKey.Email] === '' ? '' : style.NotEmpty}
+                    <div className={mainStyle.InputBox}>
+                        <input className={formValue[FormKey.Email] === '' ? '' : mainStyle.NotEmpty}
                                type={FormKey.Email} required={true} name={FormKey.Email}
                                value={formValue[FormKey.Email]} onChange={changeDataHandler}
                                onBlur={onBlurCheckEmailHandler}
@@ -129,67 +138,64 @@ export default function SignUp({setIsWrapperActive}) {
                         <label>Email</label>
                         <i className="fa-solid fa-envelope"></i>
                     </div>
-                    <div className={`${style.InputBox} ${style.Animation}`} style={{'--i': 21, '--j': 2}}>
+                    <div className={mainStyle.InputBox}>
                         <input type={showPassword ? 'text' : FormKey.Password} required={true}
                                name={FormKey.Password} value={formValue[FormKey.Password]}
                                onChange={changeDataHandler} onClick={() => setShowMessages(true)}
                                onFocus={() => setShowMessages(true)}/>
                         <label>Password</label>
                         {showPassword
-                            ? <i className={`fa-solid fa-eye ${style.ShowHidePassword}`}
+                            ? <i className={`fa-solid fa-eye ${mainStyle.ShowHidePassword}`}
                                  onClick={() => setShowPassword(false)}></i>
-                            : <i className={`fa-solid fa-eye-slash ${style.ShowHidePassword}`}
+                            : <i className={`fa-solid fa-eye-slash ${mainStyle.ShowHidePassword}`}
                                  onClick={() => setShowPassword(true)}></i>
                         }
                         <i className="fa-solid fa-lock"></i>
                     </div>
-                    <div className={`${style.InputBox} ${style.Animation}`} style={{'--i': 22, '--j': 3}}>
+                    <div className={mainStyle.InputBox}>
                         <input type={showRePassword ? 'text' : FormKey.Password} required={true}
                                name={FormKey.RePassword} value={formValue[FormKey.RePassword]}
                                onChange={changeDataHandler} onClick={() => setShowMessages(true)}
-                               onFocus={() => setShowMessages(true)}/>
+                               onFocus={() => setShowMessages(true)}
+                            // onBlur={() => setShowMessages(false)}
+                        />
                         <label>Repeat Password: </label>
                         {showRePassword
-                            ? <i className={`fa-solid fa-eye ${style.ShowHidePassword}`}
+                            ? <i className={`fa-solid fa-eye ${mainStyle.ShowHidePassword}`}
                                  onClick={() => setShowRePassword(false)}></i>
-                            : <i className={`fa-solid fa-eye-slash ${style.ShowHidePassword}`}
+                            : <i className={`fa-solid fa-eye-slash ${mainStyle.ShowHidePassword}`}
                                  onClick={() => setShowRePassword(true)}></i>
                         }
                         <i className="fa-solid fa-lock"></i>
+                        {formValue[FormKey.RePassword] && <PasswordMismatch/>}
                     </div>
                     {showMessages && (
-                        <ul className={style.ValidationMessages} style={{'--i': 22, '--j': 3}}>
-                            {validationPasswordMessages.map(message => <li key={message}>{message}</li>)}
-                            {!passwordMismatch && <li className={style.PasswordMismatch}>Passwords mismatch!</li>}
+                        <ul className={style.ValidationMessages}>
+                            {Object.values(validationPasswordMessages).map((message, key) =>
+                                <li key={key}
+                                    className={message.status === 'error' ? style.ErrorMessage : style.SuccessMessage}>
+                                    {message.message}
+                                </li>
+                            )}
                         </ul>
                     )}
-                    <div className={`${style.Conditions} ${style.Animation}`} style={{'--i': 25, '--j': 5}}>
+                    <div className={style.Conditions}>
                         <input type="checkbox" id={FormKey.Conditions} name={FormKey.Conditions}
                                checked={formValue[FormKey.Conditions]} onChange={changeDataHandler}/>
-                        <label htmlFor={FormKey.Conditions}>I confirm that I have carefully reviewed and accepted the
-                            terms and conditions.</label>
+                        <label htmlFor={FormKey.Conditions}>
+                            I confirm that I have carefully reviewed and accepted the terms and conditions.
+                        </label>
                     </div>
-                    <button className={`${style.Button} ${style.Animation}`} style={{'--i': 24, '--j': 4}}
-                            disabled={canSubmitForm()}
-                    >
-                        Sign Up
-                    </button>
-                    <div className={`${style.LogregLink} ${style.Animation}`} style={{'--i': 25, '--j': 5}}>
+
+                    <button className={mainStyle.Button} disabled={canSubmitForm()}>Sign Up</button>
+                    <div className={mainStyle.LogregLink}>
                         <p>
                             Already have an account?
-                            <a href={Paths.signIn} onClick={() => setIsWrapperActive(false)}>Sign In</a>
+                            <Link to={Paths.signIn}>Sign In</Link>
                         </p>
                     </div>
-                    {/*    */}
                 </form>
-            </div>
-            <div className={`${style.InfoText} ${style.Register}`}>
-                <h2 className={style.Animation} style={{'--i': 19, '--j': 0}}>Welcome!</h2>
-                <p className={style.Animation} style={{'--i': 20, '--j': 1}}>Ready to join our platform?</p>
-                <p className={style.Animation} style={{'--i': 25, '--j': 2}}>We&apos;re excited to have you on our
-                    board.</p>
-                <p className={style.Animation} style={{'--i': 30, '--j': 3}}>Let&apos;s get started</p>
-            </div>
-        </>
+            </article>
+        </section>
     )
 }

@@ -1,22 +1,34 @@
 import {useLayoutEffect} from "react";
-import {Navigate, Outlet,} from "react-router-dom";
+import {Navigate, Outlet, useLocation,} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
 
-import {checkAuthenticationAction, fetchUserDataAction} from "../features/user/userActions.js";
-
 import Paths from "./Paths.js";
+import getNextUrl from "./getNextUrl.js";
 
 const PrivateRoutes = () => {
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
+    function getNextLocation() {
+        if (location.pathname === Paths.signOut) return Paths.afterSignOut;
+
+        const nextLocation = `${Paths.signIn}?next=${location.pathname}`
+        console.log('nextLocation', nextLocation);
+        return nextLocation;
+    }
+
     useLayoutEffect(() => {
-        dispatch(checkAuthenticationAction());
-        dispatch(fetchUserDataAction());
+        console.log(isAuthenticated);
+        if (isAuthenticated) {
+            return getNextUrl(location);
+        }
+
+        // dispatch(fetchUserDataAction());
     }, [dispatch]);
 
-    return isAuthenticated ? <Outlet/> : <Navigate to={Paths.auth} replace/>;
+    return isAuthenticated ? <Outlet/> : <Navigate to={getNextLocation()} replace/>;
 };
 
 export default PrivateRoutes;

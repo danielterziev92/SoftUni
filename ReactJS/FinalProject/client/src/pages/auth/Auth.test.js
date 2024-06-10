@@ -64,7 +64,7 @@ describe('Test Auth Component when', () => {
         fireEvent.submit(formElement);
 
         await waitFor(() => {
-            expect(window.location.pathname).toBe(Paths.afterLogin);
+            expect(window.location.pathname).toBe(Paths.afterSignIn);
         });
     });
 });

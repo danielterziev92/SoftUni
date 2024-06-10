@@ -1,0 +1,147 @@
+section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+section.Dark {
+
+}
+
+section .Wrapper h2 {
+    padding: 30px;
+    font-size: 2.5rem;
+    color: var(--secondaryColor);
+    text-align: center;
+}
+
+section .Wrapper form {
+    border: 1px solid var(--secondaryColor);
+    background-color: var(--whiteColor);
+    border-radius: 10px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+section .Wrapper form .Error {
+    width: 100%;
+}
+
+section .Wrapper form .Error p {
+    font-size: 0.8rem;
+    color: var(--redColor);
+}
+
+section .Wrapper form .InputBox {
+    position: relative;
+    margin: 10px 0;
+}
+
+section .Wrapper form .InputBoxError {
+    margin-bottom: 0;
+}
+
+section .Wrapper form .InputBox input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--primaryColor);
+    opacity: 0.5;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primaryColor);
+    transition: 0.5s;
+}
+
+section .Wrapper form .InputBox input:focus,
+section .Wrapper form .InputBox input:valid {
+    border-bottom-color: var(--secondaryColor);
+    opacity: 1;
+}
+
+section .Wrapper form .InputBox label,
+section .Wrapper form .InputBox i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--primaryColor);
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+section .Wrapper form .InputBox label {
+    left: 0;
+}
+
+section .Wrapper form .InputBox input:focus ~ label,
+section .Wrapper form .InputBox input:valid ~ label,
+section .Wrapper form .InputBox .NotEmpty ~ label {
+    top: -5px;
+    color: var(--secondaryColor);
+}
+
+section .Wrapper form .InputBox i {
+    right: 0;
+}
+
+section .Wrapper form .InputBox .ShowHidePassword {
+    right: 30px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+section .Wrapper form .InputBox .ShowHidePassword:hover {
+    color: var(--secondaryColor);
+}
+
+section .Wrapper form .InputBox input:focus ~ i,
+section .Wrapper form .InputBox input:valid ~ i {
+    color: var(--secondaryColor);
+}
+
+section .Wrapper form .Button {
+    position: relative;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--whiteColor);
+    background: var(--secondaryColor);
+    font-weight: 600;
+    z-index: 1;
+    overflow: hidden;
+}
+
+section .Wrapper form .Button:hover::before {
+    top: 0;
+}
+
+section .Wrapper form .Button:disabled {
+    text-decoration: line-through;
+}
+
+section .Wrapper form .LogregLink {
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+section .Wrapper form .LogregLink a {
+    color: var(--secondaryColor);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+section .Wrapper form .LogregLink a:hover {
+    text-decoration: underline;
+}

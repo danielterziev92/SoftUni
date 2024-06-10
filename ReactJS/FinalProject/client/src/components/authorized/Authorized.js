@@ -23,7 +23,7 @@ const AuthorizedComponent = () => {
 
     const handleLogout = () => {
         axios.post(Urls.userLogout.then(() => {
-            // Dispatch logout action to reset user state
+            // Dispatch signout action to reset user state
             dispatch(logoutUser());
         }));
     };

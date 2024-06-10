@@ -7,6 +7,8 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    box-shadow: 0 0 15px rgb(var(--primaryColorRGB), 0.4);
+    z-index: 2;
 }
 
 .NavigationBar .LeftContainer,
@@ -230,4 +232,30 @@
 
 .NavigationBar .RightContainer .ProfileDropdown .DropDownProfileMenu ul li i {
     margin-right: 20px;
+}
+
+.NavigationBar .RightContainer .Sign {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.NavigationBar .RightContainer .Sign li {
+    list-style: none;
+}
+
+.NavigationBar .RightContainer .Sign a {
+    text-decoration: none;
+    padding: 10px 15px;
+    border: 1px solid var(--secondaryColor);
+    border-radius: 5px;
+    font-size: 1.1rem;
+    background-color: var(--whiteColor);
+    color: var(--secondaryColor);
+}
+
+.NavigationBar .RightContainer .Sign a:hover {
+    background-color: var(--secondaryColor);
+    color: var(--whiteColor)
 }

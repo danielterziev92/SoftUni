@@ -5,7 +5,7 @@ import {toast} from "react-hot-toast";
 import {logoutUserAction} from "../../features/user/userActions.js";
 
 
-export default function Logout() {
+export default function SignOut() {
     const dispatch = useDispatch();
 
     useLayoutEffect(() => {

@@ -22,12 +22,13 @@ import {keyToSend} from "../../pages/profile/Profile.jsx";
 import cookieManager from "../../utils/cookieManager.js";
 
 async function getCRSFToken() {
-    let csrfToken = CookieManager.getCookie('csrftoken');
+    const cookieName = 'csrftoken'
+    let csrfToken = CookieManager.getCookie(cookieName);
 
     if (!csrfToken) {
         const response = await axios.get(Urls.CRSFToken);
         csrfToken = response.data.csrfToken;
-        cookieManager.setCookie('csrftoken', csrfToken, 1);
+        cookieManager.setCookie(cookieName, csrfToken, 1);
     }
 
     return csrfToken;
@@ -49,7 +50,8 @@ async function getAxiosConfig(contentType) {
 export const singInUserAction = createAsyncThunk(
     'user/loginUser',
     async (userData, {rejectWithValue, dispatch}) => {
-        const axiosConfig = await getAxiosConfig('application/json');
+        const contentType = 'application/json';
+        const axiosConfig = await getAxiosConfig(contentType);
 
         try {
             const response = await axios.post(Urls.user.login, userData, axiosConfig);
@@ -66,19 +68,16 @@ export const singInUserAction = createAsyncThunk(
 export const signUpUserAction = createAsyncThunk(
     'user/createUser',
     async (userData, {rejectWithValue, dispatch}) => {
-        const axiosConfig = await getAxiosConfig('application/json');
-        console.log(axiosConfig)
+        const contentType = 'application/json';
+        const axiosConfig = await getAxiosConfig(contentType);
 
         try {
             const response = await axios.post(Urls.user.register, userData, axiosConfig);
-            console.log(response)
-            // dispatch(createUser(response.data));
-
-            //     localStorage.setItem('userData', JSON.stringify(response.data.user));
-            //     return response.data;
+            dispatch(createUser(response.data.data));
+            localStorage.setItem('userData', JSON.stringify(response.data.data));
+            return response.data;
         } catch (error) {
-            console.log(error.response)
-            //     return rejectWithValue(error.response.data);
+            return rejectWithValue(error.response.data);
         }
     }
 );
@@ -86,7 +85,8 @@ export const signUpUserAction = createAsyncThunk(
 export const logoutUserAction = createAsyncThunk(
     'user/logoutUser',
     async (_, {dispatch}) => {
-        const axiosConfig = await getAxiosConfig('application/json');
+        const contentType = 'application/json';
+        const axiosConfig = await getAxiosConfig(contentType);
 
         try {
             const response = await axios.get(Urls.user.logout, axiosConfig);
@@ -94,7 +94,6 @@ export const logoutUserAction = createAsyncThunk(
             localStorage.removeItem('userData');
             return response.data;
         } catch (error) {
-            console.log('error', error.response)
             return error.response.data;
         }
     }
@@ -103,13 +102,15 @@ export const logoutUserAction = createAsyncThunk(
 export const checkAuthenticationAction = createAsyncThunk(
     'user/checkAuthentication',
     async (_, {dispatch}) => {
-        const axiosConfig = await getAxiosConfig('application/json');
-        console.log(axiosConfig)
+        const contentType = 'application/json';
+        const axiosConfig = await getAxiosConfig(contentType);
+
         try {
             const response = await axios.get(Urls.user.authentication, axiosConfig);
             dispatch(checkAuth(response.data.isAuthenticated));
+            return response.data.isAuthenticated;
         } catch (error) {
-            console.log(error.response);
+            return error.response.data.isAuthenticated;
         }
     }
 );
@@ -117,7 +118,8 @@ export const checkAuthenticationAction = createAsyncThunk(
 export const fetchUserDataAction = createAsyncThunk(
     'user/fetchUserData',
     async (_, {dispatch}) => {
-        const axiosConfig = await getAxiosConfig('application/json');
+        const contentType = 'application/json';
+        const axiosConfig = await getAxiosConfig(contentType);
 
         try {
             const response = await axios.get(Urls.user.profile, axiosConfig);
@@ -126,7 +128,7 @@ export const fetchUserDataAction = createAsyncThunk(
 
             localStorage.setItem('userData', JSON.stringify(response.data));
         } catch (error) {
-            toast.error(error.response.data.message, {duration: 5000,});
+            toast.error(error.response.data.message);
         }
     }
 )
@@ -134,7 +136,8 @@ export const fetchUserDataAction = createAsyncThunk(
 export const updateProfileDataAction = createAsyncThunk(
     'user/checkAuthentication',
     async (dataset, {dispatch}) => {
-        const axiosConfig = await getAxiosConfig('multipart/form-data');
+        const contentType = 'multipart/form-data';
+        const axiosConfig = await getAxiosConfig(contentType);
 
         try {
             const {data, droppedImage} = dataset;
@@ -160,7 +163,8 @@ export const updateProfileDataAction = createAsyncThunk(
 export const deleteProfilePictureAction = createAsyncThunk(
     'user/deleteProfilePicture',
     async (_, {dispatch}) => {
-        const axiosConfig = await getAxiosConfig('application/json');
+        const contentType = 'application/json';
+        const axiosConfig = await getAxiosConfig(contentType);
 
         try {
             const response = await axios.delete(Urls.user.deleteProfilePicture, axiosConfig);

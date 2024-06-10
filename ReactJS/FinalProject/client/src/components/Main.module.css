@@ -1,7 +1,6 @@
 .MainContent {
     grid-area: main;
-    min-height: 100vh;
-    max-height: calc(100vh - var(--nav-bar-height));
+    height: calc(100vh - var(--nav-bar-height));
     overflow: scroll;
     background-color: var(--background-secondary);
     box-sizing: content-box;
@@ -14,6 +13,7 @@
 
 .MainContent.Expand {
     width: 100vw;
+    height: 100vh;
 }
 
 .MainContent .Nav {

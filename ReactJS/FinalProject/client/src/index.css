@@ -19,6 +19,8 @@ aside::-webkit-scrollbar {
 }
 
 :root {
+
+
     /*font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
     /*line-height: 1.5;*/
     /*font-weight: 400;*/
@@ -33,8 +35,10 @@ aside::-webkit-scrollbar {
     /*-moz-osx-font-smoothing: grayscale;*/
     /*-webkit-text-size-adjust: 100%;*/
 
-
+    --mainColor: #00eeff;
+    --mainColorRGB: 0, 238, 255;
     --primaryColor: #1e1f22;
+    --primaryColorRGB: 30, 31, 34;
     --secondaryColor: #6366f1;
     --grayColor: #838a95;
     --grayColorRGB: 131, 138, 149;
