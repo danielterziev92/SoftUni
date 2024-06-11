@@ -19,15 +19,11 @@ class UserInfoAPIView(api_views.RetrieveAPIView, UserInfoMixin):
 
     def get(self, request, *args, **kwargs):
         try:
-            user_info = self.get_user_basic_data(request)
-            user_id = user_info['id']
-            user_profile = self.get_user_profile_data(id=user_id)
-            company = Company.objects.filter(owner_id=user_id).first()
+            user_info = self.get_user_profile_data(request=request)
+            company = Company.objects.filter(owner_id=user_info['id']).first()
 
-            if not user_profile:
+            if not user_info:
                 return Response(user_info, status=status.HTTP_200_OK)
-
-            user_info.update(user_profile)
 
             if not company:
                 return Response(user_info, status=status.HTTP_200_OK)

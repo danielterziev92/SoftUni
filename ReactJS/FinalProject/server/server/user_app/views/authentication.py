@@ -77,7 +77,7 @@ class GetCSRFTokenView(api_views.GenericAPIView):
 
 
 @method_decorator(csrf_protect, name='dispatch')
-class CheckAuthenticationView(api_views.RetrieveAPIView):
+class CheckAuthenticationView(api_views.RetrieveAPIView, UserInfoMixin):
     permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
@@ -87,4 +87,10 @@ class CheckAuthenticationView(api_views.RetrieveAPIView):
         if not session_id or not is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        return Response({'isAuthenticated': True}, status=status.HTTP_200_OK)
+        user_data = self.get_user_profile_data(request=request)
+        return Response(
+            {
+                'isAuthenticated': True,
+                'userData': user_data,
+            },
+            status=status.HTTP_200_OK)
