@@ -15,10 +15,8 @@ export default function useAuthCheck() {
     useLayoutEffect(() => {
         if (isAuthenticated) return;
 
-        const sessionId = localStorage.getItem("sessionId");
-        dispatch(changeIsMinimizedAsideBarAction(false));
-        console.log(sessionId)
         dispatch(checkAuthenticationAction());
+        dispatch(changeIsMinimizedAsideBarAction(true));
     });
 
 }

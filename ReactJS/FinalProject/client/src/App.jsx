@@ -26,7 +26,7 @@ import NavigationBar from "./components/navigation-bar/NavigationBar.jsx";
 export default function App() {
     const showAsideBar = useSelector(state => state.common.isMinimizedAsideBar);
 
-    // const isLoading = useAuthCheck();
+    useAuthCheck();
 
     return (
         <ErrorBoundary>

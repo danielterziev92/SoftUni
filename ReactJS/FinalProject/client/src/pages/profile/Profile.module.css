@@ -19,6 +19,22 @@
     grid-area: info;
 }
 
+.ProfileForm .info input {
+    border: 1px solid var(--secondaryColor);
+}
+
+.ProfileForm .info input:focus {
+    background-color: var(--secondaryColor);
+    color: var(--whiteColor)
+}
+
+.ProfileForm .info input:disabled {
+    background-color: var(--lightGreyColor);
+    color: var(--primaryColor);
+    font-weight: 500;
+    border: none;
+}
+
 .ProfileForm .picture {
     grid-area: picture;
 }

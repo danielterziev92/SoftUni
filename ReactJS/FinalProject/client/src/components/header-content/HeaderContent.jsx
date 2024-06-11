@@ -12,7 +12,7 @@ export default function HeaderContent({title, navigations, refreshFunc}) {
                 <ul>
                     {navigations.map((nav, index) => (
                         <li key={index}>
-                            <Link to={nav.active ? nav.to : '#'} className={!nav.active && style.Disable}>
+                            <Link to={nav.active ? nav.to : ''} className={!nav.active ? style.Disable : undefined}>
                                 {nav.name.charAt(0).toUpperCase() + nav.name.slice(1)}
                             </Link>
                         </li>

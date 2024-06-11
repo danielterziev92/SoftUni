@@ -107,7 +107,9 @@ export const checkAuthenticationAction = createAsyncThunk(
 
         try {
             const response = await axios.get(Urls.user.authentication, axiosConfig);
-            dispatch(checkAuth(response.data.isAuthenticated));
+            const {isAuthenticated, userData} = response.data;
+            dispatch(checkAuth(isAuthenticated));
+            dispatch(updateUserData(userData));
             return response.data.isAuthenticated;
         } catch (error) {
             return error.response.data.isAuthenticated;
