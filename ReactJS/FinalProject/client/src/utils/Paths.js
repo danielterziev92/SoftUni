@@ -7,7 +7,7 @@ const Paths = {
     signUp: '/sign-up',
     afterSignUp: '/sign-up',
     signOut: '/sign-out',
-    afterSignOut: '/auth',
+    afterSignOut: '/',
     register: '/register',
     products: '/products',
     groups: '/groups',

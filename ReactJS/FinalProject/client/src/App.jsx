@@ -7,6 +7,7 @@ import style from "./components/Main.module.css";
 import PublicRoutes from "./utils/PublicRoutes.jsx";
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import Aside from "./components/aside/Aside.jsx";
+import NavigationBar from "./components/navigation-bar/NavigationBar.jsx";
 import Products from "./components/products/Products.jsx";
 import ProductsProvider from "./contexts/ProductsContext.jsx";
 import SignIn from "./pages/sign-in/SignIn.jsx";
@@ -21,10 +22,9 @@ import Page404 from "./components/page-404/Page404.jsx";
 import useAuthCheck from "./hooks/useAuthCheck.js";
 
 import Paths from "./utils/Paths.js";
-import NavigationBar from "./components/navigation-bar/NavigationBar.jsx";
 
 export default function App() {
-    const showAsideBar = useSelector(state => state.common.isMinimizedAsideBar);
+    const isMinimizedAsideBar = useSelector(state => state.common.isMinimizedAsideBar);
 
     useAuthCheck();
 
@@ -33,7 +33,7 @@ export default function App() {
             <>
                 <NavigationBar/>
                 <Aside/>
-                <main className={`${style.MainContent} ${showAsideBar ? style.Minimized : style.Expand}`}>
+                <main className={`${style.MainContent} ${isMinimizedAsideBar ? style.Minimized : style.Expand}`}>
                     <Toaster position="top-center" toastOptions={{duration: 5000,}}/>
                     <Routes>
                         <Route element={<PublicRoutes/>}>

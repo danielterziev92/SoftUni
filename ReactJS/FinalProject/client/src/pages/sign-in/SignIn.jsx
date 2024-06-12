@@ -14,8 +14,8 @@ import getNextUrl from "../../utils/getNextUrl.js";
 import compareObjects from "../../utils/compareObjects.js";
 
 const initialData = {
-    email: '',
-    password: '',
+    email: 'daniel.st.terziev@gmail.com',
+    password: 'DN9206040560d$t',
 }
 
 const FormKey = {
@@ -67,7 +67,7 @@ export default function SignIn() {
     }
 
     return (
-        <section className={theme === 'Dark' && style.Dark}>
+        <section className={theme === 'Dark' ? style.Dark : undefined}>
             <article className={`${style.Wrapper}`}>
                 <h2>Sign In</h2>
                 <form onSubmit={onSubmitForm}>

@@ -55,7 +55,7 @@ export const singInUserAction = createAsyncThunk(
 
         try {
             const response = await axios.post(Urls.user.login, userData, axiosConfig);
-            dispatch(loginUser(response.data));
+            dispatch(loginUser(response.data.user));
 
             localStorage.setItem('userData', JSON.stringify(response.data.user));
             return response.data;

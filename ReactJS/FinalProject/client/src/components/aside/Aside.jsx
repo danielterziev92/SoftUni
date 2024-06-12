@@ -1,15 +1,16 @@
-import clipboard from 'clipboard-copy';
+import {useEffect, useLayoutEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+
+import {changeIsMinimizedAsideBarAction} from "../../features/common/commonActions.js";
 
 import style from './Aside.module.css';
 
-
 import {sections} from "./asideSections.js";
-import {Link} from "react-router-dom";
-import {useLayoutEffect, useState} from "react";
-import {useSelector} from "react-redux";
-
 
 export default function Aside() {
+    const dispatch = useDispatch();
+
     const isAuthenticated = useSelector(store => store.user.isAuthenticated);
     const showAsideBar = useSelector(state => state.common.isMinimizedAsideBar);
 
@@ -17,29 +18,26 @@ export default function Aside() {
 
     useLayoutEffect(() => {
         if (isAuthenticated) {
-            if (showAsideBar) {
-                setShowComponent(true);
-            } else {
-                setShowComponent(false);
-            }
+            setShowComponent(true);
+            return;
         }
 
+        setShowComponent(false);
     }, [isAuthenticated, showAsideBar]);
 
-    // const copyEmailOnClickHandler = async () => {
-    //     try {
-    //         await clipboard('');
-    //         updateMessage(`Имейл адрес:${''} беше копиран в клипборда`);
-    //         updateStatus('success');
-    //     } catch (error) {
-    //         updateMessage('Грешка при копирането в клипборда');
-    //         updateStatus('error');
-    //     }
-    // }
+    useEffect(() => {
+        if (showComponent) {
+            dispatch(changeIsMinimizedAsideBarAction(true));
+            return;
+        }
 
-    if (showComponent) {
-        return (
-            <aside className={style.Aside}>
+        dispatch(changeIsMinimizedAsideBarAction(false));
+    }, [showComponent]);
+
+
+    return (
+        showAsideBar
+            ? <aside className={style.Aside}>
                 <ul>
                     {sections.map((section, index) => (
                         <li key={index}>
@@ -51,8 +49,6 @@ export default function Aside() {
                     ))}
                 </ul>
             </aside>
-        );
-    } else {
-        return <></>;
-    }
+            : <></>
+    );
 }
