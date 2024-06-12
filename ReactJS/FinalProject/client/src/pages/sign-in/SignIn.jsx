@@ -11,7 +11,6 @@ import useForm from "../../hooks/useForm.js";
 import Paths from "../../utils/Paths.js";
 import {changeIsMinimizedAsideBarAction} from "../../features/common/commonActions.js";
 import getNextUrl from "../../utils/getNextUrl.js";
-import compareObjects from "../../utils/compareObjects.js";
 
 const initialData = {
     email: 'daniel.st.terziev@gmail.com',

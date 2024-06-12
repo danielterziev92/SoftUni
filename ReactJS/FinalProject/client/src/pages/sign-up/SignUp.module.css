@@ -42,6 +42,10 @@
     content: '\f058';
 }
 
+.Conditions{
+    margin: 10px 0;
+}
+
 .Conditions input[type=checkbox] {
     display: none;
 }

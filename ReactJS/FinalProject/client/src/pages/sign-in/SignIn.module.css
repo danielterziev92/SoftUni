@@ -20,11 +20,9 @@ section .Wrapper form {
     border: 1px solid var(--secondaryColor);
     background-color: var(--whiteColor);
     border-radius: 10px;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
     padding: 20px;
+    position: relative;
+    min-width: 350px;
 }
 
 section .Wrapper form .Error {
@@ -38,7 +36,8 @@ section .Wrapper form .Error p {
 
 section .Wrapper form .InputBox {
     position: relative;
-    margin: 10px 0;
+    margin: 20px 0 30px 0;
+    width: 100%;
 }
 
 section .Wrapper form .InputBoxError {
@@ -47,7 +46,7 @@ section .Wrapper form .InputBoxError {
 
 section .Wrapper form .InputBox input {
     width: 100%;
-    height: 100%;
+    height: 30px;
     background: transparent;
     border: none;
     outline: none;
@@ -112,6 +111,7 @@ section .Wrapper form .Button {
     border: none;
     outline: none;
     padding: 10px 20px;
+    margin-bottom: 10px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
@@ -120,6 +120,8 @@ section .Wrapper form .Button {
     font-weight: 600;
     z-index: 1;
     overflow: hidden;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 section .Wrapper form .Button:hover::before {
