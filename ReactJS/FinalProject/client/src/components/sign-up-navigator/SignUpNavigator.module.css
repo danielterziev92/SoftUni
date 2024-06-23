@@ -1,0 +1,48 @@
+.ProgressBar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.Circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--whiteColor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primaryColor);
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.Circle.Next {
+    border: 1px solid var(--primaryColor);
+}
+
+.Circle::after {
+    content: attr(data-step);
+    position: absolute;
+    top: 35px;
+    color: var(--primaryColor);
+    font-size: 12px;
+}
+
+.Circle.Active {
+    background-color: var(--secondaryColor);
+    color: var(--whiteColor);
+}
+
+.Line {
+    width: 50px;
+    height: 2px;
+    background-color: #ddd;
+    transition: background-color 0.3s;
+}
+
+.Circle.Active + .Line {
+    background-color: var(--secondaryColor);
+}

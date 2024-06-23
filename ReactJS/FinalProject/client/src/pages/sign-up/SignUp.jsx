@@ -10,6 +10,7 @@ import style from "./SignUp.module.css";
 
 import useForm from "../../hooks/useForm.js";
 import Paths from "../../utils/Paths.js";
+import SignUpNavigator from "../../components/sign-up-navigator/SignUpNavigator.jsx";
 
 const initialFormData = {
     email: '',
@@ -126,6 +127,7 @@ export default function SignUp() {
 
     return (
         <section className={theme === 'Dark' && mainStyle.Dark}>
+            <SignUpNavigator steps={5} step={2}/>
             <article className={`${mainStyle.Wrapper}`}>
                 <h2>Sign Up</h2>
                 <form onSubmit={onSubmitForm}>

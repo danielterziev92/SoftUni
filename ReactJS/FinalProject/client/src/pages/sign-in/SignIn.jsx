@@ -13,8 +13,8 @@ import {changeIsMinimizedAsideBarAction} from "../../features/common/commonActio
 import getNextUrl from "../../utils/getNextUrl.js";
 
 const initialData = {
-    email: 'daniel.st.terziev@gmail.com',
-    password: 'DN9206040560d$t',
+    email: '',
+    password: '',
 }
 
 const FormKey = {
