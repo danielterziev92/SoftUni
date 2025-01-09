@@ -1,5 +1,0 @@
-all_numbers = input().split(', ')
-print(f'Positive: {", ".join([positive for positive in all_numbers if int(positive) >= 0])}')
-print(f'Negative: {", ".join([positive for positive in all_numbers if int(positive) < 0])}')
-print(f'Even: {", ".join([positive for positive in all_numbers if int(positive) % 2 == 0])}')
-print(f'Odd: {", ".join([positive for positive in all_numbers if int(positive) % 2 != 0])}')
