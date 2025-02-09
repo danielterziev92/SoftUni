@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://use.fontawesome.com/releases/v5.15.4/css/all.css');
+
+html, body, ul, p {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 2fr 0.5fr;
+    background-color: #dbc7a1;
+    padding: 3rem 5rem;
+    gap: 2rem;
+}
+
+main section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 3rem;
+}
+
+main section article {
+    border: 1px solid rgb(0, 0, 0, 1);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 100px rgb(0, 0, 0, 0.4);
+}
+
+main section article .image {
+    width: 120%;
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+main section article img {
+    min-width: 92%;
+    height: 100%;
+}
+
+main section article p {
+    background-color: #66545e;
+    width: 100%;
+    padding: 15px 10px;
+    color: #ffffff;
+    font-size: 3rem;
+}
+
+nav {
+    color: #604f5c;
+}
+
+nav h3 {
+    font-size: 2rem;
+    margin: 5px 0 20px 0;
+    font-weight: normal;
+}
+
+nav ul li {
+    list-style: none;
+    font-size: 2.2rem;
+    padding: 15px 0;
+}
+
+nav ul li:before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f0a9";
+    margin-right: 10px;
+}
